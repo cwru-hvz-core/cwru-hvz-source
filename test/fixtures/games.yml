@@ -1,0 +1,15 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  short_name: MyString
+  registration_begins: 2011-01-26 17:41:35
+  registration_ends: 2011-01-26 17:41:35
+  game_begins: 2011-01-26 17:41:35
+  game_ends: 2011-01-26 17:41:35
+
+two:
+  short_name: MyString
+  registration_begins: 2011-01-26 17:41:35
+  registration_ends: 2011-01-26 17:41:35
+  game_begins: 2011-01-26 17:41:35
+  game_ends: 2011-01-26 17:41:35
