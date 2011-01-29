@@ -1,0 +1,17 @@
+// Since we pass this in an object, these fields automatically
+// are populated with that object's properties if the symbol
+// matches the database column.
+.content
+  - if session[:needs_info]
+    Your profile is incomplete! Please fill out this information to continue signup.
+  - form_for(@person) do |f|
+    Name: 
+    = f.text_field :name
+    %br
+    CaseID:
+    = session[:cas_user]
+    %br
+    Phone Number (for SMS):
+    = f.text_field :phone
+    %br
+    = f.submit

@@ -1,0 +1,11 @@
+.content
+  Welcome to Humans vs. Zombies.
+  %br
+  =link_to("Login with Single Sign On", people_login_url())
+  %br
+  - if session[:cas_user].nil?
+    You are not currently logged in.
+  - else
+    You are currently logged in as
+    =session[:cas_user] + "."
+    =link_to("(Logout)", people_logout_url())
