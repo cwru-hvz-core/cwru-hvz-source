@@ -3,6 +3,7 @@ require File.expand_path('../application', __FILE__)
 
 require 'casclient'
 require 'casclient/frameworks/rails/filter'
+require 'googlevoiceapi'
 
 CASClient::Frameworks::Rails::Filter.configure(
       :cas_base_url => "https://login.case.edu/cas/"

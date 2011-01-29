@@ -1,3 +1,6 @@
+#require 'googlevoiceapi'
+require './config/private.rb'
+
 class PeopleController < ApplicationController
 	before_filter :check_login, :except => ["login", "logout"]
 	before_filter CASClient::Frameworks::Rails::Filter, :only => "login"
@@ -19,6 +22,16 @@ class PeopleController < ApplicationController
 
 
 	def login
+		# Define your Google username and password in config/private.rb
+		api = GoogleVoice::Api.new($Google_Username, $Google_Password) unless $Google_Username.eql?("youremail@gmail.com")
+		@person = Person.find_by_caseid(session[:cas_user])	
+		if not @person.nil? and api
+			begin
+				api.sms(@person.phone, "Hello, you have just logged in!") unless @person.phone.nil?
+			rescue
+				puts "Could not log into Google Voice"
+			end
+		end
 		redirect_to (session[:was_at] or root_url())
 	end
 	def logout

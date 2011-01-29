@@ -5,7 +5,7 @@ gem 'haml'
 gem 'breadcrumbs'
 gem 'rubycas-client'
 gem "compass", ">= 0.10.6"
-
+gem "googlevoiceapi"
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
