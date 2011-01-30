@@ -20,14 +20,6 @@ ActiveRecord::Schema.define(:version => 20110128230056) do
     t.datetime "updated_at"
   end
 
-  create_table "brians", :id => false, :force => true do |t|
-    t.integer  "id",         :null => false
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.text     "name"
-    t.text     "height"
-  end
-
   create_table "feeds", :force => true do |t|
     t.integer  "registration_id"
     t.datetime "datetime"
