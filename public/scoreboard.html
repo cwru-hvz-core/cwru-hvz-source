@@ -3,14 +3,20 @@ page --!>
 
 <html>
 	<head>
+		<link href='http://fonts.googleapis.com/css?family=IM+Fell+English+SC' rel='stylesheet' type='text/css'>
 		<style type="text/css">
 			body {
 				padding:0;
 				margin:0;
+				font-family: 'IM Fell English SC';
 			}
 			span.highlight {
 				color:#38D13E;
 				font-weight:bold;
+				font-family:Serif;
+			}
+			div.player.deceased span.highlight {
+				color:#F00;
 			}
 			div.player {
 				width:100%;
@@ -21,28 +27,52 @@ page --!>
 				list-style:none;
 				padding:0;
 				height:40px;
-				background-color:#EEE;
 			}
 			div.player ul li {
-				padding-top:11px;
+				padding-top:9px;
 				float:left;
 			}
+			div.player ul li.right {
+				background-color:#EEE;
+				border-top:2px solid #AAA;
+				border-bottom:2px solid #AAA;
+				height:27px;
+			}
 			div.player ul li.number {
-				padding:5px 30px 0 0;
+				padding-top:5px;
 				font-size:24px;
 				background-color:#FFF;
-				height:40px;
+				width:4%;
+				height:35px;
 			}
 			div.player ul li.name {
-				width:200px;
+				width:20%;
+				height:27px;
+			}
+			div.player ul li.survival {
+				text-align:center;
+				width:53%;
 			}
 			div.player ul li.picture {
-				padding-top:5px;
-				margin:0 15px 0 30px;
+				padding-top:2px;
+				width:7%;
+				text-align:center;
+				height:34px;
+				border-left:2px solid #AAA;
+			}
+			div.player.human ul li.picture {	
+				background:url("images/scoreboard.png") repeat-y scroll 0 0 #EEE;
+			}
+			div.player.zombie ul li.picture {	
+				background:url("images/scoreboard_bg_zombie.png") repeat-x scroll 0 0 #EEE;
+			}
+			div.player.zombie ul li.name {	
+				background:url("images/scoreboard_bg_zombie.png") repeat-x scroll 0 0 #EEE;
 			}
 			div.player ul li.points {
-				float:right;
-				margin-right:20px;
+				float:left;
+				width:14%;
+				border-right:2px solid #AAA;
 			}
 		</style>
 	</head>
@@ -51,10 +81,28 @@ page --!>
 		<div class="player human">
 			<ul>
 				<li class="number">1.</li>
-				<li class="picture"><img src="" width="30" height="30" /></li>
-				<li class="name">Tom Dooner</li>
-				<li class="survival">Survived <span class="highlight">87</span> Hours + <span class="highlight">3</span> Missions</li>
-				<li class="points"><span class="highlight">2,343</span> Pts</li>
+				<li class="picture right"><img src="" width="30" height="30" /></li>
+				<li class="name right">Tom Dooner</li>
+				<li class="survival right">Survived <span class="highlight">87</span> Hours + <span class="highlight">3</span> Missions</li>
+				<li class="points right"><span class="highlight">2,343</span> Pts</li>
+			</ul>
+		</div>
+		<div class="player zombie">
+			<ul>
+				<li class="number">2.</li>
+				<li class="picture right"><img src="" width="30" height="30" /></li>
+				<li class="name right">Brian Stack</li>
+				<li class="survival right"><span class="highlight">4</span> Tags (Starves in <span class="highlight">3</span> Hours)</li>
+				<li class="points right"><span class="highlight">2,343</span> Pts</li>
+			</ul>
+		</div>
+		<div class="player deceased">
+			<ul>
+				<li class="number">3.</li>
+				<li class="picture right"><img src="" width="30" height="30" /></li>
+				<li class="name right">Ian Dimayuga</li>
+				<li class="survival right">Deceased on <span class="highlight">Sunday</span></li>
+				<li class="points right"><span class="highlight">2,343</span> Pts</li>
 			</ul>
 		</div>
 	</body>
