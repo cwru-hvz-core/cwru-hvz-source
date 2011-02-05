@@ -1,17 +1,9 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 
 one:
-  name: MyString
-  caseid: MyString
+  name: Tom Dooner
+  caseid: ted27
   picture: 
-  phone: MyString
-  last_login: 2011-01-26 17:40:44
-  is_admin: false
-
-two:
-  name: MyString
-  caseid: MyString
-  picture: 
-  phone: MyString
+  phone: 123-456-7890
   last_login: 2011-01-26 17:40:44
   is_admin: false

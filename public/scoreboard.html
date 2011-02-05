@@ -1,0 +1,61 @@
+<!-- A testing mockup of the Players 
+page --!>
+
+<html>
+	<head>
+		<style type="text/css">
+			body {
+				padding:0;
+				margin:0;
+			}
+			span.highlight {
+				color:#38D13E;
+				font-weight:bold;
+			}
+			div.player {
+				width:100%;
+				height:40px;
+				font-variant:small-caps;
+			}
+			div.player ul {
+				list-style:none;
+				padding:0;
+				height:40px;
+				background-color:#EEE;
+			}
+			div.player ul li {
+				padding-top:11px;
+				float:left;
+			}
+			div.player ul li.number {
+				padding:5px 30px 0 0;
+				font-size:24px;
+				background-color:#FFF;
+				height:40px;
+			}
+			div.player ul li.name {
+				width:200px;
+			}
+			div.player ul li.picture {
+				padding-top:5px;
+				margin:0 15px 0 30px;
+			}
+			div.player ul li.points {
+				float:right;
+				margin-right:20px;
+			}
+		</style>
+	</head>
+
+	<body style="width:900px; border:1px solid #000;">
+		<div class="player human">
+			<ul>
+				<li class="number">1.</li>
+				<li class="picture"><img src="" width="30" height="30" /></li>
+				<li class="name">Tom Dooner</li>
+				<li class="survival">Survived <span class="highlight">87</span> Hours + <span class="highlight">3</span> Missions</li>
+				<li class="points"><span class="highlight">2,343</span> Pts</li>
+			</ul>
+		</div>
+	</body>
+</html>

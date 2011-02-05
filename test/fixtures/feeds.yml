@@ -3,9 +3,9 @@
 one:
   registration_id: 1
   datetime: 2011-01-26 17:44:05
-  feeder_id: 1
+  tag_id: 1
 
 two:
   registration_id: 1
   datetime: 2011-01-26 17:44:05
-  feeder_id: 1
+  tag_id: 1

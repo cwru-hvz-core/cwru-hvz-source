@@ -2,7 +2,13 @@ require 'test_helper'
 
 class PersonTest < ActiveSupport::TestCase
   # Replace this with your real tests.
-  test "the truth" do
-    assert true
+
+  def setup
+	  @p = people(:one)
+  end
+  test "requires CaseID" do
+	  assert @p.valid?
+	  @p.caseid = nil
+	  assert !@p.valid?
   end
 end
