@@ -1,0 +1,47 @@
+%h2.dink 
+  = "Registration: " + @current_game.short_name
+%div.registration
+  %div#infotable
+    %table
+      %thead
+        %th{:colspan=>2} Game Information:
+      %tr
+        %td
+          %b Game Begins:
+        %td=@current_game.dates[:game_begins]
+      %tr
+        %td
+          %b Game Ends:
+        %td=@current_game.dates[:game_ends]
+  %div#signuptable
+    %table
+      %thead
+        %th{:colspan=>2} Registration:
+      %tbody
+        %tr
+          %td
+            %b Name:
+          %td
+            =@person.name
+        %tr
+          %td
+            %b CaseID:
+          %td
+            =@person.caseid
+        %tr
+          %td
+            %b Phone Number:
+          %td
+            =@person.phone
+        - form_for(@registration) do |f|
+          %tr
+            %td
+              %b=f.label :is_oz, "Place me in the Original Zombie Pool:"
+            %td
+              =f.check_box :is_oz
+          %tr
+            %td{:colspan=>2}
+              =f.submit "Register!"
+
+
+

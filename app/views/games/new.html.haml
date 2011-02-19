@@ -1,0 +1,25 @@
+- if not flash[:message].nil?
+  %div.error
+    Error:
+    =flash[:message]
+%table
+  - form_for(@game) do |f|
+    %tr
+      %td= f.label :short_name, "Short Name:"
+      %td= f.text_field :short_name
+    %tr
+      %td= f.label :registration_begins, "Registration Begins:"
+      %td= f.datetime_select :registration_begins
+    %tr
+      %td= f.label :registration_ends, "Registration Ends:"
+      %td= f.datetime_select :registration_ends
+    %tr
+      %td= f.label :game_begins, "Game Begins:"
+      %td= f.datetime_select :game_begins
+    %tr
+      %td= f.label :game_ends, "Game Ends:"
+      %td= f.datetime_select :game_ends
+    %tr
+      %td{:colspan=>2}
+        %div{:align=>"center"}= f.submit "Create This Game"
+

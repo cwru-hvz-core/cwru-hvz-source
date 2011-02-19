@@ -10,18 +10,83 @@
 // Import the non-default scaffolding module.
 @import "blueprint/scaffolding";
 
+// Import colors for error messages and stuff.
+@import "blueprint/interaction";
+@import "compass/utilities/tables";
+
 // Generate the blueprint framework according to your configuration:
 @include blueprint;
 
 @include blueprint-scaffolding;
 
 .blueprint {
-	@include container;
 	
-	.content {
-		margin-top: 20px;
-		@include prepend-top(10);
-		@include prepend(4);
-		@include column(10);
+	@include container;
+	background: url("/images/bg_test.png") repeat-x;
+
+	h1 {
+		font-size:4em;
+
 	}
+
+	.heading {
+		width:100%;
+		margin:20px auto 0px;
+		text-align:center;
+
+		.navigation {
+			background-color:$hvz-green;
+			clear:both;
+			font-size:1.4em;
+			height:30px;
+			@include append-bottom(15px);
+		}
+
+	}
+
+	.heading h1{
+		font-family:'Dink';	
+	}
+	.dink {
+		font-family:'Dink';
+	}
+	.container {
+		background-color:#FFF;
+	}
+	.content {
+		text-align:center;
+		@include prepend-top(10);
+		@include column(24);
+	}
+	.info {
+		@include prepend(3);
+		@include column(18);
+		@include append-bottom(20px);
+	}
+}
+div.game {
+	table.players {
+	}
+	table.ozs {
+	}
+}
+div.registration {
+	@include column(24);
+
+	#infotable {
+		@include prepend(2);
+		@include column(8);
+	}
+	#signuptable {
+		@include column(11);
+		@include append(2);
+	}
+}
+.error {
+	@include error();
+}
+
+@font-face {
+	font-family:'Dink';
+	src:url('/fonts/DINk.ttf') format('truetype')
 }

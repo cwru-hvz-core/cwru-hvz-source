@@ -10,5 +10,29 @@
     /[if lt IE 8]
       = stylesheet_link_tag 'compiled/ie.css', :media => 'screen, projection'
   %body.blueprint
-    = yield
-
+    %div.container
+      %div.heading
+        %h1 Case Humans vs. Zombies
+        %div.info.last
+          %div.span-10
+            Description of HvZ Goes here lorem ipsum solor dit amet arc. rua jijnt .a,regj arecug ceuhna tnah.urc eug jrinaet arce ce acr!
+          %div.span-4
+            Game Begins in 02d 04h 01m 01s
+          %div.span-4.last
+            = link_to "Login", people_login_url() unless @logged_in
+            = link_to "Logout", people_logout_url() if @logged_in
+        %div.navigation
+          %div.span-4 Home
+          %div.span-4
+            - if not @current_game.nil?
+              - if @current_game.ongoing?
+                = link_to("Scoreboard", game_url(@current_game)) unless @current_game.nil?
+              - else
+                = link_to("Registration", new_registration_url())
+          %div.span-4 
+            = link_to "Report A Kill", "#" unless @current_game.nil?
+          %div.span-4 Rules
+          %div.span-4
+            = link_to("Previous Games", games_url())
+      %div.content
+        = yield

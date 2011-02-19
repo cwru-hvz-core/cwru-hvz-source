@@ -1,0 +1,50 @@
+%div.game
+  %h2.dink=@game.short_name + " (" + @game.dates[:date_range] + ")"
+  %div.span-5
+    %table.players
+      %thead
+        %th{:colspan=>2}
+          Players:
+      %tbody
+        %tr
+          %td
+            %b Human:
+          %td
+            22
+        %tr
+          %td
+            %b Zombie:
+          %td
+            23
+        %tr
+          %td
+            %b Deceased:
+          %td
+            33
+        %tr
+          %td
+            %b Total:
+          %td
+            354
+  %div.span-14
+    - cache(:action=>"show", :action_suffix=>"gamestats") do
+      = render :partial => "gamestats"
+  %div.span-5.last
+    %table.ozs
+      %thead
+        %th{:colspan=>2}
+          %b Original Zombies:
+      %tbody
+        %tr
+          %td 
+            %b Eric Laakman
+          %td 2212
+        %tr
+          %td 
+            %b Tom Dooner
+          %td 1234
+        %tr
+          %td 
+            %b Owen Bell
+          %td 1192
+

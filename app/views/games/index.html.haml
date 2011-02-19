@@ -1,0 +1,4 @@
+- @games.each do |g| 
+  %h2
+    =link_to(g.short_name, game_url(g))
+= link_to("Add New Game", new_game_url()) if @is_admin
