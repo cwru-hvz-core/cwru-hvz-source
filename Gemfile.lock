@@ -39,6 +39,7 @@ GEM
       daemons
     erubis (2.6.6)
       abstract (>= 1.0.0)
+    gchartrb (0.8)
     googlevoiceapi (0.1.4)
       htmlentities
       mechanize
@@ -91,6 +92,7 @@ DEPENDENCIES
   breadcrumbs
   compass (>= 0.10.6)
   delayed_job
+  gchartrb
   googlevoiceapi
   haml
   rails (= 3.0.3)

@@ -7,6 +7,7 @@ gem 'rubycas-client'
 gem "compass", ">= 0.10.6"
 gem "googlevoiceapi"
 gem 'delayed_job'
+gem 'gchartrb'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'

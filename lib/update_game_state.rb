@@ -19,7 +19,39 @@ class UpdateGameState
 	end
 
 	def perform
-		@players = Game.registrations
-#		@human = @players.map{|p| }
+		@players = @current_game.registrations
+
+		@human_faction = @players.map{|p| 
+			p if p.is_human?
+		}.compact
+
+		@zombie_faction = @players.map{|p|
+			p if p.is_zombie?
+		}.compact
+	
+		@deceased_faction = @players.map{|p|
+			p if p.is_deceased?
+		}.compact
+
+		update_faction_cache({:human => @human_faction,
+					  :zombie => @zombie_faction,
+					  :deceased => @deceased_faction
+		})
+	end
+
+	def update_faction_cache(factions)
+		factions[:human].each do |h|
+			h.update_attributes({:faction_id => 0})
+		end
+		factions[:zombie].each do |h|
+			h.update_attributes({:faction_id => 1})
+		end
+		factions[:deceased].each do |h|
+			h.update_attributes({:faction_id => 3})
+		end
+	end
+
+	def update_score_cache(registrations)
+
 	end
 end
