@@ -47,7 +47,7 @@ class UpdateGameState
 			h.update_attributes({:faction_id => 1})
 		end
 		factions[:deceased].each do |h|
-			h.update_attributes({:faction_id => 3})
+			h.update_attributes({:faction_id => 2})
 		end
 	end
 

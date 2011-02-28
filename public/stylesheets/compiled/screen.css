@@ -1161,7 +1161,7 @@ input.span-24, textarea.span-24, select.span-24 {
 
 /* line 12, ../../../../../../.rvm/gems/ruby-1.9.2-p0/gems/compass-0.10.6/frameworks/blueprint/stylesheets/blueprint/_interaction.scss */
 .highlight {
-  background: yellow;
+  background: none;
 }
 
 /* line 14, ../../../../../../.rvm/gems/ruby-1.9.2-p0/gems/compass-0.10.6/frameworks/blueprint/stylesheets/blueprint/_interaction.scss */
@@ -1310,19 +1310,30 @@ form.inline p {
   margin: 0 auto;
   overflow: hidden;
   *zoom: 1;
+  overflow: auto;
+  *zoom: 1;
   background: url("/images/bg_test.png") repeat-x;
 }
-/* line 27, ../../../app/stylesheets/screen.scss */
+/* line 22, ../../../../../../.rvm/gems/ruby-1.9.2-p0/gems/compass-0.10.6/frameworks/compass/stylesheets/compass/utilities/general/_clearfix.scss */
+.blueprint:after {
+  content: "\0020";
+  display: block;
+  height: 0;
+  clear: both;
+  overflow: hidden;
+  visibility: hidden;
+}
+/* line 29, ../../../app/stylesheets/screen.scss */
 .blueprint h1 {
   font-size: 4em;
 }
-/* line 32, ../../../app/stylesheets/screen.scss */
+/* line 34, ../../../app/stylesheets/screen.scss */
 .blueprint .heading {
   width: 100%;
   margin: 20px auto 0px;
   text-align: center;
 }
-/* line 37, ../../../app/stylesheets/screen.scss */
+/* line 39, ../../../app/stylesheets/screen.scss */
 .blueprint .heading .navigation {
   background-color: #94ff70;
   clear: both;
@@ -1330,19 +1341,19 @@ form.inline p {
   height: 30px;
   margin-bottom: 15px;
 }
-/* line 47, ../../../app/stylesheets/screen.scss */
+/* line 49, ../../../app/stylesheets/screen.scss */
 .blueprint .heading h1 {
   font-family: 'Dink';
 }
-/* line 50, ../../../app/stylesheets/screen.scss */
+/* line 52, ../../../app/stylesheets/screen.scss */
 .blueprint .dink {
   font-family: 'Dink';
 }
-/* line 53, ../../../app/stylesheets/screen.scss */
+/* line 55, ../../../app/stylesheets/screen.scss */
 .blueprint .container {
   background-color: #FFF;
 }
-/* line 56, ../../../app/stylesheets/screen.scss */
+/* line 58, ../../../app/stylesheets/screen.scss */
 .blueprint .content {
   text-align: center;
   margin-top: 10;
@@ -1355,7 +1366,7 @@ form.inline p {
 * html .blueprint .content {
   overflow-x: hidden;
 }
-/* line 61, ../../../app/stylesheets/screen.scss */
+/* line 63, ../../../app/stylesheets/screen.scss */
 .blueprint .info {
   padding-left: 120px;
   display: inline;
@@ -1369,7 +1380,7 @@ form.inline p {
   overflow-x: hidden;
 }
 
-/* line 73, ../../../app/stylesheets/screen.scss */
+/* line 75, ../../../app/stylesheets/screen.scss */
 div.registration {
   display: inline;
   float: left;
@@ -1380,7 +1391,7 @@ div.registration {
 * html div.registration {
   overflow-x: hidden;
 }
-/* line 76, ../../../app/stylesheets/screen.scss */
+/* line 78, ../../../app/stylesheets/screen.scss */
 div.registration #infotable {
   padding-left: 80px;
   display: inline;
@@ -1392,7 +1403,7 @@ div.registration #infotable {
 * html div.registration #infotable {
   overflow-x: hidden;
 }
-/* line 80, ../../../app/stylesheets/screen.scss */
+/* line 82, ../../../app/stylesheets/screen.scss */
 div.registration #signuptable {
   display: inline;
   float: left;
@@ -1405,7 +1416,7 @@ div.registration #signuptable {
   overflow-x: hidden;
 }
 
-/* line 85, ../../../app/stylesheets/screen.scss */
+/* line 87, ../../../app/stylesheets/screen.scss */
 .error {
   padding: 0.8em;
   margin-bottom: 1em;

@@ -1,0 +1,72 @@
+span.highlight {
+	color:#38D13E;
+	font-weight:bold;
+	font-family:Serif;
+}
+div.player.deceased span.highlight {
+	color:#000;
+}
+div.player {
+	font-family: 'IM Fell English SC', arial, serif;
+	width:100%;
+	font-size:1.3em;
+	height:40px;
+	font-variant:small-caps;
+	margin-bottom:15px;
+}
+div.player ul {
+	list-style:none;
+	padding:0;
+	height:40px;
+}
+div.player ul li {
+	padding-top:9px;
+	float:left;
+}
+div.player ul li.right {
+	background-color:#EEE;
+	border-top:2px solid #AAA;
+	border-bottom:2px solid #AAA;
+	height:27px;
+}
+div.player ul li.number {
+	padding-top:5px;
+	font-size:24px;
+	background-color:#FFF;
+	width:4%;
+	height:35px;
+}
+div.player ul li.name {
+	width:20%;
+	height:27px;
+	font-weight:bold;
+}
+li.name.admin {
+	color: #9C1A27;
+}
+div.player ul li.survival {
+	text-align:center;
+	width:53%;
+}
+div.player ul li.picture {
+	padding-top:2px;
+	width:7%;
+	text-align:center;
+	height:34px;
+	border-left:2px solid #AAA;
+}
+div.player.human ul li.picture {	
+	background:url("/images/scoreboard.png") repeat-y scroll 0 0 #EEE;
+}
+div.player.zombie ul li.picture {	
+	background:url("/images/scoreboard_bg_zombie.png") repeat-x scroll 0 0 #EEE;
+}
+div.player.zombie ul li.name {	
+	background:url("/images/scoreboard_bg_zombie.png") repeat-x scroll 0 0 #EEE;
+}
+div.player ul li.points {
+	float:left;
+	width:14%;
+	border-right:2px solid #AAA;
+}
+

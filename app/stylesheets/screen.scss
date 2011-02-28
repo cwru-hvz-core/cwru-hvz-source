@@ -22,6 +22,8 @@
 .blueprint {
 	
 	@include container;
+	overflow:auto;
+	@include pie-clearfix;
 	background: url("/images/bg_test.png") repeat-x;
 
 	h1 {

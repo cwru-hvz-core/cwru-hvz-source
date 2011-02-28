@@ -24,5 +24,10 @@ class Game < ActiveRecord::Base
 	def can_register?
 		(self.registration_begins < Time.now.utc) and (self.registration_ends > Time.now.utc)
 	end
+
+	def self.now(game)
+		# Returns the effective time so states won't change after the game ends. (Hopefully)
+		[Time.now.utc, game.game_ends].min
+	end
 end
 

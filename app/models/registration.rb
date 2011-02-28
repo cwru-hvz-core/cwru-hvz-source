@@ -16,76 +16,57 @@ class Registration < ActiveRecord::Base
 		(0..5).map{ chars.to_a[rand(chars.size)] }.join
 	end
 
-	# Note: These methods is costly and should only be called asynchronously.
+	# Note: These methods are costly and should only be called asynchronously.
+	
+	def time_survived
+		tag = self.killing_tag
+		return [0, tag.datetime - self.game.game_begins].max unless tag.nil?
+		return [0, Game.now(self.game) - self.game.game_begins].max
+	end
+
+	def killing_tag
+		# Each human should have only one killing tag. (That is, the tag that turned them
+		# into a zombie)
+		self.taggedby.map{|x| x if x.mission_id.nil? or x.mission_id==0 }.compact.first
+	end
+
+	def most_recent_feed
+		# Get the time the player turned into a zombie:
+		tag = self.killing_tag
+		zombietime = tag.datetime + 1.hour unless tag.nil?
+		zombietime ||= Time.at(0)
+		# Get the most recent feed given to that player:
+		feedtime = self.feeds.sort{|a,b| b.datetime <=> a.datetime}.first
+		feedtime = feedtime.datetime unless feedtime.nil?
+		feedtime ||= Time.at(0) # (if they have no feeds)
+		return [zombietime, feedtime].max
+	end
+
 	def is_human?
 		# A player is human if and only if they have not been tagged in game (i.e. outside a mission)
-		not self.taggedby.map{|x| "zombie" if x.mission_id.nil? or x.mission_id==0 }.include?("zombie")
+		self.killing_tag.nil?
 	end
-
-	#TODO: Extract the common code in these methods into a method for most_recent_feed and has_game_tag
-	# So we can do:  is_deceased = has_game_tag? and (most_recent_feed + 48.hours < Time.now)
-	#                is_zombie = has_game_tag? and (most_recent_feed + 48.hours >= Time.now)
 	def is_zombie?
-		# A player is zombie if and only if they have been tagged in game and have not deceased.
-		#
-		# Get the non-mission tags for this player first:
-		tags = self.taggedby.map{|x| x if x.mission_id.nil? or x.mission_id==0 }.compact
-		
-		# If the player has been tagged during the game...
-		if not tags.empty?
-			# Get the most recent tag
-			tagtime = Time.at(0)
-			tags.each do |t|
-				if t.datetime > tagtime
-					tagtime = t.datetime
-				end
-			end
-			# and add the incubation period...
-			zombietime = tagtime + 1.hour
-
-			#Get the most recent feed of a player
-			feedtime = self.feeds.sort{|a,b| b.datetime <=> a.datetime}.first
-			feedtime = feedtime.datetime unless feedtime.nil?
-			feedtime ||= Time.at(0)
-
-			#Death occurs 48 hours after the most recent feed or zombification time
-			death = [zombietime, feedtime].max + 48.hours
-
-			return !(death < Time.now)
-		else
-			return false
-		end
+		# A player is a zombie if they have been tagged in game and have not yet starved.
+		return (!self.killing_tag.nil? and self.most_recent_feed + 48.hours >= Game.now(self.game))
 	end
 	def is_deceased?
-		# A player is deceased if and only if they have been tagged in game and it is been 48
-		# hours since their last tag and feed.
-		#
-		# Get the non-mission tags for this player first:
-		tags = self.taggedby.map{|x| x if x.mission_id.nil? or x.mission_id==0 }.compact
-		
-		# If the player has been tagged during the game...
-		if not tags.empty?
-			# Get the most recent tag
-			tagtime = Time.at(0)
-			tags.each do |t|
-				if t.datetime > tagtime
-					tagtime = t.datetime
-				end
-			end
-			# and add the incubation period...
-			zombietime = tagtime + 1.hour
-
-			#Get the most recent feed of a player
-			feedtime = self.feeds.sort{|a,b| b.datetime <=> a.datetime}.first
-			feedtime = feedtime.datetime unless feedtime.nil?
-			feedtime ||= Time.at(0)
-
-			#Death occurs 48 hours after the most recent feed or zombification time
-			death = [zombietime, feedtime].max + 48.hours
-
-			return (death < Time.now)
-		else
-			return false
+		# A player is deceased if they are not human and not a zombie.
+		return (!self.is_human? and !self.is_zombie?)
+	end
+	def state_history
+		# Returns the times at which the human transitioned between factions, according to the
+		# current database.
+		# TODO: Add OZ logic in here
+		# Currently only used in the graph of game vs. time in games#show.
+		human_time = self.game.game_begins
+		tag = self.killing_tag
+		zombie_time = self.game.game_ends
+		deceased_time = self.game.game_ends
+		if not tag.nil?
+			zombie_time = tag.datetime + 1.hour 
+			deceased_time = self.most_recent_feed + 48.hours
 		end
+		return {:human => human_time, :zombie => zombie_time, :deceased => deceased_time}
 	end
 end

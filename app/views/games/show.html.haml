@@ -1,3 +1,4 @@
+= stylesheet_link_tag "Testing"
 %div.game
   %h2.dink=@game.short_name + " (" + @game.dates[:date_range] + ")"
   %div.span-5
@@ -10,25 +11,25 @@
           %td
             %b Human:
           %td
-            22
+            = @players.map{|x| x if x.faction_id == 0}.compact.length
         %tr
           %td
             %b Zombie:
           %td
-            23
+            = @players.map{|x| x if x.faction_id == 1}.compact.length
         %tr
           %td
             %b Deceased:
           %td
-            33
+            = @players.map{|x| x if x.faction_id == 2}.compact.length
         %tr
           %td
             %b Total:
           %td
-            354
+            = @players.length
   %div.span-14
-    = render :partial => "gamestats"
-    //- cache(:action=>"show", :action_suffix=>"gamestats") do
+    - cache(:action=>"show", :action_suffix=>"gamestats") do
+      = render :partial => "gamestats"
   %div.span-5.last
     %table.ozs
       %thead
@@ -47,4 +48,14 @@
           %td 
             %b Owen Bell
           %td 1192
+  %div.span-2.clear
+    &nbsp;
+  %div.span-20
+    - cache(:action => "show", :action_suffix=>"scoreboard") do
+      - number = 1
+      - @players.each do |p|
+        = render :partial => "scoreboard", :locals => {:player => p, :number => (number)}
+        - number += 1
+  %div.span-2.last
+    &nbsp;
 
