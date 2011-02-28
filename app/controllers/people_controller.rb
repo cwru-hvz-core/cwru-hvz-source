@@ -2,19 +2,11 @@
 require './config/private.rb'
 
 class PeopleController < ApplicationController
-	before_filter :check_login, :except => ["login", "logout", "update"]
+	before_filter :check_login, :except => ["login", "logout", "update", "admins"]
 	before_filter CASClient::Frameworks::Rails::Filter, :only => "login"
 
-	# Note: On every page load where check_login is called as a before_filter,
-	#  
-	def index 
-
-	end
-
-	def edit
+	# Note: On every page load where check_login is called as a before_filter 
 	
-	end
-
 	def update
 		@person.update_attributes(params[:person])
 		redirect_to(session[:was_at] || @person)

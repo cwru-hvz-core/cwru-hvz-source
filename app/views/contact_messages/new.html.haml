@@ -1,0 +1,63 @@
+- unless flash[:notice].nil?
+  %div.notice=flash[:notice]
+- unless flash[:error].nil?
+  %div.error="Error: " + flash[:error]
+%div.span-8
+  %table
+    %thead
+      %th
+        ="HvZ " + @current_game.short_name + " Admins"
+    %tbody
+      - @admins.each do |a|
+        %tr
+          %td
+            =a.name
+  %table
+    %thead
+      %th{:colspan => 2}
+        Other Contact Methods:
+    %tbody
+      %tr
+        %td E-mail:
+        %td
+          = mail_to "casehvz@gmail.com"
+      %tr
+        %td Phone/SMS:
+        %td
+          330.8868.HVZ
+%div.span-16.last
+  %table
+    %thead
+      %th{:colspan=>2} Contact HvZ Administrators
+    %tbody
+      %tr
+        %td{:colspan=>2}
+          HvZ Core would like to hear your feedback about the current game of HvZ. Although we make strong attempts
+          to keep HvZ out of non-players' lives, we realize that there may be some instances that we have not yet
+          addressed in our rules. Please inform us of any situations which you feel should be corrected.
+      -form_for :contact_message do |j|
+        %tr
+          %td= j.label :from, "Your Name (optional): "
+          %td= j.text_field :from
+        %tr
+          %td= j.label :regarding, "Offender (if applicable): "
+          %td= j.text_field :regarding
+        %tr
+          %td= j.label :body, "Explanation Of Problem: "
+          %td= j.text_area :body
+        %tr
+          %td= j.label :occurred, "Date & Time Of Occurrence: "
+          %td= j.datetime_select :occurred
+        %tr
+          %td
+            &nbsp;
+          %td=j.submit "Submit Comment"
+  Note: None of this information is required. However, it will be difficult to
+  correct a situation in the future without enough information.
+  %b 
+    If you would like to be informed of the outcome of your submission here, please
+    submit your name.
+    
+
+
+  
