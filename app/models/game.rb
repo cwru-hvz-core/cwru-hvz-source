@@ -19,6 +19,7 @@ class Game < ActiveRecord::Base
 		}
 	end
 	def ongoing?
+		return false if self.game_begins.nil? or self.game_ends.nil?
 		(self.game_begins < Time.now.utc) and (self.game_ends > Time.now.utc)
 	end
 	def can_register?
