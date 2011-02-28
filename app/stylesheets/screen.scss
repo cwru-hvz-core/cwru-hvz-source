@@ -6,13 +6,13 @@
 
 // Import all the default blueprint modules so that we can access their mixins.
 @import "blueprint";
-
 // Import the non-default scaffolding module.
 @import "blueprint/scaffolding";
 
 // Import colors for error messages and stuff.
 @import "blueprint/interaction";
 @import "compass/utilities/tables";
+@import "compass/css3/box-shadow";
 
 // Generate the blueprint framework according to your configuration:
 @include blueprint;
@@ -22,8 +22,10 @@
 .blueprint {
 	
 	@include container;
+	@include prepend-top(15px);
 	overflow:auto;
 	@include pie-clearfix;
+	@include box-shadow(#999, 0px, -5px, 6px, -2px);
 	background: url("/images/bg_test.png") repeat-x;
 
 	h1 {

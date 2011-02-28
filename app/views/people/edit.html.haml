@@ -1,17 +1,24 @@
 // Since we pass this in an object, these fields automatically
 // are populated with that object's properties if the symbol
 // matches the database column.
-.content
-  - if session[:needs_info]
+- if session[:needs_info]
+  %div.span-24.last
     Your profile is incomplete! Please fill out this information to continue signup.
-  - form_for(@person) do |f|
-    Name: 
-    = f.text_field :name
-    %br
-    CaseID:
-    = session[:cas_user]
-    %br
-    Phone Number (for SMS):
-    = f.text_field :phone
-    %br
-    = f.submit
+%div.span-4.clear
+  &nbsp;
+%div.span-16
+  %table
+    %tbody
+      - form_for(@person) do |f|
+        %tr
+          %td Name: 
+          %td= f.text_field :name
+        %tr
+          %td CaseID:
+          %td= session[:cas_user]
+        %tr
+          %td Phone Number (for SMS):
+          %td= f.text_field :phone
+        %tr
+          %td{:colspan=>2}
+            = f.submit
