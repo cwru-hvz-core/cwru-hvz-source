@@ -6,12 +6,13 @@
   %table
     %thead
       %th
-        ="HvZ " + @current_game.short_name + " Admins"
+        ="HvZ " + @current_game.short_name.to_s + " Admins"
     %tbody
-      - @admins.each do |a|
-        %tr
-          %td
-            =a.name
+      - unless @admins.nil?
+        - @admins.each do |a|
+          %tr
+            %td
+              =a.name
   %table
     %thead
       %th{:colspan => 2}
