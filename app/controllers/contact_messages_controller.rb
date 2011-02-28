@@ -2,7 +2,7 @@ class ContactMessagesController < ApplicationController
 	def new
 		# TODO: This probably deserves its own place somewhere else, as it is not really
 		# a "people" thing.
-		@admins = Person.find_all_by_is_admin(1)
+		@admins = Person.find_all_by_is_admin(true)
 	end
 
 	def create
