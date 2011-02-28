@@ -6,7 +6,7 @@ class Game < ActiveRecord::Base
 	validates_with GameValidator  # Defined in ./lib/game_validator.rb
 	
 	def self.current
-		Game.find(:first, :conditions => ["is_current = ?", true])
+		Game.find(:first, :conditions => ["is_current = ?", true]) or Game.new
 	end
 	# Method to return all the human-readable dates for a game
 	def dates
