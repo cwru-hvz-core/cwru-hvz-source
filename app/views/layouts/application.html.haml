@@ -35,7 +35,9 @@
           %div.span-4 
             = link_to "Report A Kill", "#" unless @current_game.nil?
           %div.span-4 Rules
-          %div.span-4
-            = link_to("Previous Games", games_url())
+          %div.span-4.last
+            = link_to("HvZ Core", new_contact_message_url())
       %div.content
+        - unless flash[:error].nil?
+          %div.error=flash[:error]
         = yield

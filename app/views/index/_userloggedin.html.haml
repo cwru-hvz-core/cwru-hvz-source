@@ -1,4 +1,9 @@
-%b=@person.name
-= "(" + @person.caseid + ")"
+- unless (@person.nil? or @person.name.nil?)
+  %b=@person.name
+  = "(" + @person.caseid + ")"
+- else
+  %b Profile Incomplete! 
+  = "(" + session[:cas_user] + ")"
+  = link_to "Update Profile", new_person_url()
 %br
 =link_to "Logout", people_logout_url()

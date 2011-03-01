@@ -29,9 +29,13 @@ class PeopleController < ApplicationController
 		end
 		redirect_to (session[:was_at] or root_url())
 	end
+
 	def logout
 		CASClient::Frameworks::Rails::Filter.logout(self)
 		#redirect_to (session[:was_at] or root_url())
 	end
 
+	def new
+		redirect_to root_url()
+	end
 end
