@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110228045404) do
+ActiveRecord::Schema.define(:version => 20110304233631) do
 
   create_table "attendances", :force => true do |t|
     t.integer  "registration_id"
@@ -99,9 +99,10 @@ ActiveRecord::Schema.define(:version => 20110228045404) do
     t.integer  "faction_id"
     t.string   "card_code"
     t.integer  "score"
-    t.boolean  "is_oz"
+    t.boolean  "is_oz",      :default => false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "wants_oz",   :default => false
   end
 
   create_table "tags", :force => true do |t|

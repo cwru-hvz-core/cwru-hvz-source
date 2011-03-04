@@ -54,7 +54,7 @@
     - cache(:action => "show", :action_suffix=>"scoreboard") do
       - number = 1
       - @players.each do |p|
-        = render :partial => "scoreboard", :locals => {:player => p, :number => (number)}
+        = render(:partial => "scoreboard", :locals => {:player => p, :number => (number)})
         - number += 1
   %div.span-2.last
     &nbsp;
