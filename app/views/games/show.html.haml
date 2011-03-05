@@ -6,30 +6,11 @@
       %thead
         %th{:colspan=>2}
           Players:
-      %tbody
-        %tr
-          %td
-            %b Human:
-          %td
-            = @players.map{|x| x if x.faction_id == 0}.compact.length
-        %tr
-          %td
-            %b Zombie:
-          %td
-            = @players.map{|x| x if x.faction_id == 1}.compact.length
-        %tr
-          %td
-            %b Deceased:
-          %td
-            = @players.map{|x| x if x.faction_id == 2}.compact.length
-        %tr
-          %td
-            %b Total:
-          %td
-            = @players.length
-  %div.span-14
-    - cache(:action=>"show", :action_suffix=>"gamestats") do
+    - cache({:action=>"show", :action_suffix=>"gamestats", :id=>@game}, :expires_in => 1.minute) do
       = render :partial => "gamestats"
+  %div.span-14
+    - cache({:action=>"show", :action_suffix=>"gamegraph", :id=>@game}, :expires_in => 5.minutes) do
+      = render :partial => "gamegraph"
   %div.span-5.last
     %table.ozs
       %thead
@@ -51,7 +32,7 @@
   %div.span-2.clear
     &nbsp;
   %div.span-20
-    - cache(:action => "show", :action_suffix=>"scoreboard") do
+    - cache({:action => "show", :action_suffix=>"scoreboard", :id=>@game}, :expires_in => 5.minutes) do
       - number = 1
       - @players.each do |p|
         = render(:partial => "scoreboard", :locals => {:player => p, :number => (number)})

@@ -39,7 +39,10 @@ class GamesController < ApplicationController
 			@deceased_v_time = data.map{|x,y| [(x - @current_game.game_begins)/1.hour, y[:deceased]]}
 		end
 	end
-
+	
+	def rules
+		@game = params[:game] || @current_game
+	end
 	def new
 		@game = Game.new
 	end

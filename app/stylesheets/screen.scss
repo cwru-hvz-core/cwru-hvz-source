@@ -30,7 +30,9 @@
 
 	h1 {
 		font-size:4em;
-
+	}
+	h2 {
+		font-size:2em;
 	}
 
 	.heading {
@@ -61,7 +63,19 @@
 	.content {
 		text-align:center;
 		@include prepend-top(10);
-		@include column(24);
+		@include prepend(1);
+		@include column(22);
+		.gameinfo {
+			text-align:left;
+		}
+		.quickstats {
+			text-align:right;
+
+			table {
+				margin-left:auto;
+				width:150px;
+			}
+		}
 	}
 	.info {
 		@include prepend(4);

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110304233631) do
+ActiveRecord::Schema.define(:version => 20110305011454) do
 
   create_table "attendances", :force => true do |t|
     t.integer  "registration_id"
@@ -61,6 +61,8 @@ ActiveRecord::Schema.define(:version => 20110304233631) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean  "is_current"
+    t.text     "information",         :default => "No information given."
+    t.text     "rules",               :default => "No rules have been posted yet. Check back later!"
   end
 
   create_table "infractions", :force => true do |t|

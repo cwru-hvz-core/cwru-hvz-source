@@ -8,6 +8,7 @@ gem "compass", ">= 0.10.6"
 gem "googlevoiceapi"
 gem 'delayed_job'
 gem 'gchartrb'
+gem 'RedCloth'
 gem 'hassle', :git => 'git://github.com/koppen/hassle.git'
 
 # Bundle edge Rails instead:
