@@ -43,6 +43,7 @@ GEM
     compass (0.10.6)
       haml (>= 3.0.4)
     daemons (1.1.0)
+    dalli (1.0.2)
     delayed_job (2.1.4)
       activesupport (~> 3.0)
       daemons
@@ -101,6 +102,7 @@ DEPENDENCIES
   RedCloth
   breadcrumbs
   compass (>= 0.10.6)
+  dalli
   delayed_job
   gchartrb
   googlevoiceapi

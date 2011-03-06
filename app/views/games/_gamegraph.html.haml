@@ -1,12 +1,15 @@
-- GoogleChart::LineChart.new('500x140', "", true) do |lc|
-  - lc.data "Zombies", @zombie_v_time, '94ff70'
-  - lc.data "Humans", @human_v_time, '800000'
-  - lc.data "Deceased", @deceased_v_time, 'AAAAAA'
-  - lc.show_legend = true
-  - lc.axis :y, :range => [0,@human_v_time[0][1]], :color => '666666', :font_size => 12, :alignment => :center
-  - days = (@human_v_time.max[0]/24).ceil
- - labels = []
-  - days.times do |x|
-    - labels << (x+1).to_s
-  - lc.axis :x, :range => [1,days], :color => '666666', :font_size => 12, :alignment => :center, :labels => labels
-  =image_tag(lc.to_url)
+// Sometimes the caching gets messed up. In that case, don't draw the graph.
+- unless @human_v_time.nil?
+  - GoogleChart::LineChart.new('500x140', "", true) do |lc|
+    - lc.data "Zombies", @zombie_v_time, '94ff70'
+    - lc.data "Humans", @human_v_time, '800000'
+    - lc.data "Deceased", @deceased_v_time, 'AAAAAA'
+    - lc.show_legend = true
+    - lc.axis :y, :range => [0,@human_v_time[0][1]], :color => '666666', :font_size => 12, :alignment => :center
+    - days = (@human_v_time.max[0]/24).ceil
+    - labels = []
+    - days.times do |x|
+      - labels << "Day " + (x+1).to_s
+    - lc.axis :x, :range => [1,days], :color => '666666', :font_size => 10, :alignment => :center, :labels => labels
+    - lc.axis :x, :labels => ["Days Into Game"], :color => '666666', :alignment => :center
+    =image_tag(lc.to_url)

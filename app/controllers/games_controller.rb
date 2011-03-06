@@ -8,8 +8,8 @@ class GamesController < ApplicationController
 	def show
 		@game = Game.find(params[:id])
 		@players = @game.registrations.sort{ |x,y| y.score <=> x.score }
-
-		if not fragment_exist?(:action => "show", :action_suffix => "gamestats", :id => @game.id)	
+		
+#		if not fragment_exist?(:action => "show", :action_suffix => "gamestats", :id => @game.id)	
 			states = @players.map{|x| x.state_history}
 			tslength = ((@current_game.game_ends - @current_game.game_begins) / 240).floor
 			data = {}
@@ -37,7 +37,7 @@ class GamesController < ApplicationController
 			@human_v_time = data.map{|x,y| [(x - @current_game.game_begins)/1.hour, y[:humans]]}
 			@zombie_v_time = data.map{|x,y| [(x - @current_game.game_begins)/1.hour, y[:zombies]]}
 			@deceased_v_time = data.map{|x,y| [(x - @current_game.game_begins)/1.hour, y[:deceased]]}
-		end
+#		end
 	end
 	
 	def rules
@@ -57,6 +57,10 @@ class GamesController < ApplicationController
 
 	def create
 		@game = Game.new(params[:game])
+		if Game.current.id.nil?
+			@game.is_current = true
+		end
+
 		if @game.save()
 			redirect_to :action => :index
 		else
