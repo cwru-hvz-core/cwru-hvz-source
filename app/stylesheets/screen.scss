@@ -19,14 +19,16 @@
 
 @include blueprint-scaffolding;
 
+body { 
+	background: url("/images/bg_test.png") repeat-x;
+}
 .blueprint {
-	
-	@include container;
-	@include prepend-top(15px);
+ 
 	overflow:auto;
 	@include pie-clearfix;
 	@include box-shadow(#999, 0px, -5px, 6px, -2px);
-	background: url("/images/bg_test.png") repeat-x;
+	margin:15px auto 0 auto;
+	width:950px;
 
 	h1 {
 		font-size:4em;
@@ -46,9 +48,19 @@
 			clear:both;
 			font-size:1.4em;
 			height:30px;
-			@include append-bottom(15px);
 		}
 
+		div.admin {
+			padding:5px 0 5px 0;
+			@include column(24, true);
+			text-align:center;
+			background-color: $admin-red;
+			color:#FFF;
+
+			a {
+				color: #FFF;
+			}
+		}
 	}
 
 	.heading h1{
@@ -58,11 +70,12 @@
 		font-family:'Dink';
 	}
 	.container {
+		@include container;
 		background-color:#FFF;
 	}
 	.content {
 		text-align:center;
-		@include prepend-top(10);
+		@include prepend-top(15px);
 		@include prepend(1);
 		@include column(22);
 		.gameinfo {
@@ -108,4 +121,35 @@ div.registration {
 @font-face {
 	font-family:'Dink';
 	src:url('/fonts/DINk.ttf') format('truetype')
+}
+
+th.admin {
+	text-align:center;
+	background-color: $admin-red;
+	color:#FFF;
+	
+	a {
+		color:#FFF;
+	}
+}
+td.admin {
+	text-align:center;
+	color:$admin-red;
+
+	a {
+		color:$admin-red;
+	}
+}
+a.admin {
+	color:$admin-red;
+}
+
+/* For games#index, games#list page */
+table.gamelist {
+	tbody tr td {
+		height:60px;
+	}
+	td.name {
+		font-size: 2em;
+	}
 }

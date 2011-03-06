@@ -1,0 +1,38 @@
+%table
+  %tbody
+    -form_for (@game) do |f|
+      %tr
+        %td
+          %b Short Name:
+        %td=f.text_field :short_name
+      %tr
+        %td
+          %b Registration Begins:
+        %td=f.datetime_select :registration_begins
+      %tr
+        %td
+          %b Registration Ends:
+        %td=f.datetime_select :registration_ends
+      %tr
+        %td
+          %b Game Begins:
+        %td=f.datetime_select :game_begins
+      %tr
+        %td
+          %b Game Ends:
+        %td=f.datetime_select :game_ends
+      %tr
+        %td
+          %b Front Page:
+          (Uses 
+          =link_to("Textile", "http://www.textism.com/tools/textile/") + ")"
+        %td=f.text_area :information
+      %tr
+        %td
+          %b Rules Page:
+          (Uses 
+          =link_to("Textile", "http://www.textism.com/tools/textile/") + ")"
+        %td=f.text_area :rules
+      %tr
+        %td{:colspan => 2}
+          = f.submit "Save Changes"

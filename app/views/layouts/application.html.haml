@@ -11,34 +11,36 @@
     = stylesheet_link_tag 'compiled/scoreboard'
     /[if lt IE 8]
       = stylesheet_link_tag 'compiled/ie.css', :media => 'screen, projection'
-  %body.blueprint
-    %div.container
-      %div.heading
-        %h1 Case Humans vs. Zombies
-        %div.info.last
-          %div.span-7
-            Welcome to the future home of Case HvZ. This site is still very much
-            a work-in-progress, so please excuse its incompleteness.
-          %div.span-7
-            Game Begins in 02d 04h 01m 01s
-          %div.span-4.last
-            = link_to "Login", people_login_url() unless @logged_in
-            = render :partial => "index/userloggedin" if @logged_in
-        %div.navigation
-          %div.span-4= link_to "Home", root_url()
-          %div.span-4
-            - if not @current_game.nil?
-              - if @current_game.ongoing?
-                = link_to("Scoreboard", game_url(@current_game)) unless @current_game.nil?
-              - else
-                = link_to("Registration", new_registration_url())
-          %div.span-4 
-            = link_to "Report A Kill", "#" unless @current_game.nil?
-          %div.span-4 
-            = link_to "Rules", game_rules_url(@current_game)
-          %div.span-4.last
-            = link_to("HvZ Core", new_contact_message_url())
-      %div.content
-        - unless flash[:error].nil?
-          %div.error=flash[:error]
-        = yield
+  %body
+    %div.blueprint
+      %div.container
+        %div.heading
+          %h1 Case Humans vs. Zombies
+          %div.info.last
+            %div.span-7
+              Welcome to the future home of Case HvZ. This site is still very much
+              a work-in-progress, so please excuse its incompleteness.
+            %div.span-7
+              Game Begins in 02d 04h 01m 01s
+            %div.span-4.last
+              = link_to "Login", people_login_url() unless @logged_in
+              = render :partial => "index/userloggedin" if @logged_in
+          %div.navigation
+            %div.span-4= link_to "Home", root_url()
+            %div.span-4
+              - if not @current_game.nil?
+                - if @current_game.ongoing?
+                  = link_to("Scoreboard", game_url(@current_game)) unless @current_game.nil?
+                - else
+                  = link_to("Registration", new_registration_url())
+            %div.span-4 
+              = link_to "Report A Kill", "#" unless @current_game.nil?
+            %div.span-4 
+              = link_to "Rules", game_rules_url(@current_game)
+            %div.span-4.last
+              = link_to("HvZ Core", new_contact_message_url())
+          = render :partial => "index/adminnavigation" if @is_admin
+        %div.content
+          - unless flash[:error].nil?
+            %div.error=flash[:error]
+          = yield

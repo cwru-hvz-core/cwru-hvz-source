@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110305011454) do
+ActiveRecord::Schema.define(:version => 20110306024932) do
 
   create_table "attendances", :force => true do |t|
     t.integer  "registration_id"
@@ -90,7 +90,7 @@ ActiveRecord::Schema.define(:version => 20110305011454) do
     t.binary   "picture"
     t.string   "phone"
     t.datetime "last_login"
-    t.boolean  "is_admin"
+    t.boolean  "is_admin",   :default => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end

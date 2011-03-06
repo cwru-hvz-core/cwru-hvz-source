@@ -1,5 +1,5 @@
 class GamesController < ApplicationController
-	before_filter :check_admin, :only => ['new', 'create']
+	before_filter :check_admin, :only => ['new', 'create', 'edit', 'update']
 
 	def index
 		@games = Game.all
@@ -9,7 +9,7 @@ class GamesController < ApplicationController
 		@game = Game.find(params[:id])
 		@players = @game.registrations.sort{ |x,y| y.score <=> x.score }
 
-		if not fragment_exist?(:action => "show", :action_suffix => "gamestats")	
+		if not fragment_exist?(:action => "show", :action_suffix => "gamestats", :id => @game.id)	
 			states = @players.map{|x| x.state_history}
 			tslength = ((@current_game.game_ends - @current_game.game_begins) / 240).floor
 			data = {}
@@ -41,10 +41,18 @@ class GamesController < ApplicationController
 	end
 	
 	def rules
-		@game = params[:game] || @current_game
+		@game = Game.find(params[:id]) || @current_game
 	end
+
 	def new
 		@game = Game.new
+	end
+
+	def edit
+		@game = Game.find(params[:id])
+		unless params[:game].nil?
+			@game = Game.new(params[:game])
+		end
 	end
 
 	def create
@@ -54,6 +62,16 @@ class GamesController < ApplicationController
 		else
 			flash[:message] = @game.errors.full_messages.first
 			redirect_to :action => :new
+		end
+	end
+
+	def update
+		@game = Game.find(params[:id])
+		if @game.update_attributes(params[:game])
+			redirect_to :action => :edit
+		else
+			flash[:error] = @game.errors.full_messages.first
+			render :action => :edit
 		end
 	end
 end

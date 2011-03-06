@@ -1,4 +1,17 @@
-- @games.each do |g| 
-  %h2
-    =link_to(g.short_name, game_url(g))
-= link_to("Add New Game", new_game_url()) if @is_admin
+%div.span-22.last
+  %table.gamelist
+    %thead
+      %th Game
+      %th Players
+      %th Victor
+      - if @is_admin
+        %th.admin Edit Link
+    %tbody
+      %tr
+      - @games.each do |g| 
+        %td.name=link_to(g.short_name, game_url(g))
+        %td NumPlayers
+        %td Victor
+        - if @is_admin
+          %td.admin=link_to "Edit Link", edit_game_url(g)
+  = link_to("Add New Game", new_game_url(),:class=>"admin") if @is_admin

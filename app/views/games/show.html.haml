@@ -1,14 +1,14 @@
 = stylesheet_link_tag "Testing"
 %div.game
   %h2.dink=@game.short_name + " (" + @game.dates[:date_range] + ")"
-  %div.span-5
+  %div.span-4
     %table.players
       %thead
         %th{:colspan=>2}
           Players:
-    - cache({:action=>"show", :action_suffix=>"gamestats", :id=>@game}, :expires_in => 1.minute) do
-      = render :partial => "gamestats"
-  %div.span-14
+      - cache({:action=>"show", :action_suffix=>"gamestats", :id=>@game}, :expires_in => 1.minute) do
+        = render :partial => "gamestats"
+  %div.span-13
     - cache({:action=>"show", :action_suffix=>"gamegraph", :id=>@game}, :expires_in => 5.minutes) do
       = render :partial => "gamegraph"
   %div.span-5.last

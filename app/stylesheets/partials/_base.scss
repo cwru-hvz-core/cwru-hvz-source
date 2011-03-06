@@ -5,9 +5,10 @@ $blueprint-grid-columns: 24;
 $blueprint-grid-width: 30px;
 $blueprint-grid-margin: 10px;
 
-$blueprint-table-header-color: #94FF70;
 $hvz-green: #94FF70;
+$admin-red: #82050B;
 
+$blueprint-table-header-color: $hvz-green;
 $highlight-color: none;
 
 // If you change your grid column dimensions
