@@ -10,13 +10,17 @@ class Game < ActiveRecord::Base
 	end
 	# Method to return all the human-readable dates for a game
 	def dates
-		datetimeformat = "%A, %B %e, %Y %I:%M %p"
-		{	:date_range => game_begins.strftime("%B %e") + " - " + game_ends.strftime("%e"), 
+		datetimeformat = "%A, %B %e, %Y @ %I:%M %p"
+		array = {	:date_range => game_begins.strftime("%B %e") + " - " + game_ends.strftime("%e"), 
 			:registration_begins => registration_begins.strftime(datetimeformat),
 			:registration_ends => registration_ends.strftime(datetimeformat),
 			:game_begins => game_begins.strftime(datetimeformat),
 			:game_ends => game_ends.strftime(datetimeformat)
 		}
+		if game_ends.month != game_begins.month
+			array[:date_range] =  game_begins.strftime("%B %e") + " - " + game_ends.strftime("%B %e") 
+		end
+		return array
 	end
 	def ongoing?
 		return false if self.game_begins.nil? or self.game_ends.nil?
