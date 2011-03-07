@@ -43,6 +43,6 @@ class RegistrationsController < ApplicationController
 	end
 
 	def index
-		@registrations = Registration.where(["registrations.game_id = ?",@current_game.id])
+		@registrations = Registration.find_all_by_game_id(@current_game.id)
 	end
 end
