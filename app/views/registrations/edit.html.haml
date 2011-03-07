@@ -1,0 +1,39 @@
+%div.span-11
+  %table
+    %thead
+      %th{:colspan=>2} Person Details
+    %tbody
+      -form_for (@person) do |f|
+        %tr
+          %td=f.label :name, "Full Name:"
+          %td=f.text_field :name
+        %tr
+          %td=f.label :caseid, "Case ID:"
+          %td=@person.caseid
+        %tr
+          %td=f.label :phone, "Phone:"
+          %td=f.text_field :phone
+        %tr
+          %td=f.label :is_admin, "Is Admin?"
+          %td=f.check_box :is_admin
+        %tr
+          %td{:colspan=>2, :style=>"text-align:center"}
+            = f.hidden_field :id
+            = f.submit "Save Changes"
+%div.span-11.last
+  %table
+    %thead
+      %th{:colspan=>2} Registration Details
+    %tbody
+      -form_for (@registration) do |f|
+        %tr
+          %td=f.label :card_code, "Card Code:"
+          %td=f.text_field :card_code, :disabled => :true
+        %tr
+          %td=f.label :wants_oz, "Wants OZ?"
+          %td=f.check_box :wants_oz
+        %tr
+          %td=f.label :is_oz, "Is OZ?"
+          %td=f.check_box :is_oz
+        %tr
+          %td{:colspan=>2, :style=>"text-align:center"}=f.submit "Save Changes"

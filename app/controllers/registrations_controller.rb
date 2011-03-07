@@ -1,4 +1,5 @@
 class RegistrationsController < ApplicationController
+	before_filter :check_admin, :only => [:index]
 	before_filter :check_login, :only => [:new, :create]
 	def new
 		if @current_game.id.nil?
@@ -31,6 +32,17 @@ class RegistrationsController < ApplicationController
 	end
 
 	def update
+		r = Registration.find(params[:id])
+		r.update_attributes(params[:registration])
+		redirect_to edit_registration_url(params[:id])
 	end
 
+	def edit
+		@registration = Registration.find(params[:id])
+		@person = @registration.person;
+	end
+
+	def index
+		@registrations = Registration.where(["registrations.game_id = ?",@current_game.id])
+	end
 end

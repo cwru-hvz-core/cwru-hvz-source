@@ -3,7 +3,8 @@ Hvz::Application.routes.draw do
   # first created -> highest priority.
   	match "/people/login/" => "people#login"
   	match "/people/logout/" => "people#logout"
-	resources :people, :games, :registrations
+	resources :people, :games
+	resources :players, :as => :registrations, :controller => :registrations
 	match 'games/:id/rules' => "games#rules", :as => "game_rules"
 	match "/contact/" => "contact_messages#new", :as=>"contact_messages", :via => "get"
 	match "/contact/" => "contact_messages#create", :as => "new_contact_message",:via => "post"
