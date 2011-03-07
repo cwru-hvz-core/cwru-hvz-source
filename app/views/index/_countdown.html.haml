@@ -1,0 +1,5 @@
+:javascript
+  $(function() {
+    $("#countdown").countdown({until: new Date(#{(@current_game.game_begins-1.month).strftime("%Y, %m, %d, %H, %M, %S")}), description: "until the game begins!"})
+  });
+#countdown

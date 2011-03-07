@@ -65,6 +65,11 @@ html {
 				color: #FFF;
 			}
 		}
+
+		div.countdowncontainer {
+			@include prepend(1);
+			@include append(1);
+		}
 	}
 
 	.heading h1{
