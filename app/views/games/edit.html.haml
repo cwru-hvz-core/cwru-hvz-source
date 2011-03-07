@@ -16,11 +16,17 @@
       %tr
         %td
           %b Game Begins:
-        %td=f.datetime_select :game_begins
+        %td
+          = @game.dates[:game_begins]
       %tr
         %td
           %b Game Ends:
-        %td=f.datetime_select :game_ends
+        %td
+          = @game.dates[:game_ends]
+      %tr
+        %td
+        %td
+          %em (Sorry, you cannot edit game beginning and ending times.)
       %tr
         %td
           %b Front Page:
