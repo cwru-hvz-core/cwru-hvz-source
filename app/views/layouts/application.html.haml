@@ -45,3 +45,6 @@
           - unless flash[:error].nil?
             %div.error=flash[:error]
           = yield
+        %div.footer.span-24.last
+          Case Western's Humans vs. Zombies is organized by the Big Games Club. Comments can be left using the
+          = link_to("contact page", new_contact_message_url()) + "."

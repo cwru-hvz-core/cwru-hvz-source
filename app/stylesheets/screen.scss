@@ -13,21 +13,25 @@
 @import "blueprint/interaction";
 @import "compass/utilities/tables";
 @import "compass/css3/box-shadow";
+@import "compass/css3/gradient";
+@import "compass/utilities/general/min";
 
 // Generate the blueprint framework according to your configuration:
 @include blueprint;
 
 @include blueprint-scaffolding;
 
-body { 
-	background: url("/images/bg_test.png") repeat-x;
+html { 
+	@include linear-gradient(color-stops(mix($hvz-green,$bgcolor), $bgcolor 80px), top);
+	background-repeat: no-repeat;
+	background-color: $bgcolor;
 }
 .blueprint {
  
 	overflow:auto;
 	@include pie-clearfix;
-	@include box-shadow(#999, 0px, -5px, 6px, -2px);
-	margin:15px auto 0 auto;
+	@include box-shadow(darken($bgcolor, 20%), 0px, 0px, 30px, 0px);
+	margin:0px auto 0 auto;
 	width:950px;
 
 	h1 {
@@ -78,6 +82,7 @@ body {
 		@include prepend-top(15px);
 		@include prepend(1);
 		@include column(22);
+		@include min-height(600px);
 		.gameinfo {
 			text-align:left;
 		}
@@ -94,6 +99,14 @@ body {
 		@include prepend(4);
 		@include column(19);
 		@include append-bottom(20px);
+	}
+	.footer {
+		text-align:center;
+		padding:5px 0px;
+		color: #666;
+		border-bottom:3px solid $hvz-green;
+		background-color: lighten($hvz-green,20%);
+		a { color: #666; }
 	}
 }
 div.game {
