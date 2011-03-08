@@ -15,6 +15,11 @@ class Registration < ActiveRecord::Base
 		chars = %w{ A B C D E F 1 2 3 4 5 6 7 8 9 }
 		(0..5).map{ chars.to_a[rand(chars.size)] }.join
 	end
+	
+	def validate
+		errors.add_to_base("Registration has not yet begun for this game!")	if (Time.now + self.game.utc_offset) < self.game.registration_begins
+		errors.add_to_base("Registration has already ended for this game!") if (Time.now + self.game.utc_offset) > self.game.registration_ends
+	end
 
 	# Note: These methods are costly and should only be called asynchronously.
 	

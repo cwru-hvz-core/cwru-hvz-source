@@ -6,6 +6,14 @@ class RegistrationsController < ApplicationController
 			flash[:error] = "Your administrators have not yet created a game to register for."
 			redirect_to root_url()
 		end
+		if (Time.now + @current_game.utc_offset) < @current_game.registration_begins
+			flash[:error] = "Registration begins " + @current_game.dates[:registration_begins] + ". Please check back then!"
+			redirect_to root_url()
+		end
+		if (Time.now + @current_game.utc_offset) > @current_game.registration_ends
+			flash[:error] = "Registration ended " + @current_game.dates[:registration_ends] + ". If you would still like to play, please contact the administrators."
+			redirect_to root_url()
+		end
 		@registration = Registration.find_or_initialize_by_person_id_and_game_id(@person.id, @current_game.id)
 		if not @registration.card_code.nil?
 			redirect_to registration_url(@registration)

@@ -42,6 +42,8 @@
           %tr
             %td{:colspan=>2}
               =f.submit "Register!"
+Don't want to register just yet? It's all good. Registration is open until
+= @current_game.dates[:registration_ends] + "."
 
 
 

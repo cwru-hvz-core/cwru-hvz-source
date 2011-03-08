@@ -17,12 +17,18 @@
         %td
           %b Game Begins:
         %td
-          = @game.dates[:game_begins]
+          - if @game.has_begun?
+            = @game.dates[:game_begins]
+          - else
+            =f.datetime_select :game_begins
       %tr
         %td
           %b Game Ends:
         %td
-          = @game.dates[:game_ends]
+          - if @game.has_ended?
+            =@game.dates[:game_ends]
+          -else
+            =f.datetime_select :game_ends
       %tr
         %td
           %b Time Zone:

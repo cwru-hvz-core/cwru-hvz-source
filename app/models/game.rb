@@ -5,12 +5,13 @@ class Game < ActiveRecord::Base
 	has_many :missions
 	has_many :contact_messages
 	validates_with GameValidator  # Defined in ./lib/game_validator.rb
-	
+
 	def self.current
 		Game.find(:first, :conditions => ["is_current = ?", true]) or Game.new
 	end
-	# Method to return all the human-readable dates for a game
+
 	def dates
+	# Method to return all the human-readable dates for a game
 		datetimeformat = "%A, %B %e, %Y @ %I:%M %p"
 		array = {	:date_range => game_begins.strftime("%B %e") + " - " + game_ends.strftime("%e"), 
 			:registration_begins => registration_begins.strftime(datetimeformat),
@@ -25,7 +26,13 @@ class Game < ActiveRecord::Base
 	end
 	def ongoing?
 		return false if self.game_begins.nil? or self.game_ends.nil?
-		(self.game_begins < Time.now.utc) and (self.game_ends > Time.now.utc)
+		self.has_begun? and not self.has_ended?
+	end
+	def has_begun?	
+		Time.now + self.utc_offset >= self.game_begins
+	end
+	def has_ended?
+		Time.now + self.utc_offset >= self.game_ends
 	end
 	def can_register?
 		(self.registration_begins < Time.now.utc) and (self.registration_ends > Time.now.utc)
@@ -38,6 +45,11 @@ class Game < ActiveRecord::Base
 	def utc_offset
 		ActiveSupport::TimeZone.new(self.time_zone).utc_offset
 	end
-
+	def game_begins=(value)
+		write_attribute(:game_begins, value) unless has_begun?
+	end
+	def game_ends=(value)
+		write_attribute(:game_ends, value) unless has_ended?
+	end
 end
 
