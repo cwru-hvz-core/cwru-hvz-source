@@ -1,10 +1,11 @@
 class RegistrationsController < ApplicationController
-	before_filter :check_admin, :only => [:index]
-	before_filter :check_login, :only => [:new, :create]
+	before_filter :check_admin, :only => [:index, :destroy]
+	before_filter :check_login, :only => [:new, :create, :show]
 	def new
-		if @current_game.id.nil?
+		if @current_game.id.nil? or @current_game.registration_begins.nil? or @current_game.registration_ends.nil?
 			flash[:error] = "Your administrators have not yet created a game to register for."
 			redirect_to root_url()
+			return
 		end
 		if (Time.now + @current_game.utc_offset) < @current_game.registration_begins
 			flash[:error] = "Registration begins " + @current_game.dates[:registration_begins] + ". Please check back then!"
@@ -40,6 +41,11 @@ class RegistrationsController < ApplicationController
 
 	def show
 		@registration = Registration.find(params[:id])
+		if @registration.person_id != @person.id
+			flash[:error] = "This is not your registration!!"
+			redirect_to root_url()
+			return
+		end
 	end
 
 	def update
