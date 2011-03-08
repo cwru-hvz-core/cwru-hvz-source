@@ -13,9 +13,10 @@
         %tr
           %td=f.label :phone, "Phone:"
           %td=f.text_field :phone
-        %tr
-          %td=f.label :is_admin, "Is Admin?"
-          %td=f.check_box :is_admin
+        -if @is_admin
+          %tr
+            %td.admin=f.label :is_admin, "Is Admin?"
+            %td=f.check_box :is_admin
         %tr
           %td{:colspan=>2, :style=>"text-align:center"}
             = f.hidden_field :id
@@ -32,8 +33,9 @@
         %tr
           %td=f.label :wants_oz, "Wants OZ?"
           %td=f.check_box :wants_oz
-        %tr
-          %td=f.label :is_oz, "Is OZ?"
-          %td=f.check_box :is_oz
+        -if @is_admin
+          %tr
+            %td.admin=f.label :is_oz, "Is OZ?"
+            %td=f.check_box :is_oz
         %tr
           %td{:colspan=>2, :style=>"text-align:center"}=f.submit "Save Changes"

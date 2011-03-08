@@ -1,6 +1,6 @@
-- unless (@person.nil? or @person.name.nil?)
-  %b=@person.name
-  = "(" + @person.caseid + ")"
+- unless (@logged_in_person.nil? or @logged_in_person.name.nil?)
+  %b=@logged_in_person.name
+  = "(" + @logged_in_person.caseid + ")"
 - else
   %b Profile Incomplete! 
   = "(" + session[:cas_user] + ")"

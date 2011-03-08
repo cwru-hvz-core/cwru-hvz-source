@@ -1,9 +1,8 @@
 class ContactMessagesController < ApplicationController
 
 	def new
-		# TODO: This probably deserves its own place somewhere else, as it is not really
-		# a "people" thing.
 		@admins = Person.find_all_by_is_admin(true)
+		@contact_message = ContactMessage.new
 	end
 
 	def create
@@ -15,7 +14,11 @@ class ContactMessagesController < ApplicationController
 			redirect_to :contact_messages
 		else
 			flash[:error] = @new.errors.full_messages.first
-			redirect_to :contact_messages
+			# TODO: Determine better way to maintain the input in the fields than copy & pasting the code
+			# from contact_messages#new
+			@admins = Person.find_all_by_is_admin(true)
+			@contact_message = ContactMessage.new(params[:contact_message])
+			render :new
 		end
 
 	end

@@ -57,6 +57,11 @@ class RegistrationsController < ApplicationController
 	def edit
 		@registration = Registration.find(params[:id])
 		@person = @registration.person;
+		if !@is_admin and @person != @logged_in_person
+			flash[:error] = "You do not have permission to edit this registration."
+			redirect_to root_url()
+			return
+		end
 	end
 
 	def index

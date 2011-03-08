@@ -4,4 +4,9 @@ class Person < ActiveRecord::Base
 	validates :caseid, :presence => true
 
 	attr_accessible :name, :phone # The user-modifiable fields
+
+	def ==(other)
+		return false if self.nil? or other.nil?
+		self.caseid == other.caseid
+	end
 end
