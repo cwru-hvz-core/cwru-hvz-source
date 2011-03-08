@@ -45,11 +45,11 @@ class Game < ActiveRecord::Base
 	def utc_offset
 		ActiveSupport::TimeZone.new(self.time_zone).utc_offset
 	end
-	def game_begins=(value)
-		write_attribute(:game_begins, value) unless has_begun?
-	end
-	def game_ends=(value)
-		write_attribute(:game_ends, value) unless has_ended?
-	end
+#	def game_begins=(value)
+#		write_attribute(:game_begins, value) unless has_begun?
+#	end
+#	def game_ends=(value)
+#		assign_multiparameter_attributes(:game_ends, value) unless has_ended?
+#	end
 end
 
