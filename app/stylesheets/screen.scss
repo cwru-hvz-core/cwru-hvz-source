@@ -22,7 +22,7 @@
 @include blueprint-scaffolding;
 
 html { 
-	@include linear-gradient(color-stops(mix($hvz-green,$bgcolor), $bgcolor 80px), top);
+	@include linear-gradient(color-stops(mix($hvz-green,$bgcolor, 25%), $bgcolor 20%, $bgcolor), top);
 	background-repeat: no-repeat;
 	background-color: $bgcolor;
 }

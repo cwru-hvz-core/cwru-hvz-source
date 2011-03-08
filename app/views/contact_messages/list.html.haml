@@ -1,0 +1,15 @@
+%table
+  %thead
+    %th From
+    %th Regarding
+    %th Body
+    %th Occurred
+    %th.admin Delete
+  %tbody
+    - @messages.each do |m|
+      %tr
+        %td=m.from
+        %td=m.regarding
+        %td=m.body
+        %td=m.occurred.strftime("%A, %B %e, %Y @ %I:%M %p")
+        %td=link_to("Delete", delete_contact_message_url(m), :class=>"admin", :method=>:delete)

@@ -25,6 +25,10 @@
           = @game.dates[:game_ends]
       %tr
         %td
+          %b Time Zone:
+        %td=f.time_zone_select :time_zone
+      %tr
+        %td
         %td
           %em (Sorry, you cannot edit game beginning and ending times.)
       %tr

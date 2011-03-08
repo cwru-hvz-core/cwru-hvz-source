@@ -3,6 +3,7 @@ class Game < ActiveRecord::Base
 	has_many :registrations
 	has_many :tags
 	has_many :missions
+	has_many :contact_messages
 	validates_with GameValidator  # Defined in ./lib/game_validator.rb
 	
 	def self.current
@@ -34,5 +35,9 @@ class Game < ActiveRecord::Base
 		# Returns the effective time so states won't change after the game ends. (Hopefully)
 		[Time.now.utc, game.game_ends].min
 	end
+	def utc_offset
+		ActiveSupport::TimeZone.new(self.time_zone).utc_offset
+	end
+
 end
 
