@@ -34,7 +34,7 @@
           HvZ Core would like to hear your feedback about the current game of HvZ. Although we make strong attempts
           to keep HvZ out of non-players' lives, we realize that there may be some instances that we have not yet
           addressed in our rules. Please inform us of any situations which you feel should be corrected.
-      -form_for :contact_message do |j|
+      -form_for(@contact_message) do |j|
         %tr
           %td= j.label :from, "Your Name (optional): "
           %td= j.text_field :from
