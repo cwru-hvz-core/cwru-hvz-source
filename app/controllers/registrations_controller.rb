@@ -33,6 +33,9 @@ class RegistrationsController < ApplicationController
 	end
 
 	def destroy
+		@registration = Registration.find(params[:id])
+		@registration.delete() unless @registration.nil?
+		redirect_to registrations_url()
 	end
 
 	def show

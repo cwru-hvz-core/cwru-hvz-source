@@ -55,14 +55,26 @@ html {
 		}
 
 		div.admin {
-			padding:5px 0 5px 0;
 			@include column(24, true);
 			text-align:center;
 			background-color: $admin-red;
 			color:#FFF;
+			div {
+				padding:5px 0 5px 0;
+			}
 
 			a {
 				color: #FFF;
+			}
+
+			div.hvzcore {
+				padding: 0pt; 
+				font-size: 22px; 
+				height: 13px; 
+				margin-top: 3px; 
+				margin-left: -2px; 
+				text-align: right; 
+				color: darken($admin-red, 10%);
 			}
 		}
 
