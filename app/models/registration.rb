@@ -42,7 +42,7 @@ class Registration < ActiveRecord::Base
 		zombietime = tag.datetime + 1.hour unless tag.nil?
 		zombietime ||= Time.at(0)
 		# Get the most recent feed given to that player:
-		feedtime = self.feeds.sort{|a,b| b.datetime <=> a.datetime}.first
+		feedtime = self.tagged.sort{|a,b| b.datetime <=> a.datetime}.first
 		feedtime = feedtime.datetime unless feedtime.nil?
 		feedtime ||= Time.at(0) # (if they have no feeds)
 		return [zombietime, feedtime].max

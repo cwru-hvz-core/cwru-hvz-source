@@ -34,6 +34,7 @@ class UpdateGameState
 
 		@players.collect {|x| x.score = 0} # Reset the scores
 		calculate_human_scores(@players)
+		calculate_zombie_tag_scores(@players)
 
 
 		update_faction_cache({:human => @human_faction,
@@ -56,10 +57,17 @@ class UpdateGameState
 		end
 	end
 
-	def calculate_human_scores(human_faction)
+	def calculate_human_scores(all_players)
 		# This is where any fancy math would go to determine the score of someone
-		human_faction.each do |h|
+		all_players.each do |h|
 			h.score += h.time_survived * 100 / 1.hour
+		end
+	end
+	def calculate_zombie_tag_scores(zombie)
+		zombie.each do |z|
+			z.tagged.each do |t|
+				z.score += t.score
+			end
 		end
 	end
 

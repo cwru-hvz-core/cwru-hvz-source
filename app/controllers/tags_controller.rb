@@ -21,14 +21,15 @@ class TagsController < ApplicationController
 		  redirect_to new_tag_url()
 		  return
 	  end
+	  @tagee = Registration.find(@tag.tagee_id)
+	  @tagger = Registration.find(@tag.tagger_id) unless @tag.tagger_id == 0
 	  #TODO: Fix ActiveRecord so we don't have to do this crummy registration loading:
 	  @points_given = 0
-	  @points_given = Registration.find(@tag.tagee_id).score*0.1 unless @tag.award_points=="0"
+	  @points_given = @tagee.score*0.1 unless @tag.award_points=="0"
 	  @tag.score = @points_given
 	  unless @tag.save()
 		  flash[:error] = @tag.errors.full_messages.first
 		  redirect_to new_tag_url()
 	  end
-
   end
 end
