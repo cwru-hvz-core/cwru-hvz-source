@@ -15,6 +15,9 @@ class GamesController < ApplicationController
 			data = {}
 			240.times do |dt|
 				now = @current_game.game_begins + (dt.seconds.to_i*tslength)
+				if (now - @current_game.utc_offset) >= Time.now
+					break
+				end
 				data[now] = {:zombies => 0, :deceased => 0, :humans=>0}
 				states.each do |s|
 					# States is a hash of important times of players. Like

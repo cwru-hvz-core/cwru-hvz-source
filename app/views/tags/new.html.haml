@@ -1,0 +1,41 @@
+%div.span-16
+  %table
+    %thead
+      %th{:colspan=>2} Report a Tag
+    %tbody
+      - form_for(@tag) do |f|
+        %tr
+          %td=f.label :tagee_card_code, "Victim Card Code:"
+          %td=f.text_field :tagee_card_code
+        %tr
+          %td=f.label :datetime, "Time of Tag:"
+          %td=f.datetime_select :datetime, {:start_year => @current_game.game_begins.year, :end_year => @current_game.game_ends.year, :order=>[:month,:day,:year],:minute_step=>10}
+        %tr
+          %td=f.submit "Submit Tag!"
+- if @is_admin
+  %div.span-16
+    %table
+      %thead
+        %th.admin{:colspan=>2}Admin Tag Report
+      %tbody
+        %tr
+          %td{:colspan=>2}
+            Except in the case of an incorrectly represented tag, all players (admins included) should use the above "Report a Tag" form.
+            This special "Admin Tag Report" is only to be used to report a tag for a player or to convert a player to the zombie team.
+        -form_for(@tag) do |f|
+          %tr
+            %td=f.label :tagee_id, "Person Tagged:"
+            %td=select :tag, :tagee_id, @humans.collect{|x| ["(" + x.card_code + ") - " + x.person.name, x.id]}
+          %tr
+            %td=f.label :tagger_id, "Tagged By:"
+            %td=select :tag, :tagger_id, [["Admininstrative Zombification", 0]].concat(@zombies.collect{|x| ["(" + x.card_code + ") - " + x.person.name, x.id]})
+          %tr
+            %td=f.label :datetime, "Time Of Tag:"
+            %td=f.datetime_select :datetime
+          %tr
+            %td=f.label :award_points, "Award Points For Tag?"
+            %td=f.check_box :award_points, :checked => true
+          %tr
+            %td{:colspan=>2}=f.submit "Submit Administrative Tag"
+
+  

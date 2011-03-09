@@ -12,6 +12,10 @@
       %th.admin Unregister
     %tbody
       - @registrations.each do |r|
+        - if r.person.nil?
+          %tr
+            %td{:colspan=>9, :style=>"text-align:center"} Error - Missing Record
+          - next
         %tr
           %td=r.person.name
           %td=r.person.caseid

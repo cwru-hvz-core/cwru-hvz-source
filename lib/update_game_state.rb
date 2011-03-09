@@ -12,7 +12,6 @@
 #
 # Also, this file should store the current game state in the database
 # if it has changed -- so all changes can be tracked over time.
-
 class UpdateGameState
 	def initialize
 		@current_game = Game.current
@@ -23,7 +22,7 @@ class UpdateGameState
 
 		@human_faction = @players.map{|p| 
 			p if p.is_human?
-		}.compact
+		}.compact	
 
 		@zombie_faction = @players.map{|p|
 			p if p.is_zombie?
@@ -33,10 +32,16 @@ class UpdateGameState
 			p if p.is_deceased?
 		}.compact
 
+		@players.collect {|x| x.score = 0} # Reset the scores
+		calculate_human_scores(@players)
+
+
 		update_faction_cache({:human => @human_faction,
 					  :zombie => @zombie_faction,
 					  :deceased => @deceased_faction
 		})
+
+		Delayed::Job.enqueue(UpdateGameState.new(),{ :run_at => Time.now + 1.minute })
 	end
 
 	def update_faction_cache(factions)
@@ -51,7 +56,14 @@ class UpdateGameState
 		end
 	end
 
-	def update_score_cache(registrations)
+	def calculate_human_scores(human_faction)
+		# This is where any fancy math would go to determine the score of someone
+		human_faction.each do |h|
+			h.score += h.time_survived * 100 / 1.hour
+		end
+	end
 
+	def update_score_cache(registrations)
+		
 	end
 end

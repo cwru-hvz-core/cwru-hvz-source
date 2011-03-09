@@ -36,5 +36,14 @@ class ApplicationController < ActionController::Base
 			end
 		end
 	end
+	def check_is_registered
+		check_login
+		@logged_in_registration = Registration.find_by_person_id_and_game_id(@logged_in_person,@current_game)
+		if @logged_in_registration.nil?
+			flash[:error] = "You must register for the game before you can view this page."
+			redirect_to root_url()
+			return
+		end
+	end
 
 end
