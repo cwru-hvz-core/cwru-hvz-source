@@ -65,6 +65,10 @@ class RegistrationsController < ApplicationController
 	end
 
 	def index
-		@registrations = Registration.find_all_by_game_id(@current_game.id)
+		@registrations = Registration.find_all_by_game_id(@current_game.id, :include=>:person)
+
+		@registrations_people = @registrations.map{|x| x.person_id}
+		@allpeople = Person.all
+		@allpeople.keep_if{|x| not @registrations_people.include?(x.id)}
 	end
 end

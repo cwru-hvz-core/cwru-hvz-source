@@ -39,11 +39,12 @@
             %td=f.check_box :is_oz
         %tr
           %td{:colspan=>2, :style=>"text-align:center"}=f.submit "Save Changes"
-%div.span-11.clear
-  %table
-    %thead
-      %th.admin Admin Options
-    %tbody
-      %tr
-        %td 
-          =link_to("Convert To Zombie", new_tag_url(), :class=>"admin")
+- if @is_admin
+  %div.span-11.clear
+    %table
+      %thead
+        %th.admin Admin Options
+      %tbody
+        %tr
+          %td 
+            =link_to("Convert To Zombie", new_tag_url(), :class=>"admin")
