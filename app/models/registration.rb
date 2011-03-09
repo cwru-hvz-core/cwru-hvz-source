@@ -25,8 +25,9 @@ class Registration < ActiveRecord::Base
 	
 	def time_survived
 		tag = self.killing_tag
-		return [0, tag.datetime - self.game.game_begins].max unless tag.nil?
-		return [0, Game.now(self.game) - self.game.game_begins].max
+		real_begins = self.game.game_begins - self.game.utc_offset
+		return [0, tag.datetime - real_begins].max unless tag.nil?
+		return [0, Game.now(self.game) - real_begins].max
 	end
 
 	def killing_tag
@@ -41,7 +42,7 @@ class Registration < ActiveRecord::Base
 		zombietime = tag.datetime + 1.hour unless tag.nil?
 		zombietime ||= Time.at(0)
 		# Get the most recent feed given to that player:
-		feedtime = self.feeds.sort{|a,b| b.datetime <=> a.datetime}.first
+		feedtime = self.tagged.sort{|a,b| b.datetime <=> a.datetime}.first
 		feedtime = feedtime.datetime unless feedtime.nil?
 		feedtime ||= Time.at(0) # (if they have no feeds)
 		return [zombietime, feedtime].max
@@ -68,6 +69,8 @@ class Registration < ActiveRecord::Base
 		tag = self.killing_tag
 		zombie_time = self.game.game_ends
 		deceased_time = self.game.game_ends
+		zombie_time = self.game.game_begins if self.is_oz
+		deceased_time = self.game.game_begins + 48.hours if self.is_oz
 		if not tag.nil?
 			zombie_time = tag.datetime + 1.hour 
 			deceased_time = self.most_recent_feed + 48.hours

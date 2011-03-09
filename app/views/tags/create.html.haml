@@ -1,0 +1,18 @@
+%h2.dink Tag Accepted!
+Congratulations!
+%br
+%br
+%b=@tagee.person.name
+has been converted into a zombie.
+%br
+You have been awarded 10% of his or her current point total, or
+%b=@tag.score.to_s + " points."
+%br
+You are fed for 48 hours -- until
+%b=@tagger.state_history[:deceased].strftime("%A, %B %e, %Y @ %I:%M %p") + "."
+%br
+%br
+%b Please note:
+It may take up to 10 minutes for the status to update on the scoreboard. Please be patient and do not panic until
+=(Time.now + 10.minutes).strftime("%I:%M %p")
+, at which point you might wish to contact the admins.
