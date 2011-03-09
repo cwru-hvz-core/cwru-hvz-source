@@ -6,7 +6,7 @@ class GamesController < ApplicationController
 	end
 
 	def show
-		@game = Game.find(params[:id])
+		@game = Game.find(params[:id], :include=>:tags)
 		@players = @game.registrations.sort{ |x,y| y.score <=> x.score }
 		
 #		if not fragment_exist?(:action => "show", :action_suffix => "gamestats", :id => @game.id)	

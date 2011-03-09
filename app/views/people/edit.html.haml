@@ -9,7 +9,7 @@
 %div.span-16
   %table
     %tbody
-      - form_for(@person) do |f|
+      - form_for(@toedit) do |f|
         %tr
           %td 
             %b Name: 
@@ -17,11 +17,16 @@
         %tr
           %td 
             %b CaseID:
-          %td= session[:cas_user]
+          %td= @toedit.caseid
         %tr
           %td 
             %b Phone Number (for SMS)*:
           %td= f.text_field :phone
+        -if @is_admin
+          %tr
+            %td.admin
+              %b Is Admin?
+            %td=f.check_box :is_admin
         %tr
           %td{:colspan=>2}
             = f.submit
