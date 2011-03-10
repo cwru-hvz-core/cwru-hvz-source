@@ -18,7 +18,7 @@
             %td{:colspan=>9, :style=>"text-align:center"} Error - Missing Record
           - next
         %tr
-          %td=r.person.name
+          %td{:class=>("admin nocenter" if r.person.is_admin)}=r.person.name
           %td=r.person.caseid
           %td=faction_id_to_class(r)
           %td=r.card_code
@@ -37,7 +37,7 @@
     %tbody
       - @allpeople.each do |p|
         %tr
-          %td=(p.name or "[unknown]")
+          %td{:class=>("admin nocenter" if p.is_admin)}=(p.name or "[unknown]")
           %td=p.caseid
           %td=p.is_admin
           %td=link_to("Edit", edit_person_url(p), :class=>"admin")

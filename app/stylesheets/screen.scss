@@ -108,7 +108,7 @@ html {
 
 			table {
 				margin-left:auto;
-				width:150px;
+width:150px;
 			}
 		}
 	}
@@ -119,11 +119,11 @@ html {
 	}
 	.footer {
 		text-align:center;
-		padding:5px 0px;
-		color: #666;
-		border-bottom:3px solid $hvz-green;
-		background-color: lighten($hvz-green,20%);
-		a { color: #666; }
+padding:5px 0px;
+color: #666;
+	   border-bottom:3px solid $hvz-green;
+	   background-color: lighten($hvz-green,20%);
+	   a { color: #666; }
 	}
 }
 div.game {
@@ -135,13 +135,13 @@ div.game {
 div.registration {
 	@include column(22);
 
-	#infotable {
-		@include column(10);
-		@include append(1);
-	}
-	#signuptable {
-		@include column(10,true);
-	}
+#infotable {
+	@include column(10);
+	@include append(1);
+}
+#signuptable {
+	@include column(10,true);
+}
 }
 .error {
 	@include error();
@@ -149,7 +149,7 @@ div.registration {
 
 @font-face {
 	font-family:'Dink';
-	src:url('/fonts/DINk.ttf') format('truetype')
+src:url('/fonts/DINk.ttf') format('truetype')
 }
 
 th.admin {
@@ -168,6 +168,9 @@ td.admin {
 	a {
 		color:$admin-red;
 	}
+}
+td.nocenter {
+	text-align:left;
 }
 a.admin {
 	color:$admin-red;
