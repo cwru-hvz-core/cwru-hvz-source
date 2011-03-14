@@ -27,22 +27,21 @@
           %td=r.is_oz
           %td=link_to("Edit", edit_registration_url(r), :class=>"admin")
           %td=link_to("Unregister", registration_url(r), :class=>"admin", :method=>:delete, :confirm=>"Are you sure you wish to delete this registration?")
-  %h3.dink Unregistered Folks:
-  %table
-    %thead
-      %th Name
-      %th Case ID
-      %th Is Admin?
-      %th.admin Edit
-    %tbody
-      - @allpeople.each do |p|
-        %tr
-          %td{:class=>("admin nocenter" if p.is_admin)}=(p.name or "[unknown]")
-          %td=p.caseid
-          %td=p.is_admin
-          %td=link_to("Edit", edit_person_url(p), :class=>"admin")
 - else
-  No players found!
-  %br
+  No players registered!
   %br
   Quick! Do more advertising!
+%h3.dink Unregistered Folks:
+%table
+  %thead
+    %th Name
+    %th Case ID
+    %th Is Admin?
+    %th.admin Edit
+  %tbody
+    - @allpeople.each do |p|
+      %tr
+        %td{:class=>("admin nocenter" if p.is_admin)}=(p.name or "[unknown]")
+        %td=p.caseid
+        %td=p.is_admin
+        %td=link_to("Edit", edit_person_url(p), :class=>"admin")
