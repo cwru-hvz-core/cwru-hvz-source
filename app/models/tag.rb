@@ -22,7 +22,7 @@ class Tag < ActiveRecord::Base
 		unless self.tagger_id == 0
 			#TODO: Get ActiveRecord associations working so we don't have to look up registrations this way.
 			tagger = Registration.find(self.tagger_id)
-			errors.add_to_base "Tagger is not a zombie!" unless tagger.is_zombie?
+			errors.add_to_base "Tagger is not a zombie!" unless (tagger.is_zombie? or tagger.is_oz)
 			# Check to ensure the tagger was a zombie at the time the player was tagged.
 			if self.datetime < tagger.state_history[:zombie]
 				errors.add_to_base "Tag occurred before the tagging player was a zombie!"
