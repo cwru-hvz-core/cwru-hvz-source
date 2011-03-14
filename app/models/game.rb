@@ -43,7 +43,9 @@ class Game < ActiveRecord::Base
 		[Time.now.utc, game.game_ends].min
 	end
 	def utc_offset
-		ActiveSupport::TimeZone.new(self.time_zone).utc_offset
+		dst_off = 0
+		dst_off = 1.hour if Time.now.dst?
+		ActiveSupport::TimeZone.new(self.time_zone).utc_offset + dst_off
 	end
 #	def game_begins=(value)
 #		write_attribute(:game_begins, value) unless has_begun?
