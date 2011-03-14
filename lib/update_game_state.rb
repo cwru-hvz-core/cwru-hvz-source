@@ -32,7 +32,7 @@ class UpdateGameState
 			p if p.is_deceased?
 		}.compact
 
-		@players.collect {|x| x.score = 0} # Reset the scores
+		@players.collect {|x| x.score = 1200} # Reset the scores
 		calculate_human_scores(@players)
 		calculate_zombie_tag_scores(@players)
 
@@ -64,7 +64,7 @@ class UpdateGameState
 	def calculate_human_scores(all_players)
 		# This is where any fancy math would go to determine the score of someone
 		all_players.each do |h|
-			h.score += h.time_survived * 100 / 1.hour
+			h.score += h.time_survived * 50 / 1.hour
 		end
 	end
 	def calculate_zombie_tag_scores(zombie)
