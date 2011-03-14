@@ -43,6 +43,8 @@ class Game < ActiveRecord::Base
 		[Time.now.utc, game.game_ends].min
 	end
 	def utc_offset
+		dst_off = 0
+		dst_off = 1.hour if Time.now.dst?
 		ActiveSupport::TimeZone.new(self.time_zone).utc_offset
 	end
 #	def game_begins=(value)
