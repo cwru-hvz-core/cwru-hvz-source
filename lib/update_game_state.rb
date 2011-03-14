@@ -42,18 +42,22 @@ class UpdateGameState
 					  :deceased => @deceased_faction
 		})
 
+
+		# We have to override validation because the registrations are generally not changable
+		# after registration ends.
+		[@human_faction, @zombie_faction, @deceased_faction].flatten.each { |x| x.save(false) }
 		Delayed::Job.enqueue(UpdateGameState.new(),{ :run_at => Time.now + 1.minute })
 	end
 
 	def update_faction_cache(factions)
 		factions[:human].each do |h|
-			h.update_attributes({:faction_id => 0})
+			h.faction_id = 0
 		end
 		factions[:zombie].each do |h|
-			h.update_attributes({:faction_id => 1})
+			h.faction_id = 1
 		end
 		factions[:deceased].each do |h|
-			h.update_attributes({:faction_id => 2})
+			h.faction_id = 2
 		end
 	end
 
