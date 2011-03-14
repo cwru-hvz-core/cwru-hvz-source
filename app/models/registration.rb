@@ -69,8 +69,10 @@ class Registration < ActiveRecord::Base
 		tag = self.killing_tag
 		zombie_time = self.game.game_ends
 		deceased_time = self.game.game_ends
-		zombie_time = self.game.game_begins if self.is_oz
-		deceased_time = self.game.game_begins + 48.hours if self.is_oz
+		if self.is_oz
+			zombie_time = self.game.game_begins
+			deceased_time = [self.game.game_begins, self.most_recent_feed].max + 48.hours
+		end
 		if not tag.nil?
 			zombie_time = tag.datetime + 1.hour 
 			deceased_time = self.most_recent_feed + 48.hours
