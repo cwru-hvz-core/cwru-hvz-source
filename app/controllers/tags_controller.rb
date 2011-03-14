@@ -25,7 +25,7 @@ class TagsController < ApplicationController
 	  @tagger = Registration.find(@tag.tagger_id) unless @tag.tagger_id == 0
 	  #TODO: Fix ActiveRecord so we don't have to do this crummy registration loading:
 	  @points_given = 0
-	  @points_given = @tagee.score*0.1 unless @tag.award_points=="0"
+	  @points_given = @tagee.score*0.2 unless @tag.award_points=="0"
 	  @tag.score = @points_given
 	  unless @tag.save()
 		  flash[:error] = @tag.errors.full_messages.first
