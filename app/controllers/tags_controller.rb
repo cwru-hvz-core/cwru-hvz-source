@@ -5,7 +5,7 @@ class TagsController < ApplicationController
 	  @tag = Tag.new
 	  if @is_admin
 		  @humans = Registration.find_all_by_faction_id(0).sort{|x,y| x.card_code <=> y.card_code}
-		  @humans.keep_if {|x| not x.is_oz}
+		  @humans.collect{|x| not x.is_oz}.compact
 
 		  @zombies = Registration.find_all_by_faction_id(1).sort{|x,y| x.card_code <=> y.card_code}
 		  @zombies.concat(Registration.find_all_by_is_oz(true))

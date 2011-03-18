@@ -69,7 +69,6 @@ class RegistrationsController < ApplicationController
 		@registrations = Registration.find_all_by_game_id(@current_game.id, :include=>:person)
 
 		@registrations_people = @registrations.map{|x| x.person_id}
-		@allpeople = Person.all
-		@allpeople.keep_if{|x| not @registrations_people.include?(x.id)}
+		@allpeople = Person.all.map{|x| x if not @registrations_people.include?(x.id)}.compact
 	end
 end
