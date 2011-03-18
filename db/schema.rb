@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110318035401) do
+ActiveRecord::Schema.define(:version => 20110318160217) do
 
   create_table "attendances", :force => true do |t|
     t.integer  "registration_id"
@@ -106,10 +106,11 @@ ActiveRecord::Schema.define(:version => 20110318035401) do
     t.integer  "faction_id"
     t.string   "card_code"
     t.integer  "score"
-    t.boolean  "is_oz",      :default => false
+    t.boolean  "is_oz",         :default => false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "wants_oz",   :default => false
+    t.boolean  "wants_oz",      :default => false
+    t.boolean  "is_off_campus", :default => false
   end
 
   create_table "tags", :force => true do |t|
