@@ -1,5 +1,4 @@
 #require 'googlevoiceapi'
-require './config/private.rb'
 
 class PeopleController < ApplicationController
 	before_filter :check_login, :except => ["login", "logout"]
