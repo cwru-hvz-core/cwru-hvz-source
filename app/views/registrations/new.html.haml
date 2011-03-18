@@ -36,14 +36,9 @@
         - form_for(@registration) do |f|
           %tr
             %td
-              %b=f.label :wants_oz, "Place me in the Original Zombie Pool:"
+              %b=f.label :is_oz, "Place me in the Original Zombie Pool:"
             %td
               =f.check_box :wants_oz
-          %tr
-            %td
-              %b=f.label :is_off_campus, "I currently live off-campus:"
-            %td
-              =f.check_box :is_off_campus
           %tr
             %td{:colspan=>2}
               =f.submit "Register!"
