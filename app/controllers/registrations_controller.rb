@@ -27,7 +27,9 @@ class RegistrationsController < ApplicationController
 		@registration.card_code = Registration.make_code
 		@registration.score = 0
 		if @registration.save()
-			Delayed::Job.enqueue SendNotification.new(@person, "Thank you for registering for HvZ. Your card code is: " + @registration.card_code + ". Please keep this code on you at all times. Have fun!")
+			unless (@registration.phone.nil? or @registration.phone.empty?)
+				Delayed::Job.enqueue SendNotification.new(@person, "Thank you for registering for HvZ. Your card code is: " + @registration.card_code + ". Please keep this code on you at all times. Have fun!")
+			end
 			redirect_to registration_url(@registration)
 		else
 			redirect_to new_registration_url()

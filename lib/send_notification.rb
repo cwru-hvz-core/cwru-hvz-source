@@ -13,7 +13,7 @@ class SendNotification
 
 	def perform
 		api = GoogleVoice::Api.new(@un, @pw) unless (@un.empty? or @un.nil?)
-		if not @to_player.nil? and api
+		if not @to_player.nil? and not @to_player.phone.nil? and not @to_player.phone.empty? and api
 			begin
 				api.sms(@to_player.phone, @message) if (not @to_player.phone.nil?)
 			rescue
