@@ -23,6 +23,14 @@
             =f.datetime_select :game_begins
       %tr
         %td
+          %b Reveal OZs At:
+        %td
+          - if @game.ozs_revealed?
+            = @game.dates[:oz_reveal]
+          - else
+            =f.datetime_select :oz_reveal
+      %tr
+        %td
           %b Game Ends:
         %td
           - if @game.has_ended?

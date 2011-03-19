@@ -7,15 +7,16 @@ class GamesController < ApplicationController
 
 	def show
 		@game = Game.find(params[:id], :include=>:tags)
-		@players = @game.registrations.sort{ |x,y| y.score <=> x.score }
+		@players = Registration.find_all_by_game_id(@game, :include=>:person).sort{ |x,y| y.display_score <=> x.display_score or x.created_at <=> y.created_at }
+		@ozs = @players.map{ |x| x if x.is_oz }.compact
 		
 #		if not fragment_exist?(:action => "show", :action_suffix => "gamestats", :id => @game.id)	
 			states = @players.map{|x| x.state_history}
-			tslength = ((@current_game.game_ends - @current_game.game_begins) / 240).floor
+			tslength = ((@game.game_ends - @game.game_begins) / 240).floor
 			data = {}
 			240.times do |dt|
-				now = @current_game.game_begins + (dt.seconds.to_i*tslength)
-				if (now - @current_game.utc_offset) >= Time.now
+				now = @game.game_begins + (dt.seconds.to_i*tslength)
+				if (now - @game.utc_offset) >= Time.now
 					break
 				end
 				data[now] = {:zombies => 0, :deceased => 0, :humans=>0}
@@ -37,9 +38,9 @@ class GamesController < ApplicationController
 					end
 				end
 			end
-			@human_v_time = data.map{|x,y| [(x - @current_game.game_begins)/1.hour, y[:humans]]}
-			@zombie_v_time = data.map{|x,y| [(x - @current_game.game_begins)/1.hour, y[:zombies]]}
-			@deceased_v_time = data.map{|x,y| [(x - @current_game.game_begins)/1.hour, y[:deceased]]}
+			@human_v_time = data.map{|x,y| [(x - @game.game_begins)/1.hour, y[:humans]]}
+			@zombie_v_time = data.map{|x,y| [(x - @game.game_begins)/1.hour, y[:zombies]]}
+			@deceased_v_time = data.map{|x,y| [(x - @game.game_begins)/1.hour, y[:deceased]]}
 #		end
 	end
 	

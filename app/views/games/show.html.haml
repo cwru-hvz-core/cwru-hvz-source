@@ -17,21 +17,17 @@
         %th{:colspan=>2}
           %b Original Zombies:
       %tbody
-        %tr
-          %td 
-            %b Eric Laakman
-          %td 2212
-        %tr
-          %td 
-            %b Tom Dooner
-          %td 1234
-        %tr
-          %td 
-            %b Owen Bell
-          %td 1192
+        - @ozs.each do |z|
+          %tr
+            %td 
+              - if @game.ozs_revealed? or (not @logged_in_person.nil? and z.person.id == @logged_in_person.id)
+                %b= z.person.name
+              - else
+                %b ??????
+            %td=z.score
   %div.span-2.clear
     &nbsp;
-  %div.span-20
+  %div.span-23
     - cache({:action => "show", :action_suffix=>"scoreboard", :id=>@game}, :expires_in => 5.minutes) do
       - number = 1
       - @players.each do |p|

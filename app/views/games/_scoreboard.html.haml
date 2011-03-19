@@ -1,4 +1,4 @@
-%div.player{:class => faction_id_to_class(player)}
+%div.player{:class => faction_id_to_class(player).downcase}
   %ul
     %li.number
       = number.to_s +  "."
@@ -12,5 +12,5 @@
     %li.survival.right
       = get_scoreboard_text(player).html_safe
     %li.points.right
-      %span.highlight=player.score 
+      %span.highlight=player.display_score 
       Pts

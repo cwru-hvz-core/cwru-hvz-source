@@ -20,7 +20,7 @@
         %tr
           %td{:class=>("admin nocenter" if r.person.is_admin)}=r.person.name
           %td=r.person.caseid
-          %td=faction_id_to_class(r)
+          %td=faction_id_to_class_human(r)
           %td=r.card_code
           %td=r.score
           %td=r.wants_oz
