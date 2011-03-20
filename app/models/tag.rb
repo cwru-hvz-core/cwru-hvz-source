@@ -1,9 +1,11 @@
 class Tag < ActiveRecord::Base
 	has_many :registrations, :foreign_key => "tagger_id"
 	has_many :registrations, :foreign_key => "tagee_id"
+	has_many :feeds
 	belongs_to :game
 
-	attr_accessor :tagee_card_code, :award_points
+	# TODO: Write code so additional feeds are scalable
+	attr_accessor :tagee_card_code, :award_points, :feed_1, :feed_2
 
 	def tagee_card_code=(code)
 		tagee = Registration.find_by_card_code(code)

@@ -50,11 +50,18 @@ class Registration < ActiveRecord::Base
 		zombietime = tag.datetime + 1.hour unless tag.nil?
 		zombietime = self.game.game_begins if self.is_oz
 		zombietime ||= Time.at(0)
-		# Get the most recent feed given to that player:
-		feedtime = self.tagged.sort{|a,b| b.datetime <=> a.datetime}.first
-		feedtime = feedtime.datetime unless feedtime.nil?
+		# Get the most recent tag that player has made:
+		tag = self.tagged.sort{|a,b| b.datetime <=> a.datetime}.first
+		tagtime = tag.datetime unless tag.nil?
+		tagtime ||= Time.at(0) # (if they have no tags)
+		# Get the most recent feed that player has been given:
+		feed = self.feeds.sort{|a,b| b.datetime <=> a.datetime}.first
+		feedtime = feed.datetime unless feed.nil?
 		feedtime ||= Time.at(0) # (if they have no feeds)
-		return [zombietime, feedtime].max
+		return [zombietime, feedtime, tagtime].max
+	end
+	def time_until_death
+		return (self.most_recent_feed - self.game.utc_offset + 48.hours)  - Time.now
 	end
 
 	def is_human?

@@ -25,6 +25,7 @@ class ApplicationController < ActionController::Base
 		if session[:cas_user].nil?
 			session[:was_at] = request.env['PATH_INFO']
 			redirect_to people_login_url()
+			return false
 		else
 			# Use automatic method to find the user if they exist in the database and
 			#  create them otherwise.
@@ -33,16 +34,19 @@ class ApplicationController < ActionController::Base
 				session[:needs_info] = true
 				session[:was_at] ||= request.env['PATH_INFO']
 				redirect_to edit_person_url(@logged_in_person) unless (params[:controller] == 'people' and (params[:action]== 'edit' or params[:action] == "update"))
+				return false
 			end
 		end
+		return true
 	end
 	def check_is_registered
-		check_login
-		@logged_in_registration = Registration.find_by_person_id_and_game_id(@logged_in_person,@current_game)
-		if @logged_in_registration.nil?
-			flash[:error] = "You must register for the game before you can view this page."
-			redirect_to root_url()
-			return
+		if check_login
+			@logged_in_registration = Registration.find_by_person_id_and_game_id(@logged_in_person,@current_game)
+			if @logged_in_registration.nil?
+				flash[:error] = "You must register for the game before you can view this page."
+				redirect_to root_url()
+				return
+			end
 		end
 	end
 

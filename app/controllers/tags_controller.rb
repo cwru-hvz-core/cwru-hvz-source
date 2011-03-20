@@ -3,12 +3,12 @@ class TagsController < ApplicationController
 
   def new
 	  @tag = Tag.new
+	  @zombies = Registration.find_all_by_faction_id(1).sort{|x,y| x.time_until_death <=> y.time_until_death}
+	  @zombiebox = @zombies.collect{|x| ["(" + (x.time_until_death/1.hour).ceil.to_s + " hours left) " + x.person.name, x.id]}
+	  
 	  if @is_admin
 		  @humans = Registration.find_all_by_faction_id(0).sort{|x,y| x.card_code <=> y.card_code}
 		  @humans.collect{|x| not x.is_oz}.compact
-
-		  @zombies = Registration.find_all_by_faction_id(1).sort{|x,y| x.card_code <=> y.card_code}
-		  @zombies.concat(Registration.find_all_by_is_oz(true))
 	  end
   end
 
@@ -30,6 +30,19 @@ class TagsController < ApplicationController
 	  unless @tag.save()
 		  flash[:error] = @tag.errors.full_messages.first
 		  redirect_to new_tag_url()
+		  return
 	  end
+	  # Now that the tag has saved, let's process the extra feeds!
+	  @feed1 = Feed.new
+	  @feed1.tag = @tag
+	  @feed1.registration_id = @tag.feed_1
+	  @feed1.datetime = @tag.datetime
+	  @feed1.save()
+
+	  @feed2 = Feed.new
+	  @feed2.tag = @tag
+	  @feed2.registration_id = @tag.feed_2
+	  @feed2.datetime = @tag.datetime
+	  @feed2.save()
   end
 end

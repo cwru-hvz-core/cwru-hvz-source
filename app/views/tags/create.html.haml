@@ -5,6 +5,10 @@ Congratulations!
 %b=@tagee.person.name
 has been converted into a zombie.
 %br
+-@tag.feeds.each do |f|
+  %b=f.registration.person.name
+  has been fed.
+  %br
 You have been awarded 20% of his or her current point total, or
 %b=@tag.score.to_s + " points."
 %br

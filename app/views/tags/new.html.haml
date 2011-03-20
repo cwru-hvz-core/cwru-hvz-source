@@ -11,6 +11,12 @@
           %td=f.label :datetime, "Time of Tag:"
           %td=f.datetime_select :datetime, {:start_year => @current_game.game_begins.year, :end_year => @current_game.game_ends.year, :order=>[:month,:day,:year],:minute_step=>10}
         %tr
+          %td=f.label :feed_1, "Feed #1:"
+          %td=select :tag, :feed_1, @zombiebox
+        %tr
+          %td=f.label :feed_2, "Feed #2:"
+          %td=select :tag, :feed_2, @zombiebox
+        %tr
           %td=f.submit "Submit Tag!"
 - if @is_admin
   %div.span-16
