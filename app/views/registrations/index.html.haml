@@ -5,10 +5,9 @@
       %th Full Name
       %th Case ID
       %th Current Faction
-      %th Registration Code
       %th Score
       %th Wants OZ?
-      %th Is OZ?
+      %th Has Waiver?
       %th.admin Edit
       %th.admin Unregister
     %tbody
@@ -18,13 +17,21 @@
             %td{:colspan=>9, :style=>"text-align:center"} Error - Missing Record
           - next
         %tr
-          %td{:class=>("admin nocenter" if r.person.is_admin)}=r.person.name
+          %td{:class=>("admin nocenter" if r.person.is_admin)}
+            %acronym{:title=>r.card_code}
+              =r.person.name
+              ="(OZ)" if r.is_oz
           %td=r.person.caseid
           %td=faction_id_to_class_human(r)
-          %td=r.card_code
           %td=r.score
-          %td=r.wants_oz
-          %td=r.is_oz
+          %td="Yes" if r.wants_oz
+          %td
+            -if r.has_waiver
+              Yes 
+              =link_to("[No]", submit_waiver_url({:id=>r.id,:has=>:false}))
+            - else
+              =link_to("[Yes]", submit_waiver_url({:id=>r.id, :has=>:true}))
+              No
           %td=link_to("Edit", edit_registration_url(r), :class=>"admin")
           %td=link_to("Unregister", registration_url(r), :class=>"admin", :method=>:delete, :confirm=>"Are you sure you wish to delete this registration?")
 - else
