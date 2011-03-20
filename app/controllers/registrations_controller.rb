@@ -1,5 +1,5 @@
 class RegistrationsController < ApplicationController
-	before_filter :check_admin, :only => [:index, :destroy]
+	before_filter :check_admin, :only => [:index, :destroy, :submit_waiver]
 	before_filter :check_login, :only => [:new, :create, :show]
 	def new
 		if @current_game.id.nil? or @current_game.registration_begins.nil? or @current_game.registration_ends.nil?
@@ -20,7 +20,12 @@ class RegistrationsController < ApplicationController
 			redirect_to registration_url(@registration)
 		end
 	end
-
+	def submit_waiver
+		@reg = Registration.find(params[:id])
+		@reg.has_waiver = params[:has]
+		@reg.save(false)
+		redirect_to registrations_url()
+	end
 	def create
 		@registration = Registration.find_or_initialize_by_person_id_and_game_id(@person.id, @current_game.id)
 		@registration.attributes = params[:registration]
