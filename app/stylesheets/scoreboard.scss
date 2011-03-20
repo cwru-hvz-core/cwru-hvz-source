@@ -69,4 +69,18 @@ div.player ul li.points {
 	width:14%;
 	border-right:2px solid #AAA;
 }
+div.outOfDate {
+	float:right;
+	color: #666;
+	margin-right:40px;
+}
+div#scoreboardTime {	
+	display:inline;
+}
+div#scoreboardTime .countdown_amount {
+	font-size: 100%;
+}
+div#scoreboardInfo, div#scoreboardInfo#before {
+	display:inline;
+}
 

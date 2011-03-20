@@ -33,6 +33,16 @@
       - @players.each do |p|
         = render(:partial => "scoreboard", :locals => {:player => p, :number => (number)})
         - number += 1
+      :javascript
+        $(function() {
+          $("#scoreboardTime").countdown({since: new Date(#{(Time.now-1.month).strftime("%Y, %m, %d, %H, %M, %S")}), compact:true, format: 'MS'})
+        });
+      .outOfDate
+        #scoreboardInfo
+          This page is
+        #scoreboardTime
+        #scoreboardInfo
+          out of date.
   %div.span-2.last
     &nbsp;
 
