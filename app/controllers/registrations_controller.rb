@@ -67,6 +67,15 @@ class RegistrationsController < ApplicationController
 		end
 	end
 
+	def report
+		@registration = Registration.find(params[:id])
+		if(!@is_admin)
+			flash[:error] = "You do not have permission to report infractions."
+			redirect_to root_url()
+			return
+		end
+	end
+
 	def index
 		@registrations = Registration.find_all_by_game_id(@current_game.id, :include=>:person)
 

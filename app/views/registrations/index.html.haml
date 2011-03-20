@@ -10,6 +10,7 @@
       %th Wants OZ?
       %th Is OZ?
       %th.admin Edit
+      %th.admin Infractions
       %th.admin Unregister
     %tbody
       - @registrations.each do |r|
@@ -25,8 +26,9 @@
           %td=r.score
           %td=r.wants_oz
           %td=r.is_oz
-          %td=link_to("Edit", edit_registration_url(r), :class=>"admin")
-          %td=link_to("Unregister", registration_url(r), :class=>"admin", :method=>:delete, :confirm=>"Are you sure you wish to delete this registration?")
+          %td{:style=>"text-align:center"}=link_to("Edit", edit_registration_url(r), :class=>"admin")
+          %td{:style=>"text-align:center"}=link_to("Report", new_registration_infraction_url(r), :class=>"admin")
+          %td{:style=>"text-align:center"}=link_to("Unregister", registration_url(r), :class=>"admin", :method=>:delete, :confirm=>"Are you sure you wish to delete this registration?")
 - else
   No players registered!
   %br

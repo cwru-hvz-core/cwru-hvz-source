@@ -15,7 +15,7 @@ class TagsController < ApplicationController
   def create
 	  @tag = Tag.new(params[:tag])
 	  @tag.game = @current_game
-      @tag.tagger_id = @logged_in_registration.id if @tag.tagger_id.nil?
+      @tag.tagger_id = @logged_in_person.id if @tag.tagger_id.nil?
 	  if @tag.tagee_id.nil?
 		  flash[:error] = "Invalid Card Code Specified!"
 		  redirect_to new_tag_url()
