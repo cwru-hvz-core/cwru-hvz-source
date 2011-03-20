@@ -9,7 +9,7 @@
       - cache({:action=>"show", :action_suffix=>"gamestats", :id=>@game}, :expires_in => 1.minute) do
         = render :partial => "gamestats"
   %div.span-14
-    - cache({:action=>"show", :action_suffix=>"gamegraph", :id=>@game}, :expires_in => 5.seconds) do
+    - cache({:action=>"show", :action_suffix=>"gamegraph", :id=>@game}, :expires_in => 5.minutes) do
       = render :partial => "gamegraph"
   %div.span-4.last
     %table.ozs
