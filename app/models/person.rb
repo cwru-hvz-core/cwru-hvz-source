@@ -10,6 +10,7 @@ class Person < ActiveRecord::Base
 	end
 	def ==(other)
 		return false if self.nil? or other.nil?
+		return false unless self.is_a?(Person) and other.is_a?(Person)
 		self.caseid == other.caseid
 	end
 end
