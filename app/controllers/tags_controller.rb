@@ -25,13 +25,13 @@ class TagsController < ApplicationController
 	  #TODO: This is really ugly.
 	  @tag = Tag.new(params[:tag])
 	  @tag.game = @current_game
-      @tag.tagger_id = Registration.find_by_game_id_and_person_id(@current_game, @logged_in_person.id) if @tag.tagger_id.nil?
+      @tag.tagger = Registration.find_by_game_id_and_person_id(@current_game, @logged_in_person.id) if @tag.tagger.nil?
 	  if @tag.tagee_id.nil?
 		  flash[:error] = "Invalid Card Code Specified!"
 		  redirect_to new_tag_url()
 		  return
 	  end
-	  if params[:tag_meta][:is_admin_tag] == "true"
+	  if not params[:tag_meta].nil? and params[:tag_meta][:is_admin_tag] == "true"
 		  @tag.admin = @logged_in_person
 	  else 
 		  if @tag.tagger_id == 0
@@ -40,11 +40,8 @@ class TagsController < ApplicationController
 			  return
 		  end
 	  end
-	  #TODO: Fix ActiveRecord so we don't have to do this crummy registration loading:
-	  @tagee = Registration.find(@tag.tagee_id)
-   	  @tagger = Registration.find(@tag.tagger_id) unless @tag.tagger_id == 0
 	  @points_given = 0
-	  @points_given = @tagee.score*0.2 unless @tag.award_points=="0"
+	  @points_given = @tag.tagee.score*0.2 unless @tag.award_points=="0"
 	  @tag.score = @points_given
 	  unless @tag.save()
 		  flash[:error] = @tag.errors.full_messages.first
@@ -52,8 +49,10 @@ class TagsController < ApplicationController
 		  return
 	  end
 	  # Now that the tag has saved, let's process the extra feeds!
+	  @feed1 = Feed.new
+	  @feed2 = Feed.new
+
 	  unless @tag.feed_1.empty?
-		  @feed1 = Feed.new
 		  @feed1.tag = @tag
 		  @feed1.registration_id = @tag.feed_1
 		  @feed1.datetime = @tag.datetime
@@ -61,11 +60,11 @@ class TagsController < ApplicationController
 	  end
 
 	  unless @tag.feed_2.empty?
-		  @feed2 = Feed.new
 		  @feed2.tag = @tag
 		  @feed2.registration_id = @tag.feed_2
 		  @feed2.datetime = @tag.datetime
 		  @feed2.save()
 	  end
+	  Delayed::Job.enqueue SendNotification.new(:tag, @tag, @feed1, @feed2)
   end
 end
