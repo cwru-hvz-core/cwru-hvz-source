@@ -1,6 +1,6 @@
 - unless (@logged_in_person.nil? or @logged_in_person.name.nil?)
-  %b=@logged_in_person.name
-  = "(" + @logged_in_person.caseid + ")"
+  %b{:title=>"Edit Profile"}
+    = link_to @logged_in_person.name + " (" + @logged_in_person.caseid + ")", edit_person_url(@logged_in_person)
 - else
   %b Profile Incomplete! 
   = "(" + session[:cas_user] + ")"
