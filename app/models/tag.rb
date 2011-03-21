@@ -3,7 +3,7 @@ class Tag < ActiveRecord::Base
 	has_many :registrations, :foreign_key => "tagee_id"
 	has_many :feeds
 	belongs_to :game
-	belongs_to :admin, :class_name => "People", :foreign_key => "admin_id"
+	belongs_to :admin, :class_name => "Person", :foreign_key => "admin_id"
 
 	# TODO: Write code so additional feeds are scalable
 	attr_accessor :tagee_card_code, :award_points, :feed_1, :feed_2

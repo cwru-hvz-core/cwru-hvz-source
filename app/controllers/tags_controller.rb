@@ -4,12 +4,21 @@ class TagsController < ApplicationController
   def new
 	  @tag = Tag.new
 	  @zombies = Registration.find_all_by_faction_id(1).sort{|x,y| x.time_until_death <=> y.time_until_death}
-	  @zombiebox = @zombies.collect{|x| ["(" + (x.time_until_death/1.hour).ceil.to_s + " hours left) " + x.person.name, x.id]}
 	  
 	  if @is_admin
 		  @humans = Registration.find_all_by_faction_id(0).sort{|x,y| x.card_code <=> y.card_code}
 		  @humans.collect{|x| not x.is_oz}.compact
+
+		  @zombies.concat(Registration.find_all_by_faction_id(2))
 	  end
+	  
+	  @zombiebox = @zombies.collect{|x| 
+		  if x.time_until_death > 0
+			  [x.person.name + " (" + (x.time_until_death/1.hour).ceil.to_s + " hours left) ", x.id]
+	  	  else
+			  [x.person.name + " (Deceased)", x.id]
+		  end
+	  }
   end
 
   def create
