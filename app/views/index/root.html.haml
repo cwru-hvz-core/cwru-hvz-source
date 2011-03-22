@@ -8,4 +8,10 @@
       - cache({:controller => "games", :action=>"show", :action_suffix=>"gamestats", :id=>@current_game}, :expires_in => 1.minute) do
         = render :partial => "games/gamestats"
   %h2.dink Recent Updates
-  %h2.dink Sponsors
+  %h2.dink 
+    Sponsors
+  =image_tag "rhalogo.jpg", :width=>"100"
+  %br
+  %br
+  =image_tag "USGlogo.jpg", :width=>"100"
+  %br
