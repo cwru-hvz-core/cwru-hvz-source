@@ -25,7 +25,7 @@
             %div.span-5.countdowncontainer
               - unless @current_game.game_begins.nil?
                 = render :partial => "index/countdown"
-            %div.span-4.last
+            %div.span-3.last
               = link_to "Login", people_login_url() unless @logged_in
               = render :partial => "index/userloggedin" if @logged_in
           %div.navigation
@@ -36,7 +36,9 @@
                   = link_to("Scoreboard", game_url(@current_game)) unless @current_game.nil?
                 - else
                   = link_to("Registration", new_registration_url())
-            %div.span-4 
+            %div.span-4
+              = link_to "Missions", missions_url()
+            %div.span-4
               = link_to "Report A Tag", new_tag_url() unless @current_game.nil?
             - unless @current_game.id.nil?
               %div.span-4 

@@ -4,6 +4,8 @@ Hvz::Application.routes.draw do
   	match "/people/login/" => "people#login"
   	match "/people/logout/" => "people#logout"
 	resources :people, :games, :tags
+	resources :missions, :id => /[0-9]*/
+	match "/missions/list/" => "missions#list", :as=> "list_mission", :via=>"get"
 	resources :players, :as => :registrations, :controller => :registrations do
 		resources :infractions
 	end
