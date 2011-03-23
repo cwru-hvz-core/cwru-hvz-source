@@ -3,3 +3,17 @@
 Your card code is:
 %h2= @registration.card_code
 
+-if @current_game.ongoing?
+  You are currently
+  - if @registration.is_human?
+    a Human
+  - elsif @registration.is_zombie?
+    a Zombie
+  - else
+    Deceased
+  = " with " + @registration.score.to_s + " points."
+
+%br
+%br
+
+=link_to "View Infractions", registration_infractions_url(@registration)

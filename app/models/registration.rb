@@ -96,4 +96,9 @@ class Registration < ActiveRecord::Base
 		end
 		return {:human => human_time, :zombie => zombie_time, :deceased => deceased_time}
 	end
+
+	def ==(other)
+		return false if self.nil? || other.nil?
+		self.id == other.id
+	end
 end
