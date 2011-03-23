@@ -2,6 +2,11 @@ class TagsController < ApplicationController
   before_filter :check_is_registered
 
   def new
+	  if @logged_in_registration.is_human?
+			flash[:error] = "You are not a Zombie, so you cannot report tags!"
+			redirect_to root_url()
+			return
+	  end
 	  @tag = Tag.new
 	  @zombies = Registration.find_all_by_faction_id(1).sort{|x,y| x.time_until_death <=> y.time_until_death}
 	  
