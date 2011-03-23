@@ -1,9 +1,12 @@
 class Tag < ActiveRecord::Base
-	has_many :registrations, :foreign_key => "tagger_id"
-	has_many :registrations, :foreign_key => "tagee_id"
+	has_many :feeds
 	belongs_to :game
+	belongs_to :admin, :class_name => "Person", :foreign_key => "admin_id"
+	belongs_to :tagger, :foreign_key => "tagger_id", :class_name => "Registration"
+	belongs_to :tagee, :foreign_key => "tagee_id", :class_name => "Registration"
 
-	attr_accessor :tagee_card_code, :award_points
+	# TODO: Write code so additional feeds are scalable
+	attr_accessor :tagee_card_code, :award_points, :feed_1, :feed_2
 
 	def tagee_card_code=(code)
 		tagee = Registration.find_by_card_code(code)
@@ -20,9 +23,7 @@ class Tag < ActiveRecord::Base
 			return
 		end
 		unless self.tagger_id == 0
-			#TODO: Get ActiveRecord associations working so we don't have to look up registrations this way.
-			tagger = Registration.find(self.tagger_id)
-			errors.add_to_base "Tagger is not a zombie!" unless (tagger.is_zombie? or tagger.is_oz)
+			errors.add_to_base "Tagger " + self.tagger.inspect + " is not a zombie!" unless (self.tagger.is_zombie? or self.tagger.is_oz)
 			# Check to ensure the tagger was a zombie at the time the player was tagged.
 			if self.datetime < tagger.state_history[:zombie]
 				errors.add_to_base "Tag occurred before the tagging player was a zombie!"

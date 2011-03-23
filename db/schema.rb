@@ -114,6 +114,7 @@ ActiveRecord::Schema.define(:version => 20110322173420) do
     t.datetime "updated_at"
     t.boolean  "wants_oz",      :default => false
     t.boolean  "is_off_campus", :default => false
+    t.boolean  "has_waiver",    :default => false
   end
 
   create_table "tags", :force => true do |t|
@@ -125,6 +126,7 @@ ActiveRecord::Schema.define(:version => 20110322173420) do
     t.integer  "score"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "admin_id"
   end
 
 end

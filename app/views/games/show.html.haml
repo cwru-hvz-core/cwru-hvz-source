@@ -9,7 +9,7 @@
       - cache({:action=>"show", :action_suffix=>"gamestats", :id=>@game}, :expires_in => 1.minute) do
         = render :partial => "gamestats"
   %div.span-14
-    - cache({:action=>"show", :action_suffix=>"gamegraph", :id=>@game}, :expires_in => 5.seconds) do
+    - cache({:action=>"show", :action_suffix=>"gamegraph", :id=>@game}, :expires_in => 5.minutes) do
       = render :partial => "gamegraph"
   %div.span-4.last
     %table.ozs
@@ -17,26 +17,32 @@
         %th{:colspan=>2}
           %b Original Zombies:
       %tbody
-        %tr
-          %td 
-            %b Eric Laakman
-          %td 2212
-        %tr
-          %td 
-            %b Tom Dooner
-          %td 1234
-        %tr
-          %td 
-            %b Owen Bell
-          %td 1192
+        - @ozs.each do |z|
+          %tr
+            %td 
+              - if @game.ozs_revealed? or (not @logged_in_person.nil? and z.person.id == @logged_in_person.id)
+                %b= z.person.name
+              - else
+                %b ??????
+            %td=z.score
   %div.span-2.clear
     &nbsp;
-  %div.span-20
+  %div.span-23
     - cache({:action => "show", :action_suffix=>"scoreboard", :id=>@game}, :expires_in => 5.minutes) do
       - number = 1
       - @players.each do |p|
         = render(:partial => "scoreboard", :locals => {:player => p, :number => (number)})
         - number += 1
+      :javascript
+        $(function() {
+          $("#scoreboardTime").countdown({since: new Date(#{(Time.now-1.month).strftime("%Y, %m, %d, %H, %M, %S")}), compact:true, format: 'MS'})
+        });
+      .outOfDate
+        #scoreboardInfo
+          This page is
+        #scoreboardTime
+        #scoreboardInfo
+          out of date.
   %div.span-2.last
     &nbsp;
 

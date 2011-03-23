@@ -32,7 +32,7 @@ class UpdateGameState
 			p if p.is_deceased?
 		}.compact
 
-		@players.collect {|x| x.score = 1200} # Reset the scores
+		@players.collect {|x| x.score = 0} # Reset the scores
 		calculate_human_scores(@players)
 		calculate_zombie_tag_scores(@players)
 
@@ -54,9 +54,15 @@ class UpdateGameState
 			h.faction_id = 0
 		end
 		factions[:zombie].each do |h|
+			if h.faction_id == 0
+				Delayed::Job.enqueue SendNotification.new(h.person, "Welcome to the horde. Wear your headband with pride! Zombie Chant: What do we want? Brains! When do we want it? Brains!")
+			end
 			h.faction_id = 1
 		end
 		factions[:deceased].each do |h|
+			if h.faction_id == 1
+				Delayed::Job.enqueue SendNotification.new(h.person, "Sorry, but your status has become \"deceased\". You are now out of the game until the Final Mission. If this is a mistake (e.g. because of a mission), it should be fixed shortly. Otherwise, we'll see you at the final mission!")
+			end
 			h.faction_id = 2
 		end
 	end
@@ -64,8 +70,11 @@ class UpdateGameState
 	def calculate_human_scores(all_players)
 		# This is where any fancy math would go to determine the score of someone
 		all_players.each do |h|
-			h.score += h.time_survived * 50 / 1.hour
+			h.score += UpdateGameState.points_for_time_survived(h.time_survived / 1.hour)
 		end
+	end
+	def self.points_for_time_survived(hours)
+		1200 + 50 * hours
 	end
 	def calculate_zombie_tag_scores(zombie)
 		zombie.each do |z|

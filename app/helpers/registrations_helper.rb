@@ -1,5 +1,5 @@
 module RegistrationsHelper
-	def faction_id_to_class(registration)
+	def faction_id_to_class_human(registration)
 		case registration.faction_id
 		when 0
 			return "Human"

@@ -6,7 +6,10 @@ Hvz::Application.routes.draw do
 	resources :people, :games, :tags
 	resources :missions, :id => /[0-9]*/
 	match "/missions/list/" => "missions#list", :as=> "list_mission", :via=>"get"
-	resources :players, :as => :registrations, :controller => :registrations
+	resources :players, :as => :registrations, :controller => :registrations do
+		resources :infractions
+	end
+	match "/players/:id/submitwaiver/:has" => "registrations#submit_waiver", :as => "submit_waiver"
 	match 'games/:id/rules' => "games#rules", :as => "game_rules"
 	match "/contact/" => "contact_messages#new", :as=>"contact_messages", :via => "get"
 	match "/contact/" => "contact_messages#create", :as => "new_contact_message",:via => "post"

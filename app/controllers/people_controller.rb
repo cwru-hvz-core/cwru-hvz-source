@@ -1,5 +1,3 @@
-#require 'googlevoiceapi'
-
 class PeopleController < ApplicationController
 	before_filter :check_login, :except => ["login", "logout"]
 	before_filter CASClient::Frameworks::Rails::Filter, :only => "login"

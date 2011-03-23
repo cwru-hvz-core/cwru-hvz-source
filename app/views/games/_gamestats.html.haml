@@ -3,12 +3,12 @@
     %td
       %b Human:
     %td
-      = @players.map{|x| x if (x.faction_id == 0 and x.is_oz != true)}.compact.length
+      = @players.map{|x| x if x.faction_id == 0}.compact.length
   %tr
     %td
       %b Zombie:
     %td
-      = @players.map{|x| x if (x.faction_id == 1 or x.is_oz == true)}.compact.length
+      = @players.map{|x| x if x.faction_id == 1}.compact.length
   %tr
     %td
       %b Deceased:

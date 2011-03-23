@@ -1,0 +1,7 @@
+%h2.dink Infraction Reported.
+%br
+%b=@offender.person.name
+now has a total of 
+%b=@num_infractions.to_s + " infraction(s) "
+with a total severity of 
+%b=@total_severity.to_s + "."

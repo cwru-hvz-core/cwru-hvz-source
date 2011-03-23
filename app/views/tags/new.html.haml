@@ -11,6 +11,12 @@
           %td=f.label :datetime, "Time of Tag:"
           %td=f.datetime_select :datetime, {:start_year => @current_game.game_begins.year, :end_year => @current_game.game_ends.year, :order=>[:month,:day,:year],:minute_step=>10}
         %tr
+          %td=f.label :feed_1, "Feed #1:"
+          %td=select :tag, :feed_1, @zombiebox
+        %tr
+          %td=f.label :feed_2, "Feed #2:"
+          %td=select :tag, :feed_2, @zombiebox
+        %tr
           %td=f.submit "Submit Tag!"
 - if @is_admin
   %div.span-16
@@ -30,12 +36,20 @@
             %td=f.label :tagger_id, "Tagged By:"
             %td=select :tag, :tagger_id, [["Admininstrative Zombification", 0]].concat(@zombies.collect{|x| ["(" + x.card_code + ") - " + x.person.name, x.id]})
           %tr
-            %td=f.label :datetime, "Time Of Tag:"
-            %td=f.datetime_select :datetime
+            %td=f.label :feed_1, "Feed #1:"
+            %td=select :tag, :feed_1, @zombiebox, :include_blank => :true
+          %tr
+            %td=f.label :feed_2, "Feed #2:"
+            %td=select :tag, :feed_2, @zombiebox, :include_blank => :true
+            %tr
+              %td=f.label :datetime, "Time Of Tag:"
+              %td=f.datetime_select :datetime
           %tr
             %td=f.label :award_points, "Award Points For Tag?"
             %td=f.check_box :award_points, :checked => true
-          %tr
-            %td{:colspan=>2}=f.submit "Submit Administrative Tag"
+          %td
+            %td{:colspan=>2}
+              =hidden_field :tag_meta, :is_admin_tag, :value => :true
+              =f.submit "Submit Administrative Tag"
 
   

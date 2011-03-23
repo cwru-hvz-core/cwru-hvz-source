@@ -16,6 +16,7 @@ class Game < ActiveRecord::Base
 		array = {	:date_range => game_begins.strftime("%B %e") + " - " + game_ends.strftime("%e"), 
 			:registration_begins => registration_begins.strftime(datetimeformat),
 			:registration_ends => registration_ends.strftime(datetimeformat),
+			:oz_reveal => oz_reveal.strftime(datetimeformat),
 			:game_begins => game_begins.strftime(datetimeformat),
 			:game_ends => game_ends.strftime(datetimeformat)
 		}
@@ -34,18 +35,29 @@ class Game < ActiveRecord::Base
 	def has_ended?
 		Time.now + self.utc_offset >= self.game_ends
 	end
+	def ozs_revealed?
+		Time.now + self.utc_offset >= self.oz_reveal
+	end
 	def can_register?
 		(self.registration_begins < Time.now.utc) and (self.registration_ends > Time.now.utc)
 	end
-
 	def self.now(game)
 		# Returns the effective time so states won't change after the game ends. (Hopefully)
 		[Time.now.utc, game.game_ends].min
 	end
+	def since_begin
+		return 0 unless self.has_begun?
+		Game.now(self) - (self.game_begins - self.utc_offset)
+	end
+	def mode_score
+		m = Registration.find_by_sql("SELECT *,COUNT(*) as scorect from registrations group by score order by scorect desc")
+		return 0 if m.nil?
+		m.first.score
+	end
 	def utc_offset
 		dst_off = 0
 		dst_off = 1.hour if Time.now.dst?
-		ActiveSupport::TimeZone.new(self.time_zone).utc_offset
+		ActiveSupport::TimeZone.new(self.time_zone).utc_offset + dst_off
 	end
 #	def game_begins=(value)
 #		write_attribute(:game_begins, value) unless has_begun?

@@ -2,14 +2,19 @@
 Congratulations!
 %br
 %br
-%b=@tagee.person.name
+%b=@tag.tagee.person.name
 has been converted into a zombie.
 %br
+-@tag.feeds.each do |f|
+  %b=f.registration.person.name
+  has been fed.
+  %br
 You have been awarded 20% of his or her current point total, or
 %b=@tag.score.to_s + " points."
-%br
-You are fed for 48 hours -- until
-%b=@tagger.state_history[:deceased].strftime("%A, %B %e, %Y @ %I:%M %p") + "."
+- unless @tag.tagger.nil?
+  %br
+  You are fed for 48 hours -- until
+  %b=@tag.tagger.state_history[:deceased].strftime("%A, %B %e, %Y @ %I:%M %p") + "."
 %br
 %br
 %b Please note:

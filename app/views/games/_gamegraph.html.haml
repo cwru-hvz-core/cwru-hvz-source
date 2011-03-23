@@ -2,7 +2,7 @@
 - unless @human_v_time.nil?
   - GoogleChart::LineChart.new('500x140', "", true) do |lc|
     - lc.data "Zombies", @zombie_v_time, '94ff70'
-    - lc.data "Humans", @human_v_time, '800000'
+    - lc.data "Humans", @human_v_time, '0E4C7D'
     - lc.data "Deceased", @deceased_v_time, 'AAAAAA'
     - lc.show_legend = true
     - lc.axis :y, :range => [0,@human_v_time[0][1]], :color => '666666', :font_size => 12, :alignment => :center

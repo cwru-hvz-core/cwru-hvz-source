@@ -37,7 +37,7 @@ div.player ul li.number {
 	height:35px;
 }
 div.player ul li.name {
-	width:20%;
+	width:29%;
 	height:27px;
 	font-weight:bold;
 }
@@ -46,11 +46,11 @@ li.name.admin {
 }
 div.player ul li.survival {
 	text-align:center;
-	width:53%;
+	width:47%;
 }
 div.player ul li.picture {
 	padding-top:2px;
-	width:7%;
+	width:4%;
 	text-align:center;
 	height:34px;
 	border-left:2px solid #AAA;
@@ -68,5 +68,19 @@ div.player ul li.points {
 	float:left;
 	width:14%;
 	border-right:2px solid #AAA;
+}
+div.outOfDate {
+	float:right;
+	color: #666;
+	margin-right:40px;
+}
+div#scoreboardTime {	
+	display:inline;
+}
+div#scoreboardTime .countdown_amount {
+	font-size: 100%;
+}
+div#scoreboardInfo, div#scoreboardInfo#before {
+	display:inline;
 }
 

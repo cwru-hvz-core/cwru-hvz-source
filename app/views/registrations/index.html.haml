@@ -4,12 +4,12 @@
     %thead
       %th Full Name
       %th Case ID
-      %th Current Faction
-      %th Registration Code
-      %th Score
-      %th Wants OZ?
-      %th Is OZ?
+      %th{:style=>"text-align:center"} Current Faction
+      %th{:style=>"text-align:right"} Score
+      %th{:style=>"text-align:center"} Wants OZ?
+      %th.admin Has Waiver?
       %th.admin Edit
+      %th.admin Infractions
       %th.admin Unregister
     %tbody
       - @registrations.each do |r|
@@ -18,15 +18,24 @@
             %td{:colspan=>9, :style=>"text-align:center"} Error - Missing Record
           - next
         %tr
-          %td{:class=>("admin nocenter" if r.person.is_admin)}=r.person.name
+          %td{:class=>("admin nocenter" if r.person.is_admin)}
+            %acronym{:title=>r.card_code}
+              =r.person.name
+              ="(OZ)" if r.is_oz
           %td=r.person.caseid
-          %td=faction_id_to_class(r)
-          %td=r.card_code
-          %td=r.score
-          %td=r.wants_oz
-          %td=r.is_oz
-          %td=link_to("Edit", edit_registration_url(r), :class=>"admin")
-          %td=link_to("Unregister", registration_url(r), :class=>"admin", :method=>:delete, :confirm=>"Are you sure you wish to delete this registration?")
+          %td{:style=>"text-align:center"}=faction_id_to_class_human(r)
+          %td{:style=>"text-align:right"}=r.score
+          %td{:style=>"text-align:center"}="Yes" if r.wants_oz
+          %td{:style=>"text-align:center"}
+            -if r.has_waiver
+              %b Yes 
+              =link_to("[No]", submit_waiver_url({:id=>r.id,:has=>:false}), :class=>"admin")
+            - else
+              =link_to("[Yes]", submit_waiver_url({:id=>r.id, :has=>:true}), :class=>"admin")
+              %b No              
+          %td{:style=>"text-align:center"}=link_to("Edit", edit_registration_url(r), :class=>"admin")
+          %td{:style=>"text-align:center"}=link_to("Report", new_registration_infraction_url(r), :class=>"admin")
+          %td{:style=>"text-align:center"}=link_to("Unregister", registration_url(r), :class=>"admin", :method=>:delete, :confirm=>"Are you sure you wish to delete this registration?")
 - else
   No players registered!
   %br

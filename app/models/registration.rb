@@ -9,14 +9,19 @@ class Registration < ActiveRecord::Base
 	has_many :taggedby, :foreign_key => "tagee_id", :class_name => "Tag"
 
 	validates_uniqueness_of :person_id, :scope => :game_id	
-        validates_uniqueness_of :card_code, :scope => :game_id
+	validates_uniqueness_of :card_code, :scope => :game_id
 	validates_presence_of :person_id, :game_id, :card_code
 
 	def self.make_code
 		chars = %w{ A B C D E F 1 2 3 4 5 6 7 8 9 }
 		(0..5).map{ chars.to_a[rand(chars.size)] }.join
 	end
-	
+	def display_score
+		if self.is_oz and not self.game.ozs_revealed?
+			return self.game.mode_score
+		end
+		self.score
+	end	
 	def validate
 		errors.add_to_base("Registration has not yet begun for this game!")	if (Time.now + self.game.utc_offset) < self.game.registration_begins
 		errors.add_to_base("Registration has already ended for this game!") if (Time.now + self.game.utc_offset) > self.game.registration_ends
@@ -25,6 +30,7 @@ class Registration < ActiveRecord::Base
 	# Note: These methods are costly and should only be called asynchronously.
 	
 	def time_survived
+		return 0 if self.is_oz
 		tag = self.killing_tag
 		real_begins = self.game.game_begins - self.game.utc_offset
 		return [0, tag.datetime - real_begins].max unless tag.nil?
@@ -38,23 +44,33 @@ class Registration < ActiveRecord::Base
 	end
 
 	def most_recent_feed
+		# Does not adjust for UTC offset!
 		# Get the time the player turned into a zombie:
 		tag = self.killing_tag
 		zombietime = tag.datetime + 1.hour unless tag.nil?
+		zombietime = self.game.game_begins if self.is_oz
 		zombietime ||= Time.at(0)
-		# Get the most recent feed given to that player:
-		feedtime = self.tagged.sort{|a,b| b.datetime <=> a.datetime}.first
-		feedtime = feedtime.datetime unless feedtime.nil?
+		# Get the most recent tag that player has made:
+		tag = self.tagged.sort{|a,b| b.datetime <=> a.datetime}.first
+		tagtime = tag.datetime unless tag.nil?
+		tagtime ||= Time.at(0) # (if they have no tags)
+		# Get the most recent feed that player has been given:
+		feed = self.feeds.sort{|a,b| b.datetime <=> a.datetime}.first
+		feedtime = feed.datetime unless feed.nil?
 		feedtime ||= Time.at(0) # (if they have no feeds)
-		return [zombietime, feedtime].max
+		return [zombietime, feedtime, tagtime].max
+	end
+	def time_until_death
+		return (self.most_recent_feed - self.game.utc_offset + 48.hours)  - Time.now
 	end
 
 	def is_human?
 		# A player is human if and only if they have not been tagged in game (i.e. outside a mission)
-		self.killing_tag.nil?
+		self.killing_tag.nil? and not self.is_oz
 	end
 	def is_zombie?
 		# A player is a zombie if they have been tagged in game and have not yet starved.
+		return true if self.is_oz and self.most_recent_feed + 48.hours >= Game.now(self.game)
 		return (!self.killing_tag.nil? and self.most_recent_feed + 48.hours >= Game.now(self.game))
 	end
 	def is_deceased?
