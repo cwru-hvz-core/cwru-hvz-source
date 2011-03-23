@@ -50,7 +50,7 @@ class Game < ActiveRecord::Base
 		Game.now(self) - (self.game_begins - self.utc_offset)
 	end
 	def mode_score
-		UpdateGameState.points_for_time_survived((self.since_begin/1.hour).floor)
+		UpdateGameState.points_for_time_survived((self.since_begin/1.hour)).floor
 		#m = Registration.find_by_sql("SELECT *,COUNT(*) as scorect from registrations group by score order by scorect desc")
 		#return 0 if m.nil?
 		#m.first.score
