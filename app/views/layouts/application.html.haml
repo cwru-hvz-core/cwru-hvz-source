@@ -25,7 +25,7 @@
             %div.span-5.countdowncontainer
               - unless @current_game.game_begins.nil?
                 = render :partial => "index/countdown"
-            %div.span-3.last
+            %div.span-5.last
               = link_to "Login", people_login_url() unless @logged_in
               = render :partial => "index/userloggedin" if @logged_in
           %div.navigation
