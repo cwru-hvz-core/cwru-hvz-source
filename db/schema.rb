@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110318160217) do
+ActiveRecord::Schema.define(:version => 20110322173420) do
 
   create_table "attendances", :force => true do |t|
     t.integer  "registration_id"
@@ -68,6 +68,7 @@ ActiveRecord::Schema.define(:version => 20110318160217) do
     t.string   "time_zone",           :default => "Eastern Time (US & Canada)"
     t.string   "gv_username"
     t.string   "gv_password"
+    t.datetime "oz_reveal"
   end
 
   create_table "infractions", :force => true do |t|
@@ -87,6 +88,8 @@ ActiveRecord::Schema.define(:version => 20110318160217) do
     t.integer  "winning_faction_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "title"
+    t.text     "storyline"
   end
 
   create_table "people", :force => true do |t|
