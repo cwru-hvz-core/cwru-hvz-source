@@ -1,0 +1,6 @@
+%h2.dink 
+  Missions - 
+  =@current_game.short_name
+%ol.missionlist
+  -@missions.each do |m|
+    %li.dink=link_to(m.title + " (" + date_humanize_dayofweek_and_time(m.start) + ")",mission_url(m))

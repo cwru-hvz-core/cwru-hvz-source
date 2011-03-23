@@ -1,0 +1,35 @@
+%table
+  %thead
+    %th{:colspan=>2} New Mission!
+  %tbody
+    -form_for(@mission) do |f|
+      %tr
+        %td
+          %b=f.label :title, "Title:"
+        %td=f.text_field :title
+      %tr
+        %td 
+          %b=f.label :start, "Mission Start Time:"
+        %td=f.datetime_select :start
+      %tr
+        %td
+          %b=f.label :end, "Mission End Time:"
+        %td=f.datetime_select :end
+      %tr
+        %td 
+          %b
+            =f.label :storyline, "Storyline"
+            (uses
+            %a{:href=>"http://www.textism.com/tools/textile/"} textile
+            )
+        %td=f.text_area :storyline
+      %tr
+        %td
+          %b 
+            =f.label :description, "Mission Description"
+            (uses
+            %a{:href=>"http://www.textism.com/tools/textile/"} textile
+            )
+        %td=f.text_area :description
+      %tr
+        %td{:colspan=>2}=f.submit

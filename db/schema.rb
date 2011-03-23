@@ -89,6 +89,8 @@ ActiveRecord::Schema.define(:version => 20110323155835) do
     t.integer  "winning_faction_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "title"
+    t.text     "storyline"
   end
 
   create_table "people", :force => true do |t|

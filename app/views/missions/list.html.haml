@@ -1,0 +1,14 @@
+%table
+  %thead
+    %th Mission Title
+    %th Start Time
+    %th Edit Link
+    %th Delete Link
+  %tbody
+    - @missions.each do |m|
+      %tr
+        %td=m.title
+        %td=m.times[:start]
+        %td=link_to("Edit", edit_mission_url(m))
+        %td=link_to("Delete", mission_url(m), :method=>:delete)
+=link_to "Add New Mission", new_mission_url()
