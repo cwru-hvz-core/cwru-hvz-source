@@ -33,7 +33,7 @@ class SendNotification
 		if not @mass_text.nil?
 			@mass_text.each do |x|
 				begin
-					api.sms(x[0].phone, x[1]) if (not x[0].phone.nil?)
+					api.sms(x[0].phone, x[1]) if (not x[0].phone.empty?)
 				rescue
 					puts "Could not log into Google Voice"
 				end
@@ -42,7 +42,7 @@ class SendNotification
 
 		if not @to_player.nil? and not @to_player.phone.nil? and not @to_player.phone.empty? and api
 			begin
-				api.sms(@to_player.phone, @message) if (not @to_player.phone.nil?)
+				api.sms(@to_player.phone, @message) if (not @to_player.phone.empty?)
 			rescue
 				puts "Could not log into Google Voice"
 			end
