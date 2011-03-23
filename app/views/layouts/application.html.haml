@@ -18,14 +18,14 @@
         %div.heading
           %h1 Case Humans vs. Zombies
           %div.info.last
-            %div.span-7
+            %div.span-6
               Welcome to the official home of Case Humans vs. Zombies. If you encounter problems with this site, please e-mail 
               =mail_to("casehvz@gmail.com") + "."
 
             %div.span-5.countdowncontainer
               - unless @current_game.game_begins.nil?
                 = render :partial => "index/countdown"
-            %div.span-5.last
+            %div.span-6.last
               = link_to "Login", people_login_url() unless @logged_in
               = render :partial => "index/userloggedin" if @logged_in
           %div.navigation

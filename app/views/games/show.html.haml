@@ -18,11 +18,12 @@
           %b Original Zombies:
       %tbody
         - @ozs.each do |z|
-          %tr
-            %td 
-              - if @game.ozs_revealed? or (not @logged_in_person.nil? and z.person.id == @logged_in_person.id)
+          %tr 
+            - if @game.ozs_revealed? or (not @logged_in_person.nil? and z.person.id == @logged_in_person.id)
+              %td{:class=>("admin nocenter" if z.person.is_admin)}
                 %b= z.person.name
-              - else
+            - else
+              %td
                 %b ??????
             %td=z.score
   %div.span-2.clear

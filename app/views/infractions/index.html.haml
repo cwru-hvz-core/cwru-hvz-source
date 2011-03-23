@@ -1,6 +1,6 @@
 %h3.dink=@registration.person.name + "'s Infractions"
 %b=@registration.person.name
-- if calc_total_severity(@registration) <= 0
+- if !@is_admin && calc_total_severity(@registration) <= 0
   has no infractions.
 - else
   has
