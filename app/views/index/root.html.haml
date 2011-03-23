@@ -1,13 +1,17 @@
 %div.span-16.gameinfo
   %h2.dink Game Information
   =RedCloth.new(@current_game.information).to_html.html_safe
-%div.span-6.last.quickstats
+%div.span-5.last.quickstats
   - unless @current_game.id.nil?
     %h2.dink Game Status
     %table
       - cache({:controller => "games", :action=>"show", :action_suffix=>"gamestats", :id=>@current_game}, :expires_in => 1.minute) do
         = render :partial => "games/gamestats"
-  %h2.dink Recent Updates
+  %h2.dink 
+    Recent Updates
+  %ul
+  - @tags.each do |t|
+    %li= tag_text(t)
   %h2.dink 
     Sponsors
   =image_tag "rhalogo.jpg", :width=>"100"
