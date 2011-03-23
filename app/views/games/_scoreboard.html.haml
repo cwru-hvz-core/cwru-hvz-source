@@ -7,6 +7,8 @@
     %li.name.right
       - unless player.person.nil?
         = player.person.name
+        - unless player.infractions.empty?
+          ="(" + get_total_severity(player).to_s + " strikes)"
       - else
         \[Unknown Player]
     %li.survival.right

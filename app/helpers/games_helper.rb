@@ -34,3 +34,7 @@ def faction_id_to_class(registration)
 		return "deceased"
 	end
 end
+
+def get_total_severity(registration)
+	return registration.infractions.sum(:severity)
+end
