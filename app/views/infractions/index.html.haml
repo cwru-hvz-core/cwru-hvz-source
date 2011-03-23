@@ -1,0 +1,22 @@
+%h3.dink=@registration.person.name + "'s Infractions"
+%b=@registration.person.name
+- if @infractions.empty?
+  has no infractions.
+- else
+  has
+  %b=@infractions.length
+  infractions with a total severity of 
+  %b=@total_severity.to_s + "."
+  %br
+  %br
+  %table
+    %thead
+      %th.admin Administrator
+      %th Severity
+      %th Reason
+    %tbody
+      - @infractions.each do |i|
+        %tr
+          %td{:class=>"admin"}=Person.find(i.admin_id).name
+          %td=i.severity.to_s
+          %td=i.reason

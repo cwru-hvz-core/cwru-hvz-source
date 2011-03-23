@@ -3,6 +3,9 @@ class InfractionsController < ApplicationController
 	before_filter :check_login, :only => [:show]
 	
 	def index
+		@registration = Registration.find(params[:registration_id], :include=>:infractions)
+		@infractions = @registration.infractions.sort{|x,y| x.created_at <=> y.created_at}
+		@total_severity = @registration.infractions.sum(:severity)
 	end
 
 	def new
