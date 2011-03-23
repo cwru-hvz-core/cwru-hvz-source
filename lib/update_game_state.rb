@@ -70,7 +70,7 @@ class UpdateGameState
 	def calculate_human_scores(all_players)
 		# This is where any fancy math would go to determine the score of someone
 		all_players.each do |h|
-			h.score += UpdateGameState.points_for_time_survived(h.time_survived / 1.hour)
+			h.score += UpdateGameState.points_for_time_survived((h.time_survived / 1.hour).floor)
 		end
 	end
 	def self.points_for_time_survived(hours)
