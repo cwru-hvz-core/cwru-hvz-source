@@ -39,9 +39,9 @@ class GamesController < ApplicationController
 					end
 				end
 			end
-			@human_v_time = data.map{|x,y| [(x - @game.game_begins)/1.hour, y[:humans]]}
-			@zombie_v_time = data.map{|x,y| [(x - @game.game_begins)/1.hour, y[:zombies]]}
-			@deceased_v_time = data.map{|x,y| [(x - @game.game_begins)/1.hour, y[:deceased]]}
+			@human_v_time = data.map{|x,y| [(x - @game.game_begins)/1.hour, y[:humans]]}.sort
+			@zombie_v_time = data.map{|x,y| [(x - @game.game_begins)/1.hour, y[:zombies]]}.sort
+			@deceased_v_time = data.map{|x,y| [(x - @game.game_begins)/1.hour, y[:deceased]]}.sort
 		end
 	end
 	def rules
