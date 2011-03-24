@@ -4,9 +4,13 @@ Hvz::Application.routes.draw do
   	match "/people/login/" => "people#login"
   	match "/people/logout/" => "people#logout"
 	resources :people, :games, :tags
-	resources :missions, :id => /[0-9]*/
+	resources :attendances
+	resources :missions, :id => /[0-9]*/ do
+		get :autocomplete_person_name, :on => :collection
+	end
 	match "/missions/list/" => "missions#list", :as=> "list_mission", :via=>"get"
-	resources :players, :as => :registrations, :controller => :registrations do
+	match "/missions/:id/attendance/" => "missions#attendance", :as => "mission_attendance", :via=>"get"
+	resources :players, :as => :registrations, :controller => :registrations, :id=>/[0-9]*/ do
 		resources :infractions
 	end
 	match "/players/:id/submitwaiver/:has" => "registrations#submit_waiver", :as => "submit_waiver"

@@ -6,6 +6,7 @@ gem 'breadcrumbs'
 gem 'rubycas-client'
 gem "compass", ">= 0.10.6"
 gem "googlevoiceapi"
+gem "rails3-jquery-autocomplete"
 gem 'delayed_job'
 gem 'gchartrb'
 gem 'RedCloth'

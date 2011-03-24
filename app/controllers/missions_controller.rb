@@ -1,14 +1,15 @@
 class MissionsController < ApplicationController
 	before_filter :check_admin, :only => [:new, :create, :list, :edit, :update]
-#	autocomplete :registration, :name
+	autocomplete :person, :name
 
   def new
 	  @mission = Mission.new
   end
 
   def attendance
-  	  @mission = Mission.find(params[:id], :include=>:attendances)
+  	  @mission = Mission.find(params[:id])
 	  @attendance = @mission.attendances.new
+	  @attendees = Attendance.find_all_by_mission_id(params[:id], :include=>:registration, :order => ["created_at DESC"])
   end
 
   def create
