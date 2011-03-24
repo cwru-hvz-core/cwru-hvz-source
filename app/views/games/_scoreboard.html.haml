@@ -7,6 +7,8 @@
     - unless player.person.nil?
       %li.name.right{:class=>("admin" if player.person.is_admin?)}
         = player.person.name
+        - if player.is_oz? and @game.ozs_revealed?
+          ="(OZ)"
         - if calc_total_severity(player) > 0
           ="(" + calc_total_severity(player).to_s + " strikes)"
     - else

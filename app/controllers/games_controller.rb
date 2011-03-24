@@ -7,7 +7,7 @@ class GamesController < ApplicationController
 
 	def show
 		@game = Game.find(params[:id], :include=>:tags)
-		@players = Registration.find_all_by_game_id(@game, :include=>:person).sort{ |x,y| y.display_score <=> x.display_score or x.created_at <=> y.created_at }
+		@players = Registration.find_all_by_game_id(@game, :include=>:person).sort_by{ |x| [-x.display_score, x.person.name] }
 		@ozs = @players.map{ |x| x if x.is_oz }.compact
 		
 		# This stuff is for drawing the graph.	
