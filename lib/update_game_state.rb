@@ -33,6 +33,7 @@ class UpdateGameState
 		}.compact
 
 		@players.collect {|x| x.score = 0} # Reset the scores
+		calculate_mission_scores(@players)
 		calculate_human_scores(@players)
 		calculate_zombie_tag_scores(@players)
 
@@ -71,6 +72,11 @@ class UpdateGameState
 		# This is where any fancy math would go to determine the score of someone
 		all_players.each do |h|
 			h.score += UpdateGameState.points_for_time_survived((h.time_survived / 1.hour).floor)
+		end
+	end
+	def calculate_mission_scores(all_players)
+		all_players.each do |h|
+			h.score += h.missions.sum(:score)
 		end
 	end
 	def self.points_for_time_survived(hours)
