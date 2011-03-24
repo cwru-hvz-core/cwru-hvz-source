@@ -4,4 +4,9 @@
 now has a total of 
 %b=@num_infractions.to_s + " infraction(s) "
 with a total severity of 
-%b=@total_severity.to_s + "."
+%b=calc_total_severity(@offender).to_s + "."
+
+%br
+%br
+
+=link_to "View all of " + @offender.person.name + "'s infractions", registration_infractions_url(@offender), :class=>"admin"

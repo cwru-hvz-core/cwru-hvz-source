@@ -10,9 +10,13 @@
             %td=select :infraction, :registration_id, @players.collect{|x| [x.person.name, x.id]}, :default => @registration
           %tr
             %td=f.label :severity, "Severity:"
-            %td=select :infraction, :severity, [["1 - Low (Rule Violation)", 1],["2 - Medium (Intentional DBAD)", 2],["3 - High (Grounds for Removal)", 3]]
+            %td=select :infraction, :severity, [1, 2, 3].map{|s| [s.to_s + " - " + severity_description(s), s]}
           %tr
             %td=f.label :reason, "Reason:"
             %td=f.text_area :reason
           %tr
-            %td{:colspan=>2}=f.submit "Report Infraction"
+            %td
+            %td Reasons will be visible to the player. Please include a detailed account of the infraction.
+          %tr
+            %td
+            %td=f.submit "Report Infraction"

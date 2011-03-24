@@ -1,22 +1,35 @@
 %h3.dink=@registration.person.name + "'s Infractions"
 %b=@registration.person.name
-- if @infractions.empty?
+- if !@is_admin && calc_total_severity(@registration) <= 0
   has no infractions.
 - else
   has
-  %b=@infractions.length
+  %b=@infractions.reject{|x| x.nullified}.length
   infractions with a total severity of 
-  %b=@total_severity.to_s + "."
+  %b=calc_total_severity(@registration).to_s + "."
+  -if @is_admin
+    %br
+    =link_to("Report an Infraction", new_registration_infraction_url(@registration),:class=>"admin")
   %br
   %br
   %table
     %thead
-      %th.admin Administrator
+      %th Administrator
+      %th Reported
       %th Severity
       %th Reason
+      - if @is_admin
+        %th.admin Status
     %tbody
-      - @infractions.each do |i|
+      - @infractions.find_all{|x| !x.nullified || @is_admin}.each do |i|
         %tr
-          %td{:class=>"admin"}=Person.find(i.admin_id).name
-          %td=i.severity.to_s
+          %td{:class=>"admin nocenter"}=Person.find(i.admin_id).name
+          %td=i.created_at.to_formatted_s(:short)
+          %td=i.severity.to_s + " - " + severity_description(i.severity)
           %td=i.reason
+          -if @is_admin
+            %td{:style=>"text-align:center"}
+              - if i.nullified
+                %b Null
+              - else
+                =link_to("Nullify", registration_infraction_url({:registration_id=>@registration.id,:id=>i.id}), :class=>"admin", :method=>:delete, :confirm=>"Are you sure you wish to nullify this infraction?")

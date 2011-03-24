@@ -4,11 +4,15 @@
       = number.to_s +  "."
     %li.picture.right
       %img{:width=>"30", :height=>"30"}
-    %li.name.right
-      - unless player.person.nil?
+    - unless player.person.nil?
+      %li.name.right{:class=>("admin" if player.person.is_admin?)}
         = player.person.name
-      - else
-        \[Unknown Player]
+        - if player.is_oz? and @game.ozs_revealed?
+          ="(OZ)"
+        - if calc_total_severity(player) > 0
+          ="(" + calc_total_severity(player).to_s + " strikes)"
+    - else
+      \[Unknown Player]
     %li.survival.right
       = get_scoreboard_text(player).html_safe
     %li.points.right

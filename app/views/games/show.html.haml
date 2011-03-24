@@ -18,11 +18,12 @@
           %b Original Zombies:
       %tbody
         - @ozs.each do |z|
-          %tr
-            %td 
-              - if @game.ozs_revealed? or (not @logged_in_person.nil? and z.person.id == @logged_in_person.id)
+          %tr 
+            - if @game.ozs_revealed? or (not @logged_in_person.nil? and z.person.id == @logged_in_person.id)
+              %td{:class=>("admin nocenter" if z.person.is_admin)}
                 %b= z.person.name
-              - else
+            - else
+              %td
                 %b ??????
             %td=z.score
   %div.span-2.clear
@@ -30,9 +31,17 @@
   %div.span-23
     - cache({:action => "show", :action_suffix=>"scoreboard", :id=>@game}, :expires_in => 5.minutes) do
       - number = 1
+      - prevscore = -1
+      - currentnum = 1
+      - countnum = 1
       - @players.each do |p|
+        - if(p.score == prevscore)
+          - number = currentnum
+        - else
+          - number = currentnum = countnum
+          - prevscore = p.score
         = render(:partial => "scoreboard", :locals => {:player => p, :number => (number)})
-        - number += 1
+        - countnum += 1
       :javascript
         $(function() {
           $("#scoreboardTime").countdown({since: new Date(#{(Time.now.utc-1.month+@current_game.utc_offset).strftime("%Y, %m, %d, %H, %M, %S")}), compact:true, format: 'MS'})
