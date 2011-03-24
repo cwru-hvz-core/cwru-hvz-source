@@ -2,7 +2,7 @@ class TagsController < ApplicationController
   before_filter :check_is_registered
 
   def new
-	  if @logged_in_registration.is_human?
+	  if @logged_in_registration.is_human? and not @is_admin
 			flash[:error] = "You are not a Zombie, so you cannot report tags!"
 			redirect_to root_url()
 			return
