@@ -3,6 +3,9 @@ class AttendancesController < ApplicationController
 
 	def create
 	 	@attendance = Attendance.new(params[:attendance])
+		if @attendance.person_id.nil?
+			@attendance.person_id = Person.where("lower(name) LIKE ?", params[:attendance][:person_name].downcase + "%")
+		end
 		@attendance.save()
 		@attendances = Attendance.find_all_by_mission_id(params[:attendance][:mission_id], :order=>"created_at DESC")
 	end

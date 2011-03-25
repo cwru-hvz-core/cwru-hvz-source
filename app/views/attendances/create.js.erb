@@ -5,3 +5,4 @@ $("#attendances").html("<ol>" + <%
 <%=('\'' + link_to("x",attendance_url(a), :method=>:delete) + '] </li>\' + ').html_safe %>
 <% end %>"</ol>");
 $("#attendance_person_name").val('');
+$("#attendance_person_id").val('');
