@@ -10,9 +10,11 @@
       Ends (approximate):
     %td
       =date_humanize(@mission.end)
-%h3
+%h3.dink
   Storyline:
-=RedCloth.new(@mission.storyline).to_html.html_safe
-%h3
+%div{:align=>"left"}
+  =RedCloth.new(@mission.storyline).to_html.html_safe
+%h3.dink
   Mission Details:
-=RedCloth.new(@mission.description).to_html.html_safe
+%div{:align=>"left"}
+  =RedCloth.new(@mission.description).to_html.html_safe
