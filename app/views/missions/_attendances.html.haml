@@ -1,0 +1,5 @@
+%ol
+  - @attendances.each do |a|
+    %li
+      =(a.registration.person.name + ' [').html_safe
+      =(link_to("x",attendance_url(a), :method=>:delete) + ' ]').html_safe

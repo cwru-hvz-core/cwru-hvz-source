@@ -9,7 +9,7 @@ class MissionsController < ApplicationController
   def attendance
   	  @mission = Mission.find(params[:id])
 	  @attendance = @mission.attendances.new
-	  @attendees = Attendance.find_all_by_mission_id(params[:id], :include=>:registration, :order => ["created_at DESC"])
+	  @attendances = Attendance.find_all_by_mission_id(params[:id], :include=>:registration, :order => ["created_at DESC"])
   end
 
   def feeds

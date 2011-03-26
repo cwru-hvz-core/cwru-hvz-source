@@ -5,6 +5,4 @@
   = f.hidden_field :mission_id, :value => @mission.id
 %h2.dink Current Mission Attendees:
 #attendances
-  %ol
-    - @attendees.each do |a|
-      %li= a.registration.person.name
+  =render :partial=>"attendances"
