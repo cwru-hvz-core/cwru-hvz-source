@@ -43,6 +43,21 @@ class Registration < ActiveRecord::Base
 		self.taggedby.map{|x| x if x.mission_id.nil? or x.mission_id==0 }.compact.first
 	end
 
+	def total_deaths_associated
+		# Recursively finds the number of deaths
+		# that were involved with a player. Note: This
+		# returns 1 for zombies without kills (because
+		# they died themselves)
+		killing_tag = self.killing_tag
+		retval = 0
+		if killing_tag.nil?     # E.g. the player is an OZ or human
+			retval = self.tagged.map{|x| x.count_resulting_tags}.sum
+		else
+			retval = killing_tag.count_resulting_tags
+		end
+		retval += 1 if self.is_oz
+		return retval
+	end
 	def most_recent_feed
 		# Does not adjust for UTC offset!
 		# Get the time the player turned into a zombie:

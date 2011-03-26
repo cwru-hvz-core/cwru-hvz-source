@@ -36,6 +36,19 @@ class Tag < ActiveRecord::Base
 		errors.add_to_base "Tag occurs after game ends!" if self.datetime >= self.game.game_ends
 
 		errors.add_to_base "Tag occurs in the future?!" if self.datetime-self.game.utc_offset>=Game.now(self.game)
+	end
 
+	def count_resulting_tags
+		ary = self.num_resulting_tags
+		(ary.flatten! or ary).sum
+	end
+
+	def num_resulting_tags
+		tagged = self.tagee.tagged.map{|x| x.num_resulting_tags}
+		if tagged.empty?
+			return [1]
+		else
+			return tagged
+		end
 	end
 end
