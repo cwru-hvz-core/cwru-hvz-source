@@ -19,7 +19,7 @@ class TagsController < ApplicationController
 	  
 	  @zombiebox = @zombies.collect{|x| 
 		  if x.time_until_death > 0
-			  [x.person.name + " (" + (x.time_until_death/1.hour).ceil.to_s + " hours left) ", x.id]
+			  [x.person.name + " ("+x.missions.length.to_s+" missions, "+x.tagged.length.to_s+" tags, " + (x.time_until_death/1.hour).ceil.to_s + " hours left) ", x.id]
 	  	  else
 			  [x.person.name + " (Deceased)", x.id]
 		  end
