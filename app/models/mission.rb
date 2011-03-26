@@ -1,6 +1,7 @@
 class Mission < ActiveRecord::Base
 	belongs_to :game
 	has_many :attendances
+	has_many :feeds
 
 	validates_presence_of :game_id, :title
 

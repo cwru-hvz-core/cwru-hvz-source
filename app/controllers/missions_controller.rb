@@ -12,6 +12,12 @@ class MissionsController < ApplicationController
 	  @attendees = Attendance.find_all_by_mission_id(params[:id], :include=>:registration, :order => ["created_at DESC"])
   end
 
+  def feeds
+  	  @mission = Mission.find(params[:id])
+	  @feeds = @mission.feeds
+	  @feed = @feeds.new
+  end
+
   def create
 	  @mission = Mission.new(params[:mission])
 	  @mission.game = @current_game
