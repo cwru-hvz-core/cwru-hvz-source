@@ -85,8 +85,8 @@ class Registration < ActiveRecord::Base
 	end
 	def is_zombie?
 		# A player is a zombie if they have been tagged in game and have not yet starved.
-		return true if self.is_oz and self.most_recent_feed + 48.hours >= Game.now(self.game)
-		return (!self.killing_tag.nil? and self.most_recent_feed + 48.hours >= Game.now(self.game))
+		return true if self.is_oz and self.most_recent_feed + 48.hours >= Game.now(self.game)+Game.current.utc_offset
+		return (!self.killing_tag.nil? and self.most_recent_feed + 48.hours >= Game.now(self.game)+Game.current.utc_offset)
 	end
 	def is_deceased?
 		# A player is deceased if they are not human and not a zombie.
