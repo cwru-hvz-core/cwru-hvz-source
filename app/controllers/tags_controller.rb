@@ -45,7 +45,7 @@ class TagsController < ApplicationController
 			  return
 		  end
 	  end
-      @tag.tagger_id ||= Registration.find_by_game_id_and_person_id(@current_game, @logged_in_person.id)
+      @tag.tagger = @logged_in_registration if @tag.tagger.nil?
 	  @points_given = 0
 	  @points_given = @tag.tagee.score*0.2 unless @tag.award_points=="0"
 	  @tag.score = @points_given

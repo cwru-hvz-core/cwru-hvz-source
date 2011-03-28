@@ -114,6 +114,7 @@ class Registration < ActiveRecord::Base
 
 	def ==(other)
 		return false if self.nil? || other.nil?
+		return false if not (self.is_a?(Registration) && other.is_a?(Registration))
 		self.id == other.id
 	end
 end
