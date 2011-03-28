@@ -30,7 +30,6 @@ class TagsController < ApplicationController
 	  #TODO: This is really ugly.
 	  @tag = Tag.new(params[:tag])
 	  @tag.game = @current_game
-      @tag.tagger = Registration.find_by_game_id_and_person_id(@current_game, @logged_in_person.id) if @tag.tagger.nil?
 	  if @tag.tagee_id.nil?
 		  flash[:error] = "Invalid Card Code Specified!"
 		  redirect_to new_tag_url()
@@ -38,6 +37,7 @@ class TagsController < ApplicationController
 	  end
 	  if not params[:tag_meta].nil? and params[:tag_meta][:is_admin_tag] == "true"
 		  @tag.admin = @logged_in_person
+		  @tag.tagger_id = params[:tag][:tagger_id]
 	  else 
 		  if @tag.tagger_id == 0
 			  flash[:error] = "Invalid Admin Action Detected!"
@@ -45,6 +45,7 @@ class TagsController < ApplicationController
 			  return
 		  end
 	  end
+      @tag.tagger_id ||= Registration.find_by_game_id_and_person_id(@current_game, @logged_in_person.id)
 	  @points_given = 0
 	  @points_given = @tag.tagee.score*0.2 unless @tag.award_points=="0"
 	  @tag.score = @points_given
