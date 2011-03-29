@@ -1,2 +1,3 @@
--@data.each do |x,y|
-  =(x - @current_game.game_begins).to_s + "," + y[:humans].to_s + "," + y[:zombies].to_s + "," + y[:deceased].to_s
+-cache({:action=>"graphdata", :action_suffix=>"gamegraph", :id=>@game.id}, :expires_in => 5.minutes) do
+  -@data.each do |x,y|
+    =(x - @current_game.game_begins).to_s + "," + y[:humans].to_s + "," + y[:zombies].to_s + "," + y[:deceased].to_s

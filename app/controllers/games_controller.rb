@@ -59,7 +59,7 @@ class GamesController < ApplicationController
 		@ozs = @players.map{ |x| x if x.is_oz }.compact
 		
 		# This stuff is for drawing the graph.	
-		if not fragment_exist?(:action => "show", :action_suffix => "gamegraph", :id => @game.id)
+		if not fragment_exist?(:action => self.action_name, :action_suffix => "gamegraph", :id => @game.id)
 			states = @players.map{|x| x.state_history}
 			tslength = ((@game.game_ends - @game.game_begins) / 240).floor
 			@data = {}
