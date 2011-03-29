@@ -19,3 +19,12 @@
   %br
   =image_tag "USGlogo.jpg", :width=>"100"
   %br
+  %h2.dink
+    OZ Family Tree
+  %table
+    -cache(:expires_in => 5.minutes) do
+      - @ozs.each do |z|
+        %tr
+          %td=z.person.name
+          %td=z.total_deaths_associated
+

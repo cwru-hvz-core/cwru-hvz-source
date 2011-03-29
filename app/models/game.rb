@@ -4,6 +4,7 @@ class Game < ActiveRecord::Base
 	has_many :tags
 	has_many :missions
 	has_many :contact_messages
+	has_many :ozs, :class_name => "Registration", :conditions => ["is_oz = ?", true]
 	validates_with GameValidator  # Defined in ./lib/game_validator.rb
 
 	def self.current
