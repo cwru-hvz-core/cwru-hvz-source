@@ -9,11 +9,13 @@ class GamesController < ApplicationController
 	def show
 	
 	end
+
 	def graphdata
 		respond_to do |format|
 			format.csv
 		end
 	end
+
 	def rules
 		@game = Game.find(params[:id]) || @current_game
 	end
@@ -58,8 +60,8 @@ class GamesController < ApplicationController
 		@players = Registration.find_all_by_game_id(@game, :include=>[:person,:taggedby,:missions]).sort_by{ |x| [-x.display_score, x.person.name] }
 		@ozs = @players.map{ |x| x if x.is_oz }.compact
 		
-		# This stuff is for drawing the graph.	
-		if not fragment_exist?(:action => "show", :action_suffix => "gamegraph", :id => @game.id)
+		# This stuff is for drawing the graph.
+		if not fragment_exist?(:action => "show", :action_suffix => "gamegraph", :id => @game.id) or current_page(:action => "graphdata", :id=>@game.id)
 			states = @players.map{|x| x.state_history}
 			tslength = ((@game.game_ends - @game.game_begins) / 240).floor
 			@data = {}
