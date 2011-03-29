@@ -22,7 +22,7 @@
   %h2.dink
     OZ Family Tree
   %table
-    -cache(:expires_in => 5.minutes) do
+    -cache({:controller => "games", :action=>"show", :action_suffix=>"oz_tree", :id=>@current_game}, :expires_in => 5.minutes) do
       - @ozs.each do |z|
         %tr
           %td=z.person.name
