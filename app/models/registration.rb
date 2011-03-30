@@ -58,6 +58,16 @@ class Registration < ActiveRecord::Base
 		retval += 1 if self.is_oz
 		return retval
 	end
+	
+	def zombietree_json
+		#recursively generates json data for this player's family tree.
+		#(the following code uses & as string delimiter
+		#	to make things nicer)
+		json = %&{id:"#{self.id}", name:"#{self.person.name}", data:"DATA", children:[&
+		children = self.tagged.collect{|x| x.tagee.zombietree_json}.compact
+		json += %&#{"\n" + children.to_sentence(:last_word_connector => ",", :two_words_connector => ",") + "\n" unless children.empty?}]}&
+	end
+	
 	def most_recent_feed
 		# Does not adjust for UTC offset!
 		# Get the time the player turned into a zombie:
