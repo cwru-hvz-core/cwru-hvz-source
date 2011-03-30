@@ -44,7 +44,7 @@
         - countnum += 1
       :javascript
         $(function() {
-          $("#scoreboardTime").countdown({since: new Date(#{(Time.now.utc-1.month+@current_game.utc_offset).strftime("%Y, %m, %d, %H, %M, %S")}), compact:true, format: 'MS'})
+          $("#scoreboardTime").countdown({since: new Date(#{(Time.now.utc+@current_game.utc_offset).strftime("%Y, %m-1, %d, %H, %M, %S")}), compact:true, format: 'MS'})
         });
       .outOfDate
         #scoreboardInfo
