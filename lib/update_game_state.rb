@@ -58,6 +58,10 @@ class UpdateGameState
 			if h.faction_id == 0
 				Delayed::Job.enqueue SendNotification.new(h.person, "Welcome to the horde. Wear your headband with pride! Zombie Chant: What do we want? Brains! When do we want it? Brains!")
 			end
+			if h.faction_id == 2
+				Delayed::Job.enqueue SendNotification.new(h.person, "Due to an error in the site, you were mistakenly marked as \"deceased\". You are no longer deceased and should continue playing as a zombie until further notice. Sorry!")
+			end
+
 			h.faction_id = 1
 		end
 		factions[:deceased].each do |h|
