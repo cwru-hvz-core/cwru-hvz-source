@@ -26,6 +26,11 @@ class Game < ActiveRecord::Base
 		end
 		return array
 	end
+	def zombietree_json
+		json = %&{id:"game#{self.id}",name:"#{self.short_name}",data:{},children:[&
+		children = self.registrations.collect{|x| x.zombietree_json if((x.killing_tag.nil? or x.killing_tag.tagger.nil?) and not x.is_human?)}.compact
+		json += %&#{ children.to_sentence(:last_word_connector => ",", :two_words_connector => ",", :words_connector => ",") unless children.empty?}]}&
+	end
 	def ongoing?
 		return false if self.game_begins.nil? or self.game_ends.nil?
 		self.has_begun? and not self.has_ended?

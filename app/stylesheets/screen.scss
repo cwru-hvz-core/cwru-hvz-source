@@ -109,8 +109,13 @@ html {
 
 			table {
 				margin-left:auto;
-width:150px;
+				width:150px;
 			}
+		}
+		#gametree {
+			height:600px;
+			background-color:#EFEFEF;
+			@include box-shadow(darken(#EFEFEF, 20%), 0px, 0px, 30px, 0px, inset);
 		}
 	}
 	.info {
@@ -155,7 +160,6 @@ div.registration {
 	font-family:'Dink';
 src:url('/fonts/DINk.ttf') format('truetype')
 }
-
 th.admin {
 	text-align:center;
 	background-color: $admin-red;

@@ -19,6 +19,7 @@ Hvz::Application.routes.draw do
 	match "/players/:id/submitwaiver/:has" => "registrations#submit_waiver", :as => "submit_waiver"
 	match 'games/:id/rules' => "games#rules", :as => "game_rules"
 	match 'games/:id/graphdata' => "games#graphdata", :as => "game_graph_data"
+	match 'games/:id/tree' => "games#tree", :as => "game_tree"
 	match "/contact/" => "contact_messages#new", :as=>"contact_messages", :via => "get"
 	match "/contact/" => "contact_messages#create", :as => "new_contact_message",:via => "post"
 	match "/contact/list(/:all)" => "contact_messages#list", :as => "list_contact_messages", :via=>"get"

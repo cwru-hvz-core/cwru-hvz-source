@@ -17,7 +17,9 @@ class GamesController < ApplicationController
 	def rules
 		@game = Game.find(params[:id]) || @current_game
 	end
-
+	def tree
+		@game = Game.find(params[:id]) || @current_game
+	end
 	def new
 		@game = Game.new
 	end
