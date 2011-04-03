@@ -57,7 +57,7 @@ class GamesController < ApplicationController
 
 	def get_graph_data
 		@game = Game.find(params[:id], :include=>:tags)
-		@players = Registration.find_all_by_game_id(@game, :include=>[:person,:taggedby,:missions]).sort_by{ |x| [-x.display_score, x.person.name] }
+		@players = Registration.find_all_by_game_id(@game, :include=>[:person,:taggedby,:missions,:infractions]).sort_by{ |x| [-x.display_score, x.person.name] }
 		@ozs = @players.map{ |x| x if x.is_oz }.compact
 		
 		# This stuff is for drawing the graph.	

@@ -36,7 +36,7 @@
             %div.span-4= link_to "Home", root_url()
             %div.span-4
               - if not @current_game.nil?
-                - if @current_game.ongoing?
+                - if @current_game.ongoing? || @current_game.has_ended?
                   = link_to("Scoreboard", game_url(@current_game)) unless @current_game.nil?
                 - else
                   = link_to("Registration", new_registration_url())
