@@ -78,6 +78,8 @@ body,html {
 		font-size:36px;
 		font-weight: normal;
 		color:white;
+    a { color: white; text-decoration:none; }
+    a:hover { color: $bg_color; }
 	}
 	h1#site_name.admin {	
 		color:mix($admin_header_color, $bg_color, 10%);
