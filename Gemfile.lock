@@ -53,6 +53,8 @@ GEM
       daemons
     erubis (2.6.6)
       abstract (>= 1.0.0)
+    fancy-buttons (1.1.1)
+      compass (>= 0.11)
     fssm (0.2.7)
     gchartrb (0.8)
     googlevoiceapi (0.1.4)
@@ -112,9 +114,10 @@ PLATFORMS
 DEPENDENCIES
   RedCloth
   breadcrumbs
-  compass (>= 0.10.6)
+  compass (>= 0.11.1)
   dalli
   delayed_job
+  fancy-buttons
   gchartrb
   googlevoiceapi
   haml
