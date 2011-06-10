@@ -151,7 +151,6 @@ div#body {
      *  but to prevent unnecessary indentation, it is not. */
     width:1100px;
     margin:auto;
-
     > div {
       padding-top: 10px;
     }
@@ -192,37 +191,6 @@ div#body {
       text-align:left;
       @include column(8, true);
     }
-  }
-  div#content.scoreboard {
-    div#game_statistics {
-      @include prepend(1);
-      @include column(4);
-    } 
-    div#game_graph {
-      @include prepend(1);
-      @include column(10);
-    }
-    div#game_tags {
-      @include prepend(1);
-      @include column(9);
-      .tagger {
-        color: lighten($font_color, 40%);
-      }
-      .tagged {
-        font-weight:bold;
-      }
-    }
-    div#game_squads { 
-      @include prepend(1);
-      @include column(25);
-    }
-    div#game_players {	
-      @include prepend(1);
-      @include column(25);
-    }
-  } 
-  div#content.scoreboard.full {
-    width:928px;
   }
 
   /*
@@ -306,7 +274,18 @@ div#body {
     }
   }
 } /* end div#body */
+div#body.expanded {
+  background: image-url("bg2_extended.png") repeat-y scroll center center $bg_color !important;  
 
+  div#body_content {
+    div#right_sidebar {
+      display:none;
+    }
+    div#content {
+      width: 928px !important;
+    }
+  }
+}
 
 div#footer_container {
 	clear:both;

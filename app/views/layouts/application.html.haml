@@ -2,6 +2,7 @@
 %html
   %head
     %title Case HvZ
+    = javascript_include_tag :defaults
     = stylesheet_link_tag 'compiled/screen.css'
     = stylesheet_link_tag 'compiled/buttons.css'
     -#Empty right now:
@@ -22,7 +23,7 @@
           %li.button Squads
           %li.button Missions
           %li.button Contact Admins
-    #body
+    #body.expanded
       #body_content
         #left_sidebar.sidebar
 
@@ -68,13 +69,7 @@
               %a{:href => "#"} Ken Akiki
 
         #content
-          -#     22 Columns Wide
-          %h1#title.dink Welcome to Case HvZ
-          #gamedesc Humans vs. Zombies is an intense 10-day game of tag. It's a lot of fun. There might be a bit more description here, once someone writes it?
-          #humans.dink Humans: 100
-          #hvzlogo
-            = image_tag "HVZCaseLogo.png", {:height => "182px"}
-          #zombies.dink Zombies: 100
+          =yield
 
         #push
           &nbsp;

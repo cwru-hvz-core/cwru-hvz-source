@@ -1,21 +1,20 @@
-= stylesheet_link_tag "Testing"
+= stylesheet_link_tag "compiled/scoreboard"
 %div.game
   %h2.dink=@game.short_name + " (" + @game.dates[:date_range] + ")"
-  %div.span-4
-    %table.players
+  %div#game_statistics
+    %table
       %thead
         %th{:colspan=>2}
           Players:
-      - cache({:action=>"show", :action_suffix=>"gamestats", :id=>@game}, :expires_in => 1.minute) do
+        -#- cache({:action=>"show", :action_suffix=>"gamestats", :id=>@game}, :expires_in => 1.minute) do
         = render :partial => "gamestats"
     =link_to("Sort By Point Total", game_url(@game))
     %br
     =link_to("Sort By Deceased Time", game_sorted_url(@game,"deceased"))
-  %div.span-14
-    - cache({:action=>"show", :action_suffix=>"gamegraph", :id=>@game}, :expires_in => 5.minutes) do
-      = render :partial => "gamegraph"
-  %div.span-4.last
-    %table.ozs
+  %div#game_graph
+    = render :partial => "gamegraph"
+  %div#game_tags
+    %table
       %thead
         %th{:colspan=>2}
           %b Original Zombies:
@@ -30,8 +29,7 @@
                 %b ??????
             %td=z.score
     =link_to("Zombie Tag Tree", game_tree_url(@game))
-  %div.span-2.clear
-    &nbsp;
+/
   %div.span-23
     - cache({:action => "show", :action_suffix=>"scoreboard-"+(params[:sorttype] or ""), :id=>@game}, :expires_in => 5.minutes) do
       - number = 1

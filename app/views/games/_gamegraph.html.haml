@@ -1,6 +1,6 @@
 // Sometimes the caching gets messed up. In that case, don't draw the graph.
 - unless @human_v_time.nil?
-  - GoogleChart::LineChart.new('500x140', "", true) do |lc|
+  - GoogleChart::LineChart.new('410x125', "", true) do |lc|
     - lc.data "Zombies", @zombie_v_time, '94ff70'
     - lc.data "Humans", @human_v_time, '0E4C7D'
     - lc.data "Deceased", @deceased_v_time, 'AAAAAA'
@@ -9,7 +9,10 @@
     - days = (@human_v_time.max[0]/24).ceil
     - labels = []
     - days.times do |x|
-      - labels << "Day " + (x+1).to_s
+      - if x == 0
+        - labels << "Day " + (x+1).to_s
+      - else
+        - labels << (x+1).to_s
     - lc.axis :x, :range => [1,days], :color => '666666', :font_size => 10, :alignment => :center, :labels => labels
     - lc.axis :x, :labels => ["Days Into Game"], :color => '666666', :alignment => :center
     =image_tag(lc.to_url)
