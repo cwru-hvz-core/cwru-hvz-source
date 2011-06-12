@@ -1,10 +1,11 @@
-$blueprint_grid_width: 25px;
-$blueprint_grid_columns: 22;
+@import "partials/base";
 
 @import "compass/reset";
 @import "blueprint";
-
+@import "blueprint/colors";
 @import "blueprint/buttons";
+@import "fancy-buttons";
+
 @import "compass/utilities/general/min";
 @import "compass/css3/font-face";
 @import "compass/css3/text-shadow";
@@ -12,30 +13,6 @@ $blueprint_grid_columns: 22;
 @import "compass/css3/images";
 
 @include font-face("Dink", font-files("DINk.ttf",truetype));
-
-$bg_color: #EFEFEF;
-
-$footer_color: #999;
-$footer_height: 150px;
-
-$header_top_color: #1DD300; /*#85EB6A;*/
-$header_bottom_color: darken($header_top_color, 10%); /*#138900;*/
-$header_bottom_border_color: #CCC;
-$admin_header_color: #82050B;
-$header_top: 0px; /* Distance from the broswer top to the top of the green stripe */
-$header_title_height: 60px; /* Distance from the browser top to the top of the white content area */
-$header_bottom: 80px; /* Distance from the browser top to the bottom of the green stripe */
-$header_border_height: 2px;
-
-/** Blueprint configured colors: **/
-$blueprint_table_header_color: mix($bg_color, $header_top_color, 80%);
-@import "blueprint/colors";
-
-/* Config for fancy-buttons */
-$fb_gradient_style: "matte";
-$fb_font_size: 14px;
-$fb_color: $bg_color;
-@import "fancy-buttons";
 
 body {
 	@include blueprint-typography(true);

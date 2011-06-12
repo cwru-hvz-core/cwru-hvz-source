@@ -1,59 +1,45 @@
 = stylesheet_link_tag "compiled/scoreboard"
-%div.game
+%div#game
   %h2.dink=@game.short_name + " (" + @game.dates[:date_range] + ")"
-  %div#game_statistics
-    %table
-      %thead
-        %th{:colspan=>2}
-          Players:
-        -#- cache({:action=>"show", :action_suffix=>"gamestats", :id=>@game}, :expires_in => 1.minute) do
-        = render :partial => "gamestats"
-    =link_to("Sort By Point Total", game_url(@game))
-    %br
-    =link_to("Sort By Deceased Time", game_sorted_url(@game,"deceased"))
-  %div#game_graph
-    = render :partial => "gamegraph"
-  %div#game_tags
-    %table
-      %thead
-        %th{:colspan=>2}
-          %b Original Zombies:
-      %tbody
-        - @ozs.each do |z|
-          %tr 
-            - if @game.ozs_revealed? or (not @logged_in_person.nil? and z.person.id == @logged_in_person.id)
-              %td{:class=>("admin nocenter" if z.person.is_admin)}
-                %b= z.person.name
-            - else
-              %td
-                %b ??????
-            %td=z.score
-    =link_to("Zombie Tag Tree", game_tree_url(@game))
-/
-  %div.span-23
-    - cache({:action => "show", :action_suffix=>"scoreboard-"+(params[:sorttype] or ""), :id=>@game}, :expires_in => 5.minutes) do
-      - number = 1
-      - prevscore = -1
-      - currentnum = 1
-      - countnum = 1
-      - @players.each do |p|
-        - if(p.display_score == prevscore)
-          - number = currentnum
-        - else
-          - number = currentnum = countnum
-          - prevscore = p.display_score
-        = render(:partial => "scoreboard", :locals => {:player => p, :number => (number)})
-        - countnum += 1
-      :javascript
-        $(function() {
-          $("#scoreboardTime").countdown({since: new Date(#{(Time.now.utc+@current_game.utc_offset).strftime("%Y, %m-1, %d, %H, %M, %S")}), compact:true, format: 'MS'})
-        });
-      .outOfDate
-        #scoreboardInfo
-          This page is
-        #scoreboardTime
-        #scoreboardInfo
-          out of date.
+  %div#game_header
+    %div#statistics
+      %table
+        %thead
+          %th{:colspan=>2}
+            Players:
+          -#- cache({:action=>"show", :action_suffix=>"gamestats", :id=>@game}, :expires_in => 1.minute) do
+          = render :partial => "gamestats"
+    %div#graph
+      = render :partial => "gamegraph"
+    %div#tags
+      %table
+        %thead
+          %th{:colspan=>2}
+            %b Original Zombies:
+        -# TODO: Make this into its own partial.
+        %tbody
+          - @ozs.each do |z|
+            %tr 
+              - if @game.ozs_revealed? or (not @logged_in_person.nil? and z.person.id == @logged_in_person.id)
+                %td{:class=>("admin nocenter" if z.person.is_admin)}
+                  %b= z.person.name
+              - else
+                %td
+                  %b ??????
+              %td=z.score
+      -#=link_to("Zombie Tag Tree", game_tree_url(@game))
+  %div#view_links
+    %ul
+      %li 
+        %a.selected{:href=>"#"} Players &amp; Squads
+      %li 
+        %a{:href=>"#"} Achievements
+      %li 
+        %a{:href=>"#"} Zombie Tag Tree
+      %li 
+        %a{:href=>"#"} Tag Heatmap
+  %div#game_content
+    Loading...
   %div.span-2.last
     &nbsp;
 

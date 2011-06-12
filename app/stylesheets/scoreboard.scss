@@ -1,3 +1,6 @@
+@import "partials/base";
+
+$blueprint_grid_columns: 26;
 @import "blueprint/grid";
 @import "blueprint/colors";
 
@@ -5,28 +8,62 @@ div#content {
   th {
     text-align:center;
   }
-  div#game_statistics {
-    @include prepend(1);
-    @include column(5);
-  } 
-  div#game_graph {
-    @include column(11);
-  }
-  div#game_tags {
-    @include column(5, true);
-    .tagger {
-      color: lighten($font_color, 40%);
+  div#game {
+    @include container;
+
+    div#game_header {
+      @include column(26);
     }
-    .tagged {
-      font-weight:bold;
+
+    div#view_links {
+      @include column(26);
+      clear:both;
+
+      ul {
+        list-style-type:none;
+
+        li {
+          float:left;
+        
+          a {
+            color:$font_color;
+            background-color: $blueprint_table_header_color;
+            font-weight:bold;
+            margin-right: 20px;
+            padding: 4px 50px;
+
+            &:hover, &.selected:hover { /* & indicates the parent selector */
+              background-color: darken($blueprint_table_header_color, 15%);
+            }
+            &.selected {
+              background-color: darken($blueprint_table_header_color, 10%);
+            }
+          }
+        }
+      }
+    }
+
+    div#statistics {
+      @include prepend(1);
+      @include column(5);
+    } 
+    div#graph {
+      @include column(14);
+    }
+    div#tags {
+      @include column(5, true);
+      .tagger {
+        color: lighten($font_color, 40%);
+      }
+      .tagged {
+        font-weight:bold;
+      }
+    }
+    div#game_content {
+      clear:both;
+      padding-top:20px;
+
     }
   }
-  div#game_squads { 
-    @include prepend(1);
-    @include column(25);
-  }
-  div#game_players {	
-    @include prepend(1);
-    @include column(25);
-  }
+
 } 
