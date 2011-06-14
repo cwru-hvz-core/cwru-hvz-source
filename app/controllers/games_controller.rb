@@ -68,39 +68,6 @@ class GamesController < ApplicationController
 
 		@ozs = @players.map{ |x| x if x.is_oz }.compact
 		
-		# This stuff is for drawing the graph.	
-		if not fragment_exist?(:action => self.action_name, :action_suffix => "gamegraph", :id => @game.id)
-			states = @players.map{|x| x.state_history}
-			tslength = ((@game.game_ends - @game.game_begins) / 240).floor
-			@data = {}
-			240.times do |dt|
-				now = @game.game_begins + (dt.seconds.to_i*tslength)
-				if (now - @game.utc_offset) >= Time.now
-					break
-				end
-				@data[now] = {:zombies => 0, :deceased => 0, :humans=>0}
-				states.each do |s|
-					# States is a hash of important times of players. Like
-					# state = {:human => [time became human], :zombie => [time zombified], 
-					#          :deceased => [time of death]}
-					# So, determining who is at which state is now pretty easy.
-					if s[:human] <= now
-						if s[:zombie] <= now
-							if s[:deceased] <= now
-								@data[now][:deceased] += 1
-								next
-							end
-							@data[now][:zombies] += 1
-							next
-						end
-						@data[now][:humans] += 1
-					end
-				end
-			end
-			@data = @data.sort
-			@human_v_time = @data.map{|x,y| [(x - @game.game_begins)/1.hour, y[:humans]]}
-			@zombie_v_time = @data.map{|x,y| [(x - @game.game_begins)/1.hour, y[:zombies]]}
-			@deceased_v_time = @data.map{|x,y| [(x - @game.game_begins)/1.hour, y[:deceased]]}
-		end
+		
 	end
 end
