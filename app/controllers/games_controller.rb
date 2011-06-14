@@ -1,6 +1,7 @@
 class GamesController < ApplicationController
 	before_filter :check_admin, :only => ['new', 'create', 'edit', 'update']
 	before_filter :get_graph_data, :only => ['show', 'graphdata']
+  layout "expanded", :only => [:show]
 
 	def index
 		@games = Game.all
@@ -9,6 +10,7 @@ class GamesController < ApplicationController
 	def show
 	
 	end
+
 	def graphdata
 		respond_to do |format|
 			format.csv
