@@ -1,5 +1,6 @@
 = stylesheet_link_tag "compiled/scoreboard"
 = javascript_include_tag "scoreboard"
+= javascript_include_tag "highcharts"
 %div#game
   %h2.dink=@game.short_name + " (" + @game.dates[:date_range] + ")"
   %div#game_header
