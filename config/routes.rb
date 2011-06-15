@@ -26,7 +26,8 @@ Hvz::Application.routes.draw do
   post 'players/:id/waiver' => "waiver#create", :as => "waivers"
 	match 'games/:id/sortby/:sorttype' => "games#show", :as => "game_sorted"
   namespace "api" do
-    resources "game"
+    match 'game/:id/players' => "game#players"
+    match 'game/:id/info' => "game#info"
   end
 	match 'games/:id/rules' => "games#rules", :as => "game_rules"
 	match 'games/:id/graphdata' => "games#graphdata", :as => "game_graph_data"

@@ -87,17 +87,38 @@ $(document).ready(function() {
   
   // Load data asynchronously using jQuery. On success, add the data
   // to the options and initiate the chart.
-  jQuery.get('/api/game/1?type=players', null, function(data) {
-    console.log(data.length)
-    $("#game_content").html(data.toString());
-    var lines = [],
-      listen = false,
-      date,
+  jQuery.getJSON('/api/game/1/players', null, function(data) {
+    $("#game_content").html("Got content!");
       
+      // Calculate number of humans/zombies/deceased
+      var factions = [];
+      var ozs = [];
+      for (var j in data) {
+        if (factions[data[j]["current_faction"]] == null) {
+          factions[data[j]["current_faction"]] = 0
+        }
+        factions[data[j]["current_faction"]] += 1
+
+        if (data[j]["is_oz"] == true) {
+          ozs.push(data[j])
+        }
+      }
+      $("td#human_count").html(factions[0]);
+      $("td#zombie_count").html(factions[1]);
+      $("td#deceased_count").html(factions[2]);
+      $("td#total_count").html(data.length);
+      
+      // Add the OZs to the OZ table.
+      ozs.sort(function(a,b) { return b["score"] > a["score"] });
+      $("tbody#ozs").html("");
+      for (var i in ozs) {
+        $("tbody#ozs").append("<tr><td>" + ozs[i]["name"] + "</td><td>" + ozs[i]["score"] + "</tr>");
+      }
+
       // set up the two data series
-      time_data = []
- 
-      jQuery.get('/api/game/1?type=info', null, function(data2) {
+      var time_data = [];
+      
+      jQuery.getJSON('/api/game/1/info', null, function(data2) {
         var human, zombie, deceased
         begin_date = new Date(data2["game_begins"]);
         end_date = new Date(data2["game_ends"]);

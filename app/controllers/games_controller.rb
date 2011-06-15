@@ -58,16 +58,6 @@ class GamesController < ApplicationController
 	end
 
 	def get_graph_data
-		@game = Game.find(params[:id], :include=>:tags)
-    @players = Registration.find_all_by_game_id(@game, :include=>[:person,:taggedby,:missions,:infractions,:bonus_codes])
-    if params[:sorttype] == "deceased"
-		  @players = @players.sort_by{ |x| [x.state_history[:deceased], -x.display_score, x.person.name] }
-    else
-		  @players = @players.sort_by{ |x| [-x.display_score, x.person.name] }
-    end
-
-		@ozs = @players.map{ |x| x if x.is_oz }.compact
-		
-		
+		@game = Game.find(params[:id])
 	end
 end

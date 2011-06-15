@@ -49,6 +49,7 @@ div#content {
     } 
     div#graph {
       @include column(14);
+      margin-top: -5px;
     }
     div#tags {
       @include column(5, true);

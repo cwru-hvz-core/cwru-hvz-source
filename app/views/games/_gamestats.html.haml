@@ -2,20 +2,20 @@
   %tr
     %td
       %b Human:
-    %td
-      = @players.map{|x| x if x.faction_id == 0}.compact.length
+    %td#human_count
+      ??
   %tr
     %td
       %b Zombie:
-    %td
-      = @players.map{|x| x if x.faction_id == 1}.compact.length
+    %td#zombie_count
+      ??
   %tr
     %td
       %b Deceased:
-    %td
-      = @players.map{|x| x if x.faction_id == 2}.compact.length
+    %td#deceased_count
+      ??
   %tr
     %td
       %b Total:
-    %td
-      = @players.length
+    %td#total_count
+      ??
