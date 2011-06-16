@@ -23,10 +23,10 @@
           %tr
             %td ???
             %td ???
-  %div#view_links
-    %ul
-      %li 
-        %a.selected{:href=>"#"} Players &amp; Squads
+  %div#view_links_container
+    %ul.group.dink#view_links
+      %li.current_page_item
+        %a{:href=>"#"} Players &amp; Squads
       %li 
         %a{:href=>"#"} Achievements
       %li 
@@ -34,6 +34,17 @@
       %li 
         %a{:href=>"#"} Tag Heatmap
   %div#game_content
-    Loading...
+    %div#content_players
+      %h3.dink Top Players
+    %div#content_squads
+      %h3.dink Top Squads
+      %div.player
+        %span.rank 1.
+        %span.name Super Secret Squad
+        %span.points 4400 pts
+        %span.faction 4 Players
+        %span.status 
+          Squad Leader:
+          %a{:href => "#"} Tom Dooner
   %div.span-2.last
     &nbsp;

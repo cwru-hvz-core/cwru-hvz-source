@@ -15,28 +15,42 @@ div#content {
       @include column(26);
     }
 
-    div#view_links {
+    div#view_links_container {
       @include column(26);
+      background-color: white;
+      /*border-top: 3px solid $bg_color; */
+      border-bottom: 1px solid $header_bottom_border_color;
       clear:both;
+      padding-bottom:1px;
+      
+      #magic-line {
+        position: absolute; 
+        bottom: -3px; 
+        left: 0; 
+        width: 100px; 
+        height: 3px; 
+        background: darken($blueprint_table_header_color, 30%);
+      }
 
-      ul {
-        list-style-type:none;
+      ul#view_links {
+        margin: 0 auto; 
+        list-style: none; 
+        position: relative;
+        height:29px;
 
         li {
-          float:left;
-        
-          a {
-            color:$font_color;
-            background-color: $blueprint_table_header_color;
-            font-weight:bold;
-            margin-right: 20px;
-            padding: 4px 50px;
+          display:inline-block;
 
-            &:hover, &.selected:hover { /* & indicates the parent selector */
-              background-color: darken($blueprint_table_header_color, 15%);
-            }
-            &.selected {
-              background-color: darken($blueprint_table_header_color, 10%);
+          a {
+            color: $font_color; 
+            font-size: 14px; 
+            display: block; 
+            float: left; 
+            padding: 4px 25px;
+            text-decoration: none; 
+            &:hover {
+              color: black;
+              background-color: $bg_color;
             }
           }
         }
@@ -63,8 +77,32 @@ div#content {
     div#game_content {
       clear:both;
       padding-top:20px;
+      div#content_players {
+        @include prepend(2);
+        @include column(10);
+      }
+      div#content_squads {
+        @include prepend(1);
+        @include column(10);
+      }
+      div.player {
+        height: 45px;
+        padding: 10px 10px 10px 5px;
+        clear: both;
+        
+        &.human { border-left: 10px solid #25A; }
+        &.zombie { border-left: 10px solid darken($blueprint_table_header_color, 30%); }
+        &.deceased { border-left: 10px solid white; }
+        &.admin { .name { color: $admin_header_color; } }
 
+        &:hover { background-color: #EFEFEF; cursor: pointer; }
+        span { display: block; float:left; }
+        .rank { font-size: 1.4em; line-height:45px; width:20px; font-weight:bold; }
+        .name { width:200px; font-size: 1.4em; text-align: left; padding-left:10px; overflow:hidden; font-weight:bold; }
+        .points { font-size: 1.4em; float:right; }
+        .status {  width: 200px; padding-left:10px; text-align:left; }
+        .faction { float:right; }
+      }
     }
   }
-
 } 

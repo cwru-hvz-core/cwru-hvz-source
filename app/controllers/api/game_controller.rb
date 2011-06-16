@@ -9,7 +9,8 @@ class Api::GameController < ApplicationController
       :name => x.person.name, 
       :score => x.score, 
       :state_history => x.state_history, 
-      :is_oz => @g.ozs_revealed? && x.is_oz
+      :is_oz => @g.ozs_revealed? && x.is_oz,
+      :is_admin => x.person.is_admin
       }}
   end
 

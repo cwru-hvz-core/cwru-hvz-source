@@ -8,7 +8,10 @@ class GamesController < ApplicationController
 	end
 
 	def show
-	
+    if params[:id] == "current"
+      @game = Game.current
+    end
+		@game ||= Game.find(params[:id])
 	end
 
 	def graphdata
@@ -58,6 +61,5 @@ class GamesController < ApplicationController
 	end
 
 	def get_graph_data
-		@game = Game.find(params[:id])
 	end
 end

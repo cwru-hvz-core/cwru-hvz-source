@@ -1,7 +1,49 @@
-
+function whichState(now, stateHistory) {
+  var now = new Date(now);
+  var human = new Date(stateHistory["human"]);
+  var zombie = new Date(stateHistory["zombie"]);
+  var deceased = new Date(stateHistory["deceased"]);
+  if (human < now) {
+    if (zombie < now) {
+      if (deceased < now) {
+        return {"faction_id": 2, "class_name": "deceased", "human_name": "Deceased"};
+      }
+      return {"faction_id": 1, "class_name": "zombie", "human_name": "Zombie"};
+    }
+    return {"faction_id": 0, "class_name": "human", "human_name": "Human"};
+  }
+}
 var chart;
 $(document).ready(function() {
   
+  // Set up the MagicLine
+    var $el, leftPos, newWidth,
+        $mainNav = $("#view_links");
+
+    $mainNav.append("<li id='magic-line'></li>");
+    var $magicLine = $("#magic-line");
+
+    $magicLine
+        .width($(".current_page_item").width())
+        .css("left", $(".current_page_item a").position().left)
+        .data("origLeft", $magicLine.position().left)
+        .data("origWidth", $magicLine.width());
+
+    $("#view_links li a").hover(function() {
+        $el = $(this);
+        leftPos = $el.position().left;
+        newWidth = $el.parent().width();
+        $magicLine.stop().animate({
+            left: leftPos,
+            width: newWidth
+        });
+    }, function() {
+        $magicLine.stop().animate({
+            left: $magicLine.data("origLeft"),
+            width: $magicLine.data("origWidth")
+        });
+    });
+///////////////////////////////////////////////////////////
   // define the options
   var options = {
     chart: {
@@ -10,6 +52,7 @@ $(document).ready(function() {
       renderTo: 'graph',
       margin: [10, 0, 10, 30]
     },
+    colors: [ "#2255AA", "#5EC24D", "#999999" ],
 
     credits: {
       enabled: false
@@ -59,7 +102,6 @@ $(document).ready(function() {
     
     plotOptions: {
       series: {
-        cursor: 'pointer',
         point: {
         },
         marker: {
@@ -88,7 +130,6 @@ $(document).ready(function() {
   // Load data asynchronously using jQuery. On success, add the data
   // to the options and initiate the chart.
   jQuery.getJSON('/api/game/1/players', null, function(data) {
-    $("#game_content").html("Got content!");
       
       // Calculate number of humans/zombies/deceased
       var factions = [];
@@ -114,16 +155,65 @@ $(document).ready(function() {
       for (var i in ozs) {
         $("tbody#ozs").append("<tr><td>" + ozs[i]["name"] + "</td><td>" + ozs[i]["score"] + "</tr>");
       }
-
       // set up the two data series
       var time_data = [];
       
       jQuery.getJSON('/api/game/1/info', null, function(data2) {
+      //////////////////////////////////////////////////////
+      // Before we get into the graph stuff, populate the
+      // scoreboard....
+      //////////////////////////////////////////////////////
+
+      // Add players to the scoreboard
+      best = data.sort(function(a,b) { return b["score"] > a["score"]; });
+      for (var i = 1; i < 11; i++) {
+        // i is the rank, so i - 1 is the array index
+        player = data[i-1];             // (for convenience)
+        state = whichState(data2["now"], player["state_history"]);
+        // Creating the container
+        j = document.createElement("div");
+        j.classList.add("player");
+        j.classList.add(state["class_name"])
+        if (player["is_admin"] == true) { j.classList.add("admin") }
+        // Create the rank
+        k = document.createElement("span");
+        k.classList.add("rank");
+        k.innerHTML = i;
+        j.appendChild(k);
+        // Create the name
+        k = document.createElement("span");
+        k.classList.add("name");
+        k.innerHTML = player["name"];
+        j.appendChild(k);
+        // Create the points/score
+        // TODO: Make the verbiage consistent - points vs. score
+        k = document.createElement("span");
+        k.classList.add("points");
+        k.innerHTML = player["score"] + " pts";
+        j.appendChild(k);
+        // Create the faction
+        k = document.createElement("span");
+        k.classList.add("faction");
+        k.innerHTML = state["human_name"];
+        j.appendChild(k);
+        // Create the status
+        k = document.createElement("span");
+        k.classList.add("status");
+        k.innerHTML = "We'll figure this out later.";
+        j.appendChild(k);
+        $("div#content_players").append(j);
+      }
+
+
+      //////////////////////////////////////////////////////
+      // Graph Stuff Here!
+      //////////////////////////////////////////////////////
         var human, zombie, deceased
         begin_date = new Date(data2["game_begins"]);
         end_date = new Date(data2["game_ends"]);
-        delta = (end_date - begin_date) / 400;
-        for (i=0; i < 400; i++) {
+        var granularity = 250
+        delta = (end_date - begin_date) / granularity;
+        for (i=0; i < granularity; i++) {
           now = new Date(begin_date.getTime() + delta * i);
           time_data[now] = {"zombie": 0, "human": 0, "deceased": 0};
           for (var j in data) {
