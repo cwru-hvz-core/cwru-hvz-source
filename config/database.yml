@@ -17,7 +17,7 @@ test:
   port: 5432
   username: hvz_test
   password: hvz_test
-  template: hvz_test
+  database: hvz_test
 
 production:
   adapter: postgresql
@@ -25,4 +25,4 @@ production:
   port: 5432
   username: hvz_production
   password: hvz_production
-  template: hvz_production
+  database: hvz_production

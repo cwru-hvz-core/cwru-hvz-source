@@ -45,6 +45,24 @@
             %td
               =f.check_box :is_off_campus
           %tr
+            %td
+              %b=f.label :squad_select, "Squad:"
+            %td
+          %tr 
+            %td{:style=>"text-align:right", :colspan=>2}
+              =label_tag(:squad_select_existing, "Join an existing squad")
+              =radio_button_tag(:squad_select, "existing")
+              =collection_select(:registration, :squad_id, @squads, :id, :name)
+              %br
+              =label_tag(:squad_select_create, "Create a new Squad")
+              =radio_button_tag(:squad_select, "create")
+              %br
+              Name:
+              =text_field_tag(:new_squad_name)
+              %br
+              =label_tag(:squad_select_later, "I'll join a squad later")
+              =radio_button_tag(:squad_select, "later")
+          %tr
             %td{:colspan=>2}
               =f.submit "Register!"
 Don't want to register just yet? It's all good. Registration is open until

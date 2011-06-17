@@ -16,6 +16,7 @@ class RegistrationsController < ApplicationController
 			redirect_to root_url()
 		end
 		@registration = Registration.find_or_initialize_by_person_id_and_game_id(@person.id, @current_game.id)
+    @squads = @current_game.squads
 		if not @registration.card_code.nil?
 			redirect_to registration_url(@registration)
 		end
@@ -31,7 +32,23 @@ class RegistrationsController < ApplicationController
 		@registration.attributes = params[:registration]
 		@registration.card_code = Registration.make_code
 		@registration.score = 0
+    @registration.squad = nil unless params[:squad_select] == "existing"
 		if @registration.save()
+      
+      # Now worry about the squad, because we can't attribute squad leadership without a registration id
+      if (params[:squad_select] == "create")
+        @squad = Squad.new({
+          :name => params[:new_squad_name], 
+          :leader_id => @registration.id, 
+          :game_id => @current_game.id
+        })
+        if @squad.save()
+          @registration.update_attribute(:squad, @squad)
+        else
+          flash[:error] = "You have been successfully registered, but there was a problem creating your squad: " + @squad.errors.full_messages.first
+        end
+      end
+
 			unless (@registration.person.phone.nil? or @registration.person.phone.empty?)
 				Delayed::Job.enqueue SendNotification.new(@person, "Thank you for registering for HvZ. Your card code is: " + @registration.card_code + ". Please keep this code on you at all times. Have fun!")
 			end

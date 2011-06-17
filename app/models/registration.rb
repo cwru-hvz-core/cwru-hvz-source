@@ -1,6 +1,7 @@
 class Registration < ActiveRecord::Base
 	belongs_to :person
 	belongs_to :game
+  belongs_to :squad
 	has_many :infractions
 	has_many :feeds
 	has_many :missions, :class_name => "Attendance"
