@@ -28,6 +28,7 @@ Hvz::Application.routes.draw do
   namespace "api" do
     match 'game/:id/players' => "game#players"
     match 'game/:id/info' => "game#info"
+    match 'game/:id/squads' => "game#squads"
   end
 	match 'games/:id/rules' => "games#rules", :as => "game_rules"
 	match 'games/:id/graphdata' => "games#graphdata", :as => "game_graph_data"

@@ -1,18 +1,3 @@
-function whichState(now, stateHistory) {
-  var now = new Date(now);
-  var human = new Date(stateHistory["human"]);
-  var zombie = new Date(stateHistory["zombie"]);
-  var deceased = new Date(stateHistory["deceased"]);
-  if (human < now) {
-    if (zombie < now) {
-      if (deceased < now) {
-        return {"faction_id": 2, "class_name": "deceased", "human_name": "Deceased"};
-      }
-      return {"faction_id": 1, "class_name": "zombie", "human_name": "Zombie"};
-    }
-    return {"faction_id": 0, "class_name": "human", "human_name": "Human"};
-  }
-}
 var chart;
 $(document).ready(function() {
   
@@ -129,117 +114,90 @@ $(document).ready(function() {
   
   // Load data asynchronously using jQuery. On success, add the data
   // to the options and initiate the chart.
-  jQuery.getJSON('/api/game/1/players', null, function(data) {
-      
-      // Calculate number of humans/zombies/deceased
-      var factions = [];
-      var ozs = [];
-      for (var j in data) {
-        if (factions[data[j]["current_faction"]] == null) {
-          factions[data[j]["current_faction"]] = 0
-        }
-        factions[data[j]["current_faction"]] += 1
+  thisgame.append_on_load_info("players", computePlayers)
+  thisgame.append_on_load_info("info", computePlayers)
 
-        if (data[j]["is_oz"] == true) {
-          ozs.push(data[j])
-        }
+  function computePlayers() {
+    // If either the players or info data is not back yet, GTFO!
+    if (!("info" in thisgame.retrieved_data) ||
+                            !("players" in thisgame.retrieved_data)) {
+      return;
+    }
+    
+    // Initialize all Players and calculate some nice things
+    //   like the total score and current faction.
+    thisgame.load_players()
+    
+    //////////////////////////////////////////////////////////////////////////
+    // Calculate number of humans/zombies/deceased
+    //////////////////////////////////////////////////////////////////////////
+    var factions = {}
+    var ozs = []
+    for (var i in thisgame.players) {
+      var f = thisgame.players[i]
+      if (!(f.faction["key"] in factions)) {
+        factions[f.faction["key"]] = 0
       }
-      $("td#human_count").html(factions[0]);
-      $("td#zombie_count").html(factions[1]);
-      $("td#deceased_count").html(factions[2]);
-      $("td#total_count").html(data.length);
-      
-      // Add the OZs to the OZ table.
-      ozs.sort(function(a,b) { return b["score"] > a["score"] });
-      $("tbody#ozs").html("");
-      for (var i in ozs) {
-        $("tbody#ozs").append("<tr><td>" + ozs[i]["name"] + "</td><td>" + ozs[i]["score"] + "</tr>");
+      factions[f.faction["key"]] += 1
+
+      if (f.is_oz == true) {
+        ozs.push(f)
       }
-      // set up the two data series
-      var time_data = [];
-      
-      jQuery.getJSON('/api/game/1/info', null, function(data2) {
-      //////////////////////////////////////////////////////
-      // Before we get into the graph stuff, populate the
-      // scoreboard....
-      //////////////////////////////////////////////////////
+    }
+    $("td#human_count").html(factions[0]);
+    $("td#zombie_count").html(factions[1]);
+    $("td#deceased_count").html(factions[2]);
+    $("td#total_count").html(thisgame.players.length);
+   
+    ////////////////////////////////////////////////////////////////////////// 
+    // Add the OZs to the OZ table.
+    //////////////////////////////////////////////////////////////////////////
+    ozs.sort(function(a,b) { return b["score"] - a["score"] });
+    $("tbody#ozs").html("");
+    for (var i in ozs) {
+      $("tbody#ozs").append("<tr><td>" + ozs[i]["name"] + "</td><td>" + ozs[i]["static_score"] + "</tr>");
+    }
 
-      // Add players to the scoreboard
-      best = data.sort(function(a,b) { return b["score"] > a["score"]; });
-      for (var i = 1; i < 11; i++) {
-        // i is the rank, so i - 1 is the array index
-        player = data[i-1];             // (for convenience)
-        state = whichState(data2["now"], player["state_history"]);
-        // Creating the container
-        j = document.createElement("div");
-        j.classList.add("player");
-        j.classList.add(state["class_name"])
-        if (player["is_admin"] == true) { j.classList.add("admin") }
-        // Create the rank
-        k = document.createElement("span");
-        k.classList.add("rank");
-        k.innerHTML = i;
-        j.appendChild(k);
-        // Create the name
-        k = document.createElement("span");
-        k.classList.add("name");
-        k.innerHTML = player["name"];
-        j.appendChild(k);
-        // Create the points/score
-        // TODO: Make the verbiage consistent - points vs. score
-        k = document.createElement("span");
-        k.classList.add("points");
-        k.innerHTML = player["score"] + " pts";
-        j.appendChild(k);
-        // Create the faction
-        k = document.createElement("span");
-        k.classList.add("faction");
-        k.innerHTML = state["human_name"];
-        j.appendChild(k);
-        // Create the status
-        k = document.createElement("span");
-        k.classList.add("status");
-        k.innerHTML = "We'll figure this out later.";
-        j.appendChild(k);
-        $("div#content_players").append(j);
+    //////////////////////////////////////////////////////////////////////////
+    // Create the graph.
+    //////////////////////////////////////////////////////////////////////////
+    var human, zombie, deceased
+    begin_date = new Date(thisgame["game_begins"]);
+    end_date = new Date(thisgame["game_ends"]);
+    var granularity = 250
+    delta = (end_date - begin_date) / granularity;
+    var time_data = {}
+    for (i=0; i < granularity; i++) {
+      var now = new Date(begin_date.getTime() + delta * i);
+      time_data[now] = {"-1": 0, "0": 0, "1": 0, "2": 0};
+      for (var j in thisgame.players) {
+        var f = thisgame.players[j].get_faction_at(now)
+        time_data[now][f["key"]] += 1
       }
+    }
+    human = Object.keys(time_data).map(function(k) { return [(new Date(k)).getTime(), time_data[k]["0"]] })
+    zombie = Object.keys(time_data).map(function(k) { return [(new Date(k)).getTime(), time_data[k]["1"]] })
+    deceased = Object.keys(time_data).map(function(k) { return [(new Date(k)).getTime(), time_data[k]["2"]] })
+    options.series[0].data = human;
+    options.series[1].data = zombie;
+    options.series[2].data = deceased;
+    chart = new Highcharts.Chart(options);
 
+    //////////////////////////////////////////////////////////////////////////
+    // Populate the scoreboard
+    //////////////////////////////////////////////////////////////////////////
+    thisgame.sort_players(function(a,b) { return b.score - a.score; })
+    for (var i in thisgame.players_sorted) {
+      $("div#content_players").append(thisgame.players_sorted[i].get_scoreboard_html())
+    }
 
-      //////////////////////////////////////////////////////
-      // Graph Stuff Here!
-      //////////////////////////////////////////////////////
-        var human, zombie, deceased
-        begin_date = new Date(data2["game_begins"]);
-        end_date = new Date(data2["game_ends"]);
-        var granularity = 250
-        delta = (end_date - begin_date) / granularity;
-        for (i=0; i < granularity; i++) {
-          now = new Date(begin_date.getTime() + delta * i);
-          time_data[now] = {"zombie": 0, "human": 0, "deceased": 0};
-          for (var j in data) {
-            state_human = data[j]["state_history"]["human"]
-            state_zombie = data[j]["state_history"]["zombie"]
-            state_deceased = data[j]["state_history"]["deceased"]
-            if (new Date(state_human) <= now) {
-              if (new Date(state_zombie) <= now) {
-                if (new Date(state_deceased) <= now) {
-                  time_data[now]["deceased"] += 1
-                  continue
-                }
-                time_data[now]["zombie"] += 1
-                continue
-              }
-              time_data[now]["human"] += 1
-            }
-          }
-        }
-        human = Object.keys(time_data).map(function(k) { return [(new Date(k)).getTime(), time_data[k]["human"]] })
-        zombie = Object.keys(time_data).map(function(k) { return [(new Date(k)).getTime(), time_data[k]["zombie"]] })
-        deceased = Object.keys(time_data).map(function(k) { return [(new Date(k)).getTime(), time_data[k]["deceased"]] })
-        options.series[0].data = human;
-        options.series[1].data = zombie;
-        options.series[2].data = deceased;
-        chart = new Highcharts.Chart(options);
-      })
-   }) 
+    thisgame.append_on_load_info("squads", function() {
+      thisgame.load_squads()
+      thisgame.sort_squads(function(a,b) { return b.score - a.score; })
+      for (var i in thisgame.squads_sorted) {
+        $("div#content_squads").append(thisgame.squads_sorted[i].get_scoreboard_html())
+      }
+    })
+  }
+
 });

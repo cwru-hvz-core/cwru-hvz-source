@@ -7,7 +7,7 @@ class Api::GameController < ApplicationController
       :id => x.id, 
       :current_faction => x.faction_id, 
       :name => x.person.name, 
-      :score => x.score, 
+      :static_score => x.score, 
       :state_history => x.state_history, 
       :is_oz => @g.ozs_revealed? && x.is_oz,
       :is_admin => x.person.is_admin
@@ -16,6 +16,28 @@ class Api::GameController < ApplicationController
 
   def info
     g = Game.find(params[:id])
-    render :json => {:game_begins => g.game_begins, :game_ends => g.game_ends, :registration_begins => g.registration_begins, :registration_ends => g.registration_ends, :now => Game.now(g), :oz_reveal => g.oz_reveal}
+    render :json => 
+    {
+      :game_begins => g.game_begins, 
+      :game_ends => g.game_ends, 
+      :registration_begins => g.registration_begins, 
+      :registration_ends => g.registration_ends, 
+      :now => Game.now(g), 
+      :oz_reveal => g.oz_reveal,
+      :points_per_hour => 50
+    }
+  end
+
+  def squads
+    @g = Game.find(params[:id], :include => [{:squads => :registrations}])
+    render :json => @g.squads.map{|x| {
+      :id => x.id,
+      :leader_id => x.leader_id,
+      :name => x.name,
+      :members => x.registrations.map{ |y|
+          y.id
+        }
+      }
+    }
   end
 end

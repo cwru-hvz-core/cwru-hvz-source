@@ -2,7 +2,6 @@
 %html
   %head
     %title Case HvZ
-    = javascript_include_tag :defaults
     = stylesheet_link_tag 'compiled/screen.css'
     = stylesheet_link_tag 'compiled/buttons.css'
     -#Empty right now:
@@ -50,7 +49,7 @@
         
         #right_sidebar.sidebar
           %h3.dink
-            %a{:href=>"/game/current"} Game Statistics
+            %a{:href=>"/games/current"} Game Statistics
           %ul
             %li
               %a{:href => "#"} Human: 200
@@ -77,3 +76,5 @@
     #footer_container
       #footer
         Footer Here!!!!!?
+    
+    = javascript_include_tag :defaults
