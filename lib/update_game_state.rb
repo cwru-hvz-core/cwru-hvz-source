@@ -14,7 +14,8 @@
 # if it has changed -- so all changes can be tracked over time.
 class UpdateGameState
 	def initialize
-		@current_game = Game.current
+    @current_game = Game.find(1)
+#		@current_game = Game.current
 	end
 
 	def perform
@@ -89,7 +90,8 @@ class UpdateGameState
 		end
 	end
 	def self.points_for_time_survived(hours)
-		1200 + 50 * hours
+    1200
+#		1200 + 50 * hours
 	end
 	def calculate_zombie_tag_scores(zombie)
 		zombie.each do |z|

@@ -114,8 +114,9 @@ $(document).ready(function() {
   
   // Load data asynchronously using jQuery. On success, add the data
   // to the options and initiate the chart.
-  thisgame.append_on_load_info("players", computePlayers)
-  thisgame.append_on_load_info("info", computePlayers)
+  thisgame.append_on_load_info("info", function() {
+    thisgame.append_on_load_info("players", computePlayers)
+  })
 
   function computePlayers() {
     // If either the players or info data is not back yet, GTFO!
@@ -188,16 +189,30 @@ $(document).ready(function() {
     //////////////////////////////////////////////////////////////////////////
     thisgame.sort_players(function(a,b) { return b.score - a.score; })
     for (var i in thisgame.players_sorted) {
-      $("div#content_players").append(thisgame.players_sorted[i].get_scoreboard_html())
+      if (i == "30") break;
+      $("div#player_list").append(thisgame.players_sorted[i].get_scoreboard_html())
     }
 
     thisgame.append_on_load_info("squads", function() {
       thisgame.load_squads()
       thisgame.sort_squads(function(a,b) { return b.score - a.score; })
       for (var i in thisgame.squads_sorted) {
-        $("div#content_squads").append(thisgame.squads_sorted[i].get_scoreboard_html())
+        if (i == "30") break;
+        $("div#squad_list").append(thisgame.squads_sorted[i].get_scoreboard_html())
       }
     })
   }
+
+  $("#alphabetize").bind("click", function() {
+      thisgame.sort_players(function(a,b) { if (b.name < a.name) { return 1 }; 
+      $("div#player_list").html("");
+        if (b.name > a.name) { return -1 }; 
+        return 0; 
+      })
+      for (var i in thisgame.players_sorted) {
+        if (i == "30") break;
+        $("div#player_list").append(thisgame.players_sorted[i].get_scoreboard_html())
+      }
+  })
 
 });
