@@ -202,17 +202,29 @@ $(document).ready(function() {
       }
     })
   }
-
-  $("#alphabetize").bind("click", function() {
+  
+  var alpha = function() {
       thisgame.sort_players(function(a,b) { if (b.name < a.name) { return 1 }; 
-      $("div#player_list").html("");
         if (b.name > a.name) { return -1 }; 
         return 0; 
-      })
-      for (var i in thisgame.players_sorted) {
-        if (i == "30") break;
-        $("div#player_list").append(thisgame.players_sorted[i].get_scoreboard_html())
-      }
-  })
+      }, true)
+      update_player_list()
+    $("#alphabetize").unbind("click", alpha)
+    $("#alphabetize").bind("click", unalpha)
+  }
+  var unalpha = function() {
+    thisgame.sort_players(function(a,b) { return b.score - a.score; }) 
+    update_player_list();
+    $("#alphabetize").bind("click", alpha)
+    $("#alphabetize").unbind("click", unalpha)
+  }
+  $("#alphabetize").bind("click", alpha)
 
 });
+function update_player_list() {
+    $("div#player_list").html("");
+    for (var i in thisgame.players_sorted) {
+      if (i == "30") break;
+      $("div#player_list").append(thisgame.players_sorted[i].get_scoreboard_html())
+    }
+}

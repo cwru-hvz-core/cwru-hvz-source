@@ -60,10 +60,12 @@ var Game = function(params) {
       this.players_by_id[one.id] = one
     }
   }
-  this.sort_players = function(sort_method) {
+  this.sort_players = function(sort_method, dont_renumber) {
     this.players_sorted = this.players.sort(sort_method)
-    for (var i in this.players_sorted) {
-      this.players_sorted[i].rank = parseInt(i)+1
+    if (dont_renumber == null || dont_renumber == false) {
+      for (var i in this.players_sorted) {
+        this.players_sorted[i].rank = parseInt(i)+1
+      }
     }
   }
   ////////////////////////////////////////////////////////////////////////////
@@ -77,10 +79,12 @@ var Game = function(params) {
       this.squads_by_id[one.id] = one
     }
   }
-  this.sort_squads = function(sort_method) {
+  this.sort_squads = function(sort_method, dont_renumber) {
     this.squads_sorted = this.squads.sort(sort_method)
-    for (var i in this.squads_sorted) {
-      this.squads_sorted[i].rank = parseInt(i)+1
+    if (dont_renumber == null || dont_renumber == false) {
+      for (var i in this.squads_sorted) {
+        this.squads_sorted[i].rank = parseInt(i)+1
+      }
     }
   }
 }
