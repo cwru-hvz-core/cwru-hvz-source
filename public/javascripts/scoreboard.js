@@ -202,6 +202,7 @@ $(document).ready(function() {
       if (i == "130") break;
       $("div#player_list").append(thisgame.players_sorted[i].get_scoreboard_html())
     }
+    filter_players();
 
     thisgame.append_on_load_info("squads", function() {
       thisgame.load_squads()
@@ -213,23 +214,6 @@ $(document).ready(function() {
     })
   }
   
-  var alpha = function() {
-      thisgame.sort_players(function(a,b) { if (b.name < a.name) { return 1 }; 
-        if (b.name > a.name) { return -1 }; 
-        return 0; 
-      }, true)
-      update_player_list()
-    $("#alphabetize").unbind("click", alpha)
-    $("#alphabetize").bind("click", unalpha)
-  }
-  var unalpha = function() {
-    thisgame.sort_players(function(a,b) { return b.score - a.score; }) 
-    update_player_list();
-    $("#alphabetize").bind("click", alpha)
-    $("#alphabetize").unbind("click", unalpha)
-  }
-  $("#alphabetize").bind("click", alpha)
-
 });
 function update_player_list() {
     $("div#player_list").html("");
@@ -238,7 +222,10 @@ function update_player_list() {
       $("div#player_list").append(thisgame.players_sorted[i].get_scoreboard_html())
     }
 }
-function filter_players(str, faction_filter) {
+function filter_players() {
+  var str = $("#filter_name")[0].value;
+  var faction_filter = $("#filter_faction")[0].value;
+
   $("div#player_list").html("");
   if (str == "" && faction_filter == "All") {
     update_player_list();
@@ -256,6 +243,17 @@ function filter_players(str, faction_filter) {
   }
 }
 $(document).ready(function() {
-  $("#filter_name, #filter_faction").bind("keyup change", function() { filter_players( $("#filter_name")[0].value, $("#filter_faction")[0].value ) });
+  $("#filter_name, #filter_faction").bind("keyup change", filter_players);
   $("#filter_name").focus();
+  var loc = window.location.hash;
+  $("#filter_faction")[0].selectedIndex = 0;
+  if (loc.indexOf("humans") != -1) {
+    $("#filter_faction")[0].selectedIndex = 1;
+  }
+  if (loc.indexOf("zombies") != -1) {
+    $("#filter_faction")[0].selectedIndex = 2;
+  }
+  if (loc.indexOf("deceased") != -1) {
+    $("#filter_faction")[0].selectedIndex = 3;
+  }
 })

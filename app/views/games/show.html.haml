@@ -35,9 +35,6 @@
         %a{:href=>"#"} Tag Heatmap
   %div#game_content
     %div#content_players
-      %h3.dink Your Score
-      %div#logged_in_player
-      %h3.dink Top Players
       %div#sort_table
         Filter:
         =text_field :filter, :name
@@ -45,6 +42,8 @@
         =select_tag "filter_faction", "<option selected='selected'>All</option><option>Human</option><option>Zombie</option><option>Deceased</option>".html_safe()
       %div#player_list
     %div#content_squads
+      %h3.dink Your Score
+      %div#logged_in_player
       %h3.dink Top Squads
       %div#squad_list
   %div.span-2.last

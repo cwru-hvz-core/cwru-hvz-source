@@ -81,25 +81,28 @@ div#content {
         @include prepend(1);
         @include column(11);
 
+      }
+      div#content_squads {
+        @include prepend(1);
+        @include column(11);
+        
         div#logged_in_player {
           padding-bottom:20px;
         }
       }
-      div#content_squads {
-        @include prepend(1);
-        @include column(10);
-      }
       div#sort_table {
         font-weight:bold;
         text-align: left;
-        padding-bottom:10px;
+        padding:10px;
+        margin-bottom:20px;
+        background-color: $bg_color;
 
         #filter_name {
           width:140px;
-          margin: 0 10px;
+          margin: 0 5px;
         }
         #filter_faction {
-          margin: 0 10px;
+          margin: 0 5px;
         }
       }
       div.player {
