@@ -137,9 +137,13 @@ var Player = function(data) {
     j.classList.add(this.faction.class_name)
     if (this.is_admin == true) { j.classList.add("admin") }
     // Create the rank
+ //   k = document.createElement("span");
+ //   k.classList.add("rank");
+ //   k.innerHTML = this.rank;
+ //  j.appendChild(k);
     k = document.createElement("span");
-    k.classList.add("rank");
-    k.innerHTML = this.rank;
+    k.classList.add("pic");
+    k.innerHTML = "<img src='http://tomdooner.com:3000/images/nerf-raider.jpg' width='32' height='32'>";
     j.appendChild(k);
     // Create the name
     k = document.createElement("span");
@@ -160,7 +164,7 @@ var Player = function(data) {
     // Create the status
     k = document.createElement("span");
     k.classList.add("status");
-    k.innerHTML = "We'll figure this out later.";
+    k.innerHTML = "Ranked " + this.rank + "th with [accomplishments]";
     j.appendChild(k);
     return j
   }

@@ -78,8 +78,8 @@ div#content {
       clear:both;
       padding-top:20px;
       div#content_players {
-        @include prepend(2);
-        @include column(10);
+        @include prepend(1);
+        @include column(11);
       }
       div#content_squads {
         @include prepend(1);
@@ -90,18 +90,19 @@ div#content {
         padding: 10px 10px 10px 5px;
         clear: both;
         
-        &.human { border-left: 10px solid #25A; }
+        &.human { border-left: 10px solid #25A; .rank { background-color: #25A; } }
         &.zombie { border-left: 10px solid darken($blueprint_table_header_color, 30%); }
         &.deceased { border-left: 10px solid white; }
         &.admin { .name { color: $admin_header_color; } }
 
         &:hover { background-color: #EFEFEF; cursor: pointer; }
         span { display: block; float:left; }
-        .rank { font-size: 1.4em; line-height:45px; width:20px; font-weight:bold; }
+        .rank { font-size: 1.4em; line-height:45px; width:30px; font-weight:bold; }
         .name { width:200px; font-size: 1.4em; text-align: left; padding-left:10px; overflow:hidden; font-weight:bold; }
         .points { font-size: 1.4em; float:right; }
         .status {  width: 200px; padding-left:10px; text-align:left; }
         .faction { float:right; }
+        .pic { padding-top: 8px; padding-right:10px }
       }
     }
   }

@@ -189,7 +189,7 @@ $(document).ready(function() {
     //////////////////////////////////////////////////////////////////////////
     thisgame.sort_players(function(a,b) { return b.score - a.score; })
     for (var i in thisgame.players_sorted) {
-      if (i == "30") break;
+      if (i == "130") break;
       $("div#player_list").append(thisgame.players_sorted[i].get_scoreboard_html())
     }
 
