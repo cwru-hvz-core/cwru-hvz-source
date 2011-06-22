@@ -6,6 +6,7 @@
 var Game = function(params) {
 
   this.game_id = params["id"]
+  this.logged_in_user_id = params["logged_in_user_id"]
   this.retrieved_data = {}
 
   ////////////////////////////////////////////////////////////////////////////
@@ -224,7 +225,7 @@ var Squad = function(data) {
   }
 
 }
-var thisgame = new Game({id: 1})
+var thisgame = new Game({id: 1, logged_in_user_id: 33})
 thisgame.append_on_load_info("info", function() {
   jQuery.each(thisgame.retrieved_data["info"], function(k, v) {
     thisgame[k] = v

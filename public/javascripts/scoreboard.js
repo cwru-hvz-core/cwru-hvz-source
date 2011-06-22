@@ -188,6 +188,16 @@ $(document).ready(function() {
     // Populate the scoreboard
     //////////////////////////////////////////////////////////////////////////
     thisgame.sort_players(function(a,b) { return b.score - a.score; })
+    
+    // If the user is logged in, show them on top of the leaderboard.
+    if (thisgame.logged_in_user_id != null) {
+      for (var i in thisgame.players_sorted) {
+        if (thisgame.players_sorted[i].id == thisgame.logged_in_user_id) {
+          $("div#logged_in_player").append(thisgame.players_sorted[i].get_scoreboard_html());
+        }
+      }
+    }
+
     for (var i in thisgame.players_sorted) {
       if (i == "130") break;
       $("div#player_list").append(thisgame.players_sorted[i].get_scoreboard_html())
@@ -228,3 +238,24 @@ function update_player_list() {
       $("div#player_list").append(thisgame.players_sorted[i].get_scoreboard_html())
     }
 }
+function filter_players(str, faction_filter) {
+  $("div#player_list").html("");
+  if (str == "" && faction_filter == "All") {
+    update_player_list();
+    return;
+  }
+  for (var i in thisgame.players_sorted) {
+    var p = thisgame.players_sorted[i]
+    // Correct faction?
+    if (p.faction.human_name == faction_filter || faction_filter == "All") {
+      // Correct name substring?
+      if (p.name.toLowerCase().indexOf(str.toLowerCase()) != -1) {
+        $("div#player_list").append(thisgame.players_sorted[i].get_scoreboard_html())
+      }
+    }
+  }
+}
+$(document).ready(function() {
+  $("#filter_name, #filter_faction").bind("keyup change", function() { filter_players( $("#filter_name")[0].value, $("#filter_faction")[0].value ) });
+  $("#filter_name").focus();
+})
