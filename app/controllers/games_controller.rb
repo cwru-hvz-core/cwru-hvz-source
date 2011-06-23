@@ -1,6 +1,5 @@
 class GamesController < ApplicationController
 	before_filter :check_admin, :only => ['new', 'create', 'edit', 'update']
-	before_filter :get_graph_data, :only => ['show']
   layout "expanded", :only => [:show]
 
 	def index
