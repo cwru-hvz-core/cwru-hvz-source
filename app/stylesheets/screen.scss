@@ -66,10 +66,8 @@ body,html {
 		float:right;
 		margin-top:14px;
 		li.button {
-			/*@include button-colors(mix(#FFF,$button_bg_color,70%), $button_bg_color, lighten($button_bg_color,20%), #000);
-			 *  @include button-button();
-			 *  font-weight:normal */
 			@include fancy-button();
+      margin-right:15px;
 		}
 	}
   div#top_bar {
