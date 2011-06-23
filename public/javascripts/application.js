@@ -167,9 +167,25 @@ var Player = function(data) {
     // Create the status
     k = document.createElement("span");
     k.classList.add("status");
-    k.innerHTML = "Ranked " + this.rank + "th with [accomplishments]";
+    k.innerHTML = this.get_scoreboard_text();
     j.appendChild(k);
     return j
+  }
+  
+  this.get_scoreboard_text = function() {
+    if (this.faction.key == "-1") { // Unknown
+      return ""
+    }
+    if (this.faction.key == "0") { // Human
+      var hours = (new Date(thisgame.now) - new Date(this.state_history.human))/1000/3600;
+      return "Survived " + hours + " hours."
+    }
+    if (this.faction.key == "1") { // Zombie
+      return "Zombie."
+    }
+    if (this.faction.key == "2") { // Zombie
+      return "Deceased."
+    }
   }
 }
 var Squad = function(data) {
