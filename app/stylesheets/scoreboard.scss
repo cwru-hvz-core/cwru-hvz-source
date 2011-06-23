@@ -127,6 +127,19 @@ div#content {
           img { border: 2px outset #DDD; background-color: #FFF;}
         }
       }
+      div.squad {
+        height:45px;
+        clear:both;
+        padding:10px;
+
+        span { display:block; float:left; }
+        .rank { font-size: 1.5em; text-align:center; color: #FFF; width:40px; line-height:42px; font-weight:bold; margin: 0px -20px; position:relative; left: -36px;}
+        .name { width:250px; font-size: 1.4em; text-align: left; padding-left:5px; overflow:hidden; font-weight:bold; }
+        .points { font-size: 1.4em; float:right; }
+        .status {  width: 210px; padding-left:5px; text-align:left; }
+        .faction { float:right; }
+
+      }
     }
   }
 } 

@@ -194,7 +194,7 @@ var Squad = function(data) {
   this.get_scoreboard_html = function() {
     // Creating the container
     j = document.createElement("div");
-    j.classList.add("player");
+    j.classList.add("squad");
     //j.classList.add("human")
     // Create the rank
     k = document.createElement("span");
