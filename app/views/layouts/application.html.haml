@@ -10,7 +10,7 @@
       = stylesheet_link_tag 'compiled/ie.css'
     /[if lt IE 7]
       = stylesheet_link_tag 'stylesheets/ie6.css'
-  
+    = javascript_include_tag :defaults
   %body
     #header
       %h1#site_name.dink 
@@ -52,11 +52,13 @@
             %a{:href=>"/games/current"} Game Statistics
           %ul
             %li
-              %a{:href => "/games/current#humans"} Human: 200
+              %a#count_humans{:href => "/games/current#humans"} Humans: ??
             %li
-              %a{:href => "/games/current#zombies"} Zombie: 200
+              %a#count_zombies{:href => "/games/current#zombies"} Zombies: ??
             %li
-              %a{:href => "/games/current#deceased"} Deceased: 200
+              %a#count_deceased{:href => "/games/current#deceased"} Deceased: ??
+            %li
+              %a#count_total{:href => "/games/current"} Total: ???
           %h3.dink
             %a{:href=>"#"} Recent Tags
           %ul
@@ -75,6 +77,4 @@
 
     #footer_container
       #footer
-        Footer Here!!!!!?
-    
-    = javascript_include_tag :defaults
+        Footer Here!!!!!? 
