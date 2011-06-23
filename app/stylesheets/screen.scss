@@ -38,8 +38,9 @@ body {
 }
 body,html {
   height:100%;
+  font:auto;
 }
-
+b { font-weight: bold; }
 #header {
 	@include prepend-top($header_top);
 	margin-left:auto;
@@ -92,9 +93,9 @@ body,html {
           padding-right:15px;
           color: #000;
         }
-        a:hover {
+      /*  a:hover {
           background-color: darken($bg_color, 5%);
-        }
+        }*/
 
         float:left; 
         background-color:white; 
@@ -165,6 +166,25 @@ div#body {
       font-size:3em;
       text-align:left;
       @include column(8, true);
+    }
+    /* For the registration page: */
+    div#infotable {
+      @include prepend(1);
+      @include column(10);
+    }
+    div#signuptable {
+      @include prepend(1);
+      @include column(14);
+    }
+    ul#squad_list {
+      list-style:none;
+      padding: 0;
+      li { 
+        padding: 10px; 
+        &:hover {
+          background-color:$bg_color;
+        }
+      }
     }
   }
 

@@ -3,6 +3,7 @@ class RegistrationsController < ApplicationController
 	before_filter :check_login, :only => [:new, :create, :show]
   before_filter :check_is_registered, :only => [:joinsquad]
   before_filter :start_registration_process, :only => [:new]
+  layout "expanded", :only => [:new]
 	def new
 		if @current_game.id.nil? or @current_game.registration_begins.nil? or @current_game.registration_ends.nil?
 			flash[:error] = "Your administrators have not yet created a game to register for."

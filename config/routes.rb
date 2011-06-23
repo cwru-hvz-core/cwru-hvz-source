@@ -4,10 +4,9 @@ Hvz::Application.routes.draw do
   get "check_ins/create", :as => "check_in"
   get "feeds/create"
 
-  # The priority is based upon order of creation:
-  # first created -> highest priority.
-  	match "/people/login/" => "people#login"
-  	match "/people/logout/" => "people#logout"
+  match "/people/login/" => "people#login"
+  match "/people/logout/" => "people#logout"
+
 	resources :people, :games, :tags, :feeds
 	resources :attendances
   get "bonus_codes/claim" => "bonus_codes#claim", :as => "claim_bonus_code"

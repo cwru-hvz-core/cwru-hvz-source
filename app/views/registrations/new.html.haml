@@ -1,5 +1,32 @@
 %h2.dink
   = @current_game.short_name + " Registration (Step 3 of 3)"
+:javascript
+  $(document).ready(function(){
+    $("#squad_select_later").attr("checked", true);
+    $("#squad_select_later").focus( function() {
+      $("#squad_content").html("");
+    });
+    $("#squad_select_existing").attr("disabled", true);
+    $("#squad_select_existing").focus( function() {
+      $("#squad_content").html("<ul id='squad_list'></ul>");
+        for (var i in thisgame.squads) {
+          $("#squad_list").append("<li><b>" +thisgame.squads[i].name + "</b><br>(Leader: " + thisgame.players_by_id[thisgame.squads[i].leader_id].name + ")</li>")
+        }
+    });
+    $("#squad_select_create").focus (function() {
+      $("#squad_content").html('Squad Name:<br><input id="new_squad_name" type="text" name="new_squad_name">');
+    });
+
+    thisgame.append_on_load_info("squads", function() {
+      thisgame.append_on_load_info("players", function() {
+        thisgame.load_players();
+        thisgame.load_squads();
+        $("#squad_select_existing").attr("disabled", false);
+      });
+    });
+  });
+%h2.dink 
+  = "Registration: " + @current_game.short_name
 %div.registration
   %div#infotable
     %table
@@ -13,65 +40,60 @@
         %td
           %b Game Ends:
         %td=@current_game.dates[:game_ends]
+  %div#signuptable
+    =form_tag new_registration_url()
     %table
       %thead
-        %th{:colspan=>2} Your Information:
+        %th{:colspan=>2} Personal Information:
       %tbody
         %tr
           %td
             %b Name:
           %td
-            =@person.name
+            =text_field_tag "person[name]", @person.name
         %tr
           %td
             %b CaseID:
           %td
-            =@person.caseid
+            =text_field_tag "person[caseid]", @person.caseid
         %tr
           %td
             %b Phone Number:
           %td
-            =@person.phone
-  %div#signuptable
+            =text_field_tag "person[phone]", @person.phone
     %table
       %thead
-        %th{:colspan=>2} Registration:
-        - form_for(@registration) do |f|
-          %tr
-            %td
-              %b=f.label :wants_oz, "Place me in the Original Zombie Pool:"
-            %td
-              =f.check_box :wants_oz
-          %tr
-            %td
-              %b=f.label :is_off_campus, "I currently live off-campus:"
-            %td
-              =f.check_box :is_off_campus
-          %tr
-            %td
-              %b=f.label :squad_select, "Squad:"
-            %td
-          %tr 
-            %td{:style=>"text-align:right", :colspan=>2}
-              %hr
-              =radio_button_tag(:squad_select, "existing")
-              =label_tag(:squad_select_existing, "Join an existing squad")
-              %br
-              =collection_select(:registration, :squad_id, @squads, :id, :name)
-              %hr
-              =radio_button_tag(:squad_select, "create")
-              =label_tag(:squad_select_create, "Create a new Squad")
-              %br
-              Name:
-              =text_field_tag(:new_squad_name)
-              %hr
-              =radio_button_tag(:squad_select, "later")
-              =label_tag(:squad_select_later, "I'll join a squad later")
-          %tr
-            %td{:colspan=>2}
-              =f.submit "Register!"
+        %th{:colspan=>2} Game Preferences:
+      %tbody
+        %tr
+          %td
+            %b=label_tag :wants_oz, "Place me in the Original Zombie Pool:"
+          %td
+            =check_box_tag :wants_oz
+        %tr
+          %td
+            %b=label_tag :is_off_campus, "I currently live off-campus:"
+          %td
+            =check_box_tag :is_off_campus
+    %table
+      %thead
+        %th{:colspan => 2} Squad:
+      %tbody
+        %tr
+          %td{:colspan=>2}
+            =radio_button_tag(:squad_select, "later", {:checked => "checked"})
+            =label_tag(:squad_select_later, "I'll join a squad later")
+        %tr
+          %td
+            =radio_button_tag(:squad_select, "existing")
+            =label_tag(:squad_select_existing, "Join an existing squad")
+          %td
+            =radio_button_tag(:squad_select, "create")
+            =label_tag(:squad_select_create, "Create a new Squad")
+        %tr
+          %td#squad_content{:colspan=>2}
+        %tr
+          %td{:colspan=>2}
+            =submit_tag "Register!"
 Don't want to register just yet? It's all good. Registration is open until
 = @current_game.dates[:registration_ends] + "."
-
-
-
