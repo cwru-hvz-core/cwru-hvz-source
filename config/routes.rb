@@ -29,6 +29,7 @@ Hvz::Application.routes.draw do
     match 'game/:id/players' => "game#players"
     match 'game/:id/info' => "game#info"
     match 'game/:id/squads' => "game#squads"
+    match 'game/:id/tags' => "game#tags"
   end
 	match 'games/:id/rules' => "games#rules", :as => "game_rules"
 	match 'games/:id/graphdata' => "games#graphdata", :as => "game_graph_data"

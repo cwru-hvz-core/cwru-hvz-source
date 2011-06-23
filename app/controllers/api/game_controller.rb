@@ -22,7 +22,8 @@ class Api::GameController < ApplicationController
       :game_ends => g.game_ends, 
       :registration_begins => g.registration_begins, 
       :registration_ends => g.registration_ends, 
-      :now => Game.now(g), 
+      :now => Game.now(g),
+      :name => g.short_name,
       :oz_reveal => g.oz_reveal,
       :points_per_hour => 50
     }
@@ -37,6 +38,19 @@ class Api::GameController < ApplicationController
       :members => x.registrations.map{ |y|
           y.id
         }
+      }
+    }
+  end
+
+  def tags
+    @g = Game.find(params[:id], :include => [:tags])
+    render :json => @g.tags.map{|x| { 
+        :id => x.id,
+        :tagger_id => x.tagger_id,
+        :tagged_id => x.tagee_id,
+        :score => x.score,
+        :datetime => x.datetime,
+        :administrative => !(x.admin_id.nil?) && x.tagger_id == 0
       }
     }
   end

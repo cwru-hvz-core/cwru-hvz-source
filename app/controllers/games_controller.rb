@@ -1,6 +1,6 @@
 class GamesController < ApplicationController
 	before_filter :check_admin, :only => ['new', 'create', 'edit', 'update']
-	before_filter :get_graph_data, :only => ['show', 'graphdata']
+	before_filter :get_graph_data, :only => ['show']
   layout "expanded", :only => [:show]
 
 	def index
@@ -14,18 +14,11 @@ class GamesController < ApplicationController
 		@game ||= Game.find(params[:id])
 	end
 
-	def graphdata
-		respond_to do |format|
-			format.csv
-		end
-	end
 	def rules
 		@game = Game.find(params[:id]) || @current_game
 	end
-	def tree
-		@game = Game.find(params[:id]) || @current_game
-	end
-	def new
+	
+  def new
 		@game = Game.new
 	end
 
@@ -60,6 +53,4 @@ class GamesController < ApplicationController
 		end
 	end
 
-	def get_graph_data
-	end
 end

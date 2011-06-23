@@ -235,7 +235,6 @@ function populate_player_list() {
     }
   })
 } 
-
 function update_player_list() {
     $("div#player_list").html("");
     for (var i in thisgame.players_sorted) {
@@ -243,6 +242,58 @@ function update_player_list() {
       $("div#player_list").append(thisgame.players_sorted[i].get_scoreboard_html())
     }
 }
+/* 
+ * Zombie Tag Tree Builder
+ *   Note: populate_zombie_tag_tree assumes that thisgame.retrieved_data["tags"] exists.
+ *            (and also "info" and "players")
+*/
+function populate_zombie_tag_tree() {
+  var tagdata = thisgame.retrieved_data["tags"];    // for convenience.
+  var tags_by_tagger_id = {}
+  for (var i in tagdata) {
+    if (!(tagdata[i].tagger_id in tags_by_tagger_id)) {
+      tags_by_tagger_id[tagdata[i].tagger_id] = []
+    }
+    tags_by_tagger_id[tagdata[i].tagger_id].push(tagdata[i])
+  }
+
+  var root_players = []
+  for (var i in tagdata) {
+    if (tagdata[i].administrative) {
+      root_players.push(tagdata[i].tagged_id)
+    }
+  }
+  for (var i in thisgame.players) {
+    if (thisgame.players[i].is_oz) {
+      root_players.push(thisgame.players[i].id)
+    }
+  }
+  var children = []
+  for (var i in root_players) {
+    children.push( tag_tree_recursive(tags_by_tagger_id, root_players[i]) );
+  }
+  var tree = {id: "game", name: thisgame.name, data:{}, children: children};
+  console.log(tree)
+  init_graph(tree)
+}
+// TODO: These variable names are really confusing.
+function tag_tree_recursive(tags_by_tagger_id, tagger_id) {
+  // If the player did not get any tags, return that player's info
+  // and stop recursing.
+  var p = thisgame.players_by_id[tagger_id];
+  
+  if (!(tagger_id in tags_by_tagger_id)) {
+    return {id: "player" + p.id, name: p.name, data: {tags: 0}, children: []};
+  }
+
+  // For each tag this player got, recursively build the tree
+  var children = []
+  for (var i in tags_by_tagger_id[tagger_id]) {
+    children.push( tag_tree_recursive(tags_by_tagger_id, tags_by_tagger_id[tagger_id][i].tagged_id) );
+  }
+  return {id: "player" + p.id, name: p.name, data: {tags: children.length}, children: children};
+}
+
 function initialize_players_and_squads() {
     var initialhtml = '<div id="content_players">' +
                         '<div id="sort_table"> Filter:' +
@@ -279,7 +330,8 @@ function initialize_players_and_squads() {
     })
 }
 function initialize_zombie_tag_tree() {
-  $("#game_content").html("");
+  $("#game_content").html("<h3 class='dink'>Zombie Tag Tree</h3><div id='gametree'></div><div id='log' style='height:32px'></div>");
+  thisgame.append_on_load_info("tags", populate_zombie_tag_tree)
 }
 function filter_players() {
   var str = $("#filter_name")[0].value;

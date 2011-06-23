@@ -32,6 +32,7 @@ var Game = function(params) {
     // If we have the data already, just execute the callback funciton.
     if (url in this.retrieved_data) {
       callback()
+      return
     }
 
     // If this is the first time asking for this data, create an onload_chain
