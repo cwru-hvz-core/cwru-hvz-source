@@ -115,8 +115,23 @@ $(document).ready(function() {
   // Load data asynchronously using jQuery. On success, add the data
   // to the options and initiate the chart.
   thisgame.append_on_load_info("info", function() {
-    thisgame.append_on_load_info("players", computePlayers)
+    thisgame.append_on_load_info("players", computePlayers);
   })
+
+  /* *************************************************************************
+   * computePlayers() is called at the very beginning of the page loading.
+   *    It is here that the necessary data structures are built.
+   *  This then calls:
+   *     |
+   *     +-->  initialize_players_and_squads()
+   *             |     (this creates the HTML for the players/squads page,
+   *             |      which is the default.)
+   *            Which, in turn, calls:
+   *             |
+   *             +--> populate_player_list()
+   *                      (this puts player scoreboard entries into the
+   *                       placeholders made by the previous function.)
+   */
 
   function computePlayers() {
     // If either the players or info data is not back yet, GTFO!
@@ -184,43 +199,87 @@ $(document).ready(function() {
     options.series[2].data = deceased;
     chart = new Highcharts.Chart(options);
 
-    //////////////////////////////////////////////////////////////////////////
-    // Populate the scoreboard
-    //////////////////////////////////////////////////////////////////////////
-    thisgame.sort_players(function(a,b) { return b.score - a.score; })
-    
-    // If the user is logged in, show them on top of the leaderboard.
-    if (thisgame.logged_in_user_id != null) {
-      for (var i in thisgame.players_sorted) {
-        if (thisgame.players_sorted[i].id == thisgame.logged_in_user_id) {
-          $("div#logged_in_player").append(thisgame.players_sorted[i].get_scoreboard_html());
-        }
-      }
-    }
-
-    for (var i in thisgame.players_sorted) {
-      if (i == "130") break;
-      $("div#player_list").append(thisgame.players_sorted[i].get_scoreboard_html())
-    }
-    filter_players();
-
-    thisgame.append_on_load_info("squads", function() {
-      thisgame.load_squads()
-      thisgame.sort_squads(function(a,b) { return b.score - a.score; })
-      for (var i in thisgame.squads_sorted) {
-        if (i == "30") break;
-        $("div#squad_list").append(thisgame.squads_sorted[i].get_scoreboard_html())
-      }
-    })
+    initialize_players_and_squads();
   }
-  
 });
+
+/* **
+ * Populate Player List should be run when the HTML for the scoreboard needs
+ * to be generated initially. After that, update_player_list() will update only
+ * the changed parts
+ */
+function populate_player_list() {
+  thisgame.sort_players(function(a,b) { return b.score - a.score; })
+  
+  // If the user is logged in, show them on top of the leaderboard.
+  if (thisgame.logged_in_user_id != null) {
+    for (var i in thisgame.players_sorted) {
+      if (thisgame.players_sorted[i].id == thisgame.logged_in_user_id) {
+        $("div#logged_in_player").append(thisgame.players_sorted[i].get_scoreboard_html());
+      }
+    }
+  }
+
+  for (var i in thisgame.players_sorted) {
+    if (i == "130") break;
+    $("div#player_list").append(thisgame.players_sorted[i].get_scoreboard_html())
+  }
+  filter_players();
+
+  thisgame.append_on_load_info("squads", function() {
+    thisgame.load_squads()
+    thisgame.sort_squads(function(a,b) { return b.score - a.score; })
+    for (var i in thisgame.squads_sorted) {
+      if (i == "30") break;
+      $("div#squad_list").append(thisgame.squads_sorted[i].get_scoreboard_html())
+    }
+  })
+} 
+
 function update_player_list() {
     $("div#player_list").html("");
     for (var i in thisgame.players_sorted) {
       if (i == "30") break;
       $("div#player_list").append(thisgame.players_sorted[i].get_scoreboard_html())
     }
+}
+function initialize_players_and_squads() {
+    var initialhtml = '<div id="content_players">' +
+                        '<div id="sort_table"> Filter:' +
+                           '<input type="text" size="30" name="filter[name]" id="filter_name"> Show:' +
+                           '<select name="filter_faction" id="filter_faction">' +
+                             '<option selected="selected">All</option>' +
+                             '<option>Human</option>' + 
+                             '<option>Zombie</option>' + 
+                             '<option>Deceased</option>' +
+                           '</select></div><div id="player_list"></div>' +
+                      '</div>' + 
+                      '<div id="content_squads">' +
+                        '<h3 class="dink">Your Score</h3>' + 
+                          '<div id="logged_in_player"></div>' +
+                        '<h3 class="dink">Top Squads</h3>' +
+                          '<div id="squad_list"></div>';
+    $("#game_content").html(initialhtml);
+    // Activate the filter features
+    $("#filter_name, #filter_faction").bind("keyup change", filter_players);
+    $("#filter_name").focus();
+    var loc = window.location.hash;
+    $("#filter_faction")[0].selectedIndex = 0;
+    if (loc.indexOf("humans") != -1) {
+      $("#filter_faction")[0].selectedIndex = 1;
+    }
+    if (loc.indexOf("zombies") != -1) {
+      $("#filter_faction")[0].selectedIndex = 2;
+    }
+    if (loc.indexOf("deceased") != -1) {
+      $("#filter_faction")[0].selectedIndex = 3;
+    }
+    thisgame.append_on_load_info("info", function() {
+      thisgame.append_on_load_info("players", populate_player_list)
+    })
+}
+function initialize_zombie_tag_tree() {
+  $("#game_content").html("");
 }
 function filter_players() {
   var str = $("#filter_name")[0].value;
@@ -243,17 +302,6 @@ function filter_players() {
   }
 }
 $(document).ready(function() {
-  $("#filter_name, #filter_faction").bind("keyup change", filter_players);
-  $("#filter_name").focus();
-  var loc = window.location.hash;
-  $("#filter_faction")[0].selectedIndex = 0;
-  if (loc.indexOf("humans") != -1) {
-    $("#filter_faction")[0].selectedIndex = 1;
-  }
-  if (loc.indexOf("zombies") != -1) {
-    $("#filter_faction")[0].selectedIndex = 2;
-  }
-  if (loc.indexOf("deceased") != -1) {
-    $("#filter_faction")[0].selectedIndex = 3;
-  }
+  $("#players_and_squads_link").bind("click", initialize_players_and_squads);
+  $("#zombie_tag_tree_link").bind("click", initialize_zombie_tag_tree);
 })
