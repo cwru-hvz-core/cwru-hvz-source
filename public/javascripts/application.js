@@ -135,38 +135,37 @@ var Player = function(data) {
   this.get_scoreboard_html = function() {
     // Creating the container
     j = document.createElement("div");
-    j.classList.add("player");
-    j.classList.add(this.faction.class_name)
-    if (this.is_admin == true) { j.classList.add("admin") }
+    j.className = "player " + this.faction.class_name;
+    if (this.is_admin == true) { j.className.concat(" admin") }
     // Create the rank
     k = document.createElement("span");
-    k.classList.add("rank");
+    k.className = "rank";
     k.innerHTML = this.rank;
     j.appendChild(k);
     // Create the pic
     k = document.createElement("span");
-    k.classList.add("pic");
+    k.className = "pic";
     k.innerHTML = "<img src='http://tomdooner.com:3000/images/nerf-raider.jpg' width='32' height='32'>";
     j.appendChild(k);
     // Create the name
     k = document.createElement("span");
-    k.classList.add("name");
+    k.className = "name";
     k.innerHTML = this.name;
     j.appendChild(k);
     // Create the points/score
     // TODO: Make the verbiage consistent - points vs. score
     k = document.createElement("span");
-    k.classList.add("points");
+    k.className = "points";
     k.innerHTML = Math.round(this.score) + " pts";
     j.appendChild(k);
     // Create the faction
     k = document.createElement("span");
-    k.classList.add("faction");
+    k.className = "faction";
     k.innerHTML = this.faction.human_name;
     j.appendChild(k);
     // Create the status
     k = document.createElement("span");
-    k.classList.add("status");
+    k.className = "status";
     k.innerHTML = this.get_scoreboard_text();
     j.appendChild(k);
     return j
@@ -211,32 +210,32 @@ var Squad = function(data) {
   this.get_scoreboard_html = function() {
     // Creating the container
     j = document.createElement("div");
-    j.classList.add("squad");
+    j.className = "squad";
     //j.classList.add("human")
     // Create the rank
     k = document.createElement("span");
-    k.classList.add("rank");
+    k.className = "rank";
     k.innerHTML = this.rank;
     j.appendChild(k);
     // Create the name
     k = document.createElement("span");
-    k.classList.add("name");
+    k.className = "name";
     k.innerHTML = this.name;
     j.appendChild(k);
     // Create the points/score
     // TODO: Make the verbiage consistent - points vs. score
     k = document.createElement("span");
-    k.classList.add("points");
+    k.className = "points";
     k.innerHTML = Math.round(this.score) + " pts";
     j.appendChild(k);
     // Create the faction
     k = document.createElement("span");
-    k.classList.add("faction");
+    k.className = "faction";
     k.innerHTML = this.members.length + " Players";
     j.appendChild(k);
     // Create the status
     k = document.createElement("span");
-    k.classList.add("status");
+    k.className = "status";
     k.innerHTML = "Squad Leader: <a href='#'>" + this.leader.name + "</a>";
     j.appendChild(k);
     return j
