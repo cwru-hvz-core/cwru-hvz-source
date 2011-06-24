@@ -273,7 +273,6 @@ function populate_zombie_tag_tree() {
     children.push( tag_tree_recursive(tags_by_tagger_id, root_players[i]) );
   }
   var tree = {id: "game", name: thisgame.name, data:{}, children: children};
-  console.log(tree)
   init_graph(tree)
 }
 // TODO: These variable names are really confusing.
