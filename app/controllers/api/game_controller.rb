@@ -8,7 +8,7 @@ class Api::GameController < ApplicationController
       :current_faction => x.faction_id, 
       :name => x.person.name, 
       :static_score => x.score, 
-      :state_history => x.state_history, 
+      :state_history => Hash[x.state_history.map{|x,y| [x, y.to_i * 1000]}],
       :is_oz => @g.ozs_revealed? && x.is_oz,
       :is_admin => x.person.is_admin
       }}
@@ -18,13 +18,13 @@ class Api::GameController < ApplicationController
     g = Game.find(params[:id])
     render :json => 
     {
-      :game_begins => g.game_begins, 
-      :game_ends => g.game_ends, 
-      :registration_begins => g.registration_begins, 
-      :registration_ends => g.registration_ends, 
-      :now => Game.now(g),
+      :game_begins => g.game_begins.to_i * 1000, 
+      :game_ends => g.game_ends.to_i * 1000, 
+      :registration_begins => g.registration_begins.to_i * 1000, 
+      :registration_ends => g.registration_ends.to_i * 1000, 
+      :now => Game.now(g).to_i * 1000,
       :name => g.short_name,
-      :oz_reveal => g.oz_reveal,
+      :oz_reveal => g.oz_reveal.to_i * 1000,
       :points_per_hour => 50
     }
   end
@@ -49,7 +49,7 @@ class Api::GameController < ApplicationController
         :tagger_id => x.tagger_id,
         :tagged_id => x.tagee_id,
         :score => x.score,
-        :datetime => x.datetime,
+        :datetime => x.datetime.to_i * 1000,
         :administrative => !(x.admin_id.nil?) && x.tagger_id == 0
       }
     }
