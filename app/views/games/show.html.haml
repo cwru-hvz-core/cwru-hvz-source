@@ -12,7 +12,19 @@
         %thead
           %th{:colspan=>2}
             Players:
-          = render :partial => "gamestats"
+        %tbody
+          %tr
+            %td
+              Humans:
+            %td#human_count ??
+          %tr
+            %td
+              Zombies:
+            %td#zombie_count ??
+          %tr
+            %td
+              Deceased:
+            %td#deceased_count ??
     %div#graph
       Loading Graph...
     %div#tags
