@@ -36,6 +36,12 @@ body {
     padding-top:0px !important;
   }
 }
+/* Browser hack for webkit */
+@media screen and (-webkit-min-device-pixel-ratio:0) { 
+  body {
+    background-image: image-url("bg.png");
+  }
+}
 body,html {
   height:100%;
   font:auto;
