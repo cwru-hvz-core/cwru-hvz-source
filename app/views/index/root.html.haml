@@ -1,2 +1,6 @@
 = javascript_include_tag "homepage"
+- unless flash[:message].nil?
+  .info=flash[:message]
+- unless flash[:error].nil?
+  .error=flash[:error]
 =RedCloth.new(@current_game.information).to_html.html_safe

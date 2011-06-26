@@ -191,9 +191,18 @@ $(document).ready(function() {
         time_data[now][f["key"]] += 1
       }
     }
-    human = Object.keys(time_data).map(function(k) { return [(new Date(k)).getTime(), time_data[k]["0"]] })
-    zombie = Object.keys(time_data).map(function(k) { return [(new Date(k)).getTime(), time_data[k]["1"]] })
-    deceased = Object.keys(time_data).map(function(k) { return [(new Date(k)).getTime(), time_data[k]["2"]] })
+    human = []; zombie = []; deceased = [];
+    for (k in time_data) {
+      human.push([(new Date(k)).getTime(), time_data[k]["0"]])
+    }
+    for (k in time_data) {
+      zombie.push([(new Date(k)).getTime(), time_data[k]["1"]])
+    }
+    for (k in time_data) {
+      deceased.push([(new Date(k)).getTime(), time_data[k]["2"]])
+    }
+   // zombie = Object.keys(time_data).map(function(k) { return [(new Date(k)).getTime(), time_data[k]["1"]] })
+   // deceased = Object.keys(time_data).map(function(k) { return [(new Date(k)).getTime(), time_data[k]["2"]] })
     options.series[0].data = human;
     options.series[1].data = zombie;
     options.series[2].data = deceased;
