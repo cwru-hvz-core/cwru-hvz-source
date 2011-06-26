@@ -1,20 +1,34 @@
 %h2.dink
   = @current_game.short_name + " Registration (Step 3 of 3)"
 :javascript
+  function select_squad(new_squad_selection) {
+    // new_squad_selection is like "squad-existing-25"
+    var actualid = new_squad_selection.replace("squad-existing-", "");
+    $("#squad_list li").removeClass();
+    $("#" + new_squad_selection).addClass("active");
+    $("#squad_existing_id").attr("value", actualid);
+  }
   $(document).ready(function(){
     $("#squad_select_later").attr("checked", true);
     $("#squad_select_later").focus( function() {
       $("#squad_content").html("");
+      $("#squad_existing_id").attr("value", "");
     });
     $("#squad_select_existing").attr("disabled", true);
     $("#squad_select_existing").focus( function() {
       $("#squad_content").html("<ul id='squad_list'></ul>");
         for (var i in thisgame.squads) {
-          $("#squad_list").append("<li><b>" +thisgame.squads[i].name + "</b><br>(Leader: " + thisgame.players_by_id[thisgame.squads[i].leader_id].name + ")</li>")
+          var squad = document.createElement("li");
+          squad.setAttribute("id", "squad-existing-" + thisgame.squads[i].id);
+          squad.innerHTML = "<b>" + thisgame.squads[i].name + "</b><br>" +
+            "<em>Leader: " + thisgame.players_by_id[thisgame.squads[i].leader_id].name + "</em>";
+          $(squad).bind("click", function(){ select_squad(this.id); });
+          $("#squad_list").append(squad)
         }
     });
     $("#squad_select_create").focus (function() {
       $("#squad_content").html('Squad Name:<br><input id="new_squad_name" type="text" name="new_squad_name">');
+      $("#squad_existing_id").attr("value", "");
     });
 
     thisgame.append_on_load_info("squads", function() {
@@ -87,6 +101,7 @@
           %td
             =radio_button_tag(:squad_select, "existing")
             =label_tag(:squad_select_existing, "Join an existing squad")
+            =hidden_field_tag(:squad_existing_id)
           %td
             =radio_button_tag(:squad_select, "create")
             =label_tag(:squad_select_create, "Create a new Squad")

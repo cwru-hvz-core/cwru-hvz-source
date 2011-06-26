@@ -190,6 +190,11 @@ div#body {
         &:hover {
           background-color:$bg_color;
         }
+        &.active {
+          @include background(image-url("check.png"), darken($bg_color, 10%));
+          background-repeat:no-repeat;
+          background-position:390px 10px;
+        }
       }
     }
   }
