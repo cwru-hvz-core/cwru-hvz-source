@@ -4,7 +4,7 @@ $(document).ready(function() {
     thisgame.append_on_load_info("info", function() {
       // Update the "Game Statistics" box on the top right of the page
       thisgame.load_players();
-      counts = {};
+      counts = {"0": 0, "1": 0, "2": 0};
       for (var i in thisgame.players) {
         if (!(thisgame.players[i].faction.key in counts)) {
           counts[thisgame.players[i].faction.key] = 0;

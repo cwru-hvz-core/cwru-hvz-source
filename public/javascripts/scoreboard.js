@@ -147,7 +147,7 @@ $(document).ready(function() {
     //////////////////////////////////////////////////////////////////////////
     // Calculate number of humans/zombies/deceased
     //////////////////////////////////////////////////////////////////////////
-    var factions = {}
+    var factions = {0: 0, 1: 0, 2: 0}
     var ozs = []
     for (var i in thisgame.players) {
       var f = thisgame.players[i]

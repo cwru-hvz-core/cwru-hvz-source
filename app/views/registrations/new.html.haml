@@ -17,14 +17,17 @@
     $("#squad_select_existing").attr("disabled", true);
     $("#squad_select_existing").focus( function() {
       $("#squad_content").html("<ul id='squad_list'></ul>");
-        for (var i in thisgame.squads) {
-          var squad = document.createElement("li");
-          squad.setAttribute("id", "squad-existing-" + thisgame.squads[i].id);
-          squad.innerHTML = "<b>" + thisgame.squads[i].name + "</b><br>" +
-            "<em>Leader: " + thisgame.players_by_id[thisgame.squads[i].leader_id].name + "</em>";
-          $(squad).bind("click", function(){ select_squad(this.id); });
-          $("#squad_list").append(squad)
-        }
+      for (var i in thisgame.squads) {
+        var squad = document.createElement("li");
+        squad.setAttribute("id", "squad-existing-" + thisgame.squads[i].id);
+        squad.innerHTML = "<b>" + thisgame.squads[i].name + "</b><br>" +
+          "<em>Leader: " + thisgame.players_by_id[thisgame.squads[i].leader_id].name + "</em>";
+        $(squad).bind("click", function(){ select_squad(this.id); });
+        $("#squad_list").append(squad)
+      }
+      if (thisgame.squads.length == 0) {
+        $("#squad_content").html("No squads found! You should create one!");
+      }
     });
     $("#squad_select_create").focus (function() {
       $("#squad_content").html('Squad Name:<br><input id="new_squad_name" type="text" name="new_squad_name">');
