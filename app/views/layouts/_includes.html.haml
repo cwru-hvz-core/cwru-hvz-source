@@ -1,0 +1,20 @@
+= stylesheet_link_tag 'compiled/screen.css'
+= stylesheet_link_tag 'compiled/buttons.css'
+-#Empty right now:
+= stylesheet_link_tag 'compiled/print.css'
+/[if IE]
+  = stylesheet_link_tag 'compiled/ie.css'
+/[if lt IE 7]
+  = stylesheet_link_tag 'stylesheets/ie6.css'
+= javascript_include_tag :defaults
+- if @logged_in_person.nil?
+  - log_in_string = ""
+- else
+  - log_in_string = ", logged_in_user: " + @logged_in_person.id.to_s
+:javascript
+  var thisgame = new Game({id: #{@current_game.id}#{log_in_string}})
+  thisgame.append_on_load_info("info", function() {
+    jQuery.each(thisgame.retrieved_data["info"], function(k, v) {
+      thisgame[k] = v
+    })
+  })
