@@ -16,10 +16,6 @@ class Registration < ActiveRecord::Base
 	validates_uniqueness_of :card_code, :scope => :game_id
 	validates_presence_of :person_id, :game_id, :card_code
 
-	def self.make_code
-		chars = %w{ A B C D E F 1 2 3 4 5 6 7 8 9 }
-		(0..5).map{ chars.to_a[rand(chars.size)] }.join
-	end
 	def display_score
 		if self.is_oz and not self.game.ozs_revealed?
 			return self.game.mode_score
@@ -115,6 +111,16 @@ class Registration < ActiveRecord::Base
 			deceased_time = self.most_recent_feed + 48.hours
 		end
 		return {:human => human_time, :zombie => zombie_time, :deceased => deceased_time}
+	end
+
+  def after_initialize
+    if self.card_code.nil?
+      self.card_code = Registration.make_code
+    end
+  end
+	def self.make_code
+		chars = %w{ 2 3 4 5 6 7 8 9 A B C D E F }
+		(0..5).map{ chars.to_a[rand(chars.size)] }.join
 	end
 
 	def ==(other)

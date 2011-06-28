@@ -1,4 +1,11 @@
 = stylesheet_link_tag "compiled/scoreboard"
+- if @logged_in_registration_local.nil?
+  - log_in_string = "0"
+- else
+  - log_in_string = @logged_in_registration_local.id.to_s
+:javascript
+  var show_game_id = #{ @game.id };
+  var show_game_user = #{ log_in_string };
 = javascript_include_tag "scoreboard"
 = javascript_include_tag "zombietree"
 = javascript_include_tag "jit"

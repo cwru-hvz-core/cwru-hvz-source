@@ -11,7 +11,11 @@ class GamesController < ApplicationController
     if params[:id] == "current"
       @game = Game.current
     end
+
 		@game ||= Game.find(params[:id])
+    unless @logged_in_person.nil?
+      @logged_in_registration_local = Registration.find_by_person_id_and_game_id(@logged_in_person, @game)
+    end
 	end
 
 	def rules

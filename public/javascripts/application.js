@@ -47,19 +47,33 @@ var Game = function(params) {
       this.get_game_info(url)
     }
   }
+  // Automatically load the game info on each page, since that is pretty
+  // important across all pages
+  this.append_on_load_info("info", function() {
+    jQuery.each(thisgame.retrieved_data["info"], function(k, v) {
+      thisgame[k] = v
+    })
+  })
   ////////////////////////////////////////////////////////////////////////////
   this.players = []
-  this.players_by_id = {}
+  this.players_by_id_contents = {}
   this.load_players = function() {
     for (var i in this.retrieved_data["players"]) {
-      var one = new Player(this.retrieved_data["players"][i])
+      var one = new Player(this.retrieved_data["players"][i], this)
 
       if ("info" in this.retrieved_data) {
         one.set_state_at(this.retrieved_data["info"]["now"], 
                       this.retrieved_data["info"]["points_per_hour"])
       }
       this.players.push(one)
-      this.players_by_id[one.id] = one
+      this.players_by_id_contents[one.id] = one
+    }
+  }
+  this.players_by_id = function(id) {
+    if (id in this.players_by_id_contents) {
+      return this.players_by_id_contents[id];
+    } else {
+      return {id: id, score: 0, name: "Error"};
     }
   }
   this.sort_players = function(sort_method, dont_renumber) {
@@ -75,7 +89,7 @@ var Game = function(params) {
   this.squads_by_id = {}
   this.load_squads = function() {
     for (var i in this.retrieved_data["squads"]) {
-      var one = new Squad(this.retrieved_data["squads"][i])
+      var one = new Squad(this.retrieved_data["squads"][i], this)
 
       this.squads.push(one)
       this.squads_by_id[one.id] = one
@@ -98,9 +112,10 @@ var factions = {
 }
 //////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////
-var Player = function(data) {
+var Player = function(data, game) {
   this.state_history = data["state_history"]
   this.id = data["id"]
+  this.game = game
   this.name = data["name"]
   this.static_score = data["static_score"]
   this.is_oz = data["is_oz"]
@@ -111,7 +126,13 @@ var Player = function(data) {
   // Determine the player's state and point total at a given time.
   /////////////////////////////////////
   this.set_state_at = function(game_now, points_per_hour) {
-    var time_alive = (new Date(this.state_history["zombie"])) - (new Date(this.state_history["human"]))
+
+    // If the game has not yet begun
+    if (new Date(game_now) < new Date(this.state_history["human"])) {
+      var time_alive = 0
+    } else {
+      var time_alive = (new Date(this.state_history["zombie"])) - (new Date(this.state_history["human"]))
+    }
     var time_points = points_per_hour * (time_alive/3600000)
     this.score = this.static_score + time_points
     this.faction = this.get_faction_at(new Date(game_now))
@@ -121,6 +142,9 @@ var Player = function(data) {
     var human = new Date(this.state_history["human"]);  
     var zombie = new Date(this.state_history["zombie"]);  
     var deceased = new Date(this.state_history["deceased"]);
+    if (now < human) {
+      return factions[0]
+    }
     if (human <= now) {    
       if (zombie < now) {      
         if (deceased < now) {        
@@ -176,8 +200,9 @@ var Player = function(data) {
       return ""
     }
     if (this.faction.key == "0") { // Human
-      var hours = (new Date(thisgame.now) - new Date(this.state_history.human))/1000/3600;
-      return "Survived " + hours + " hours."
+      var hours = (new Date(this.game.retrieved_data["info"]["now"]) - 
+                              new Date(this.state_history.human))/1000/3600;
+      return "Survived " + Math.max(0, hours) + " hours."
     }
     if (this.faction.key == "1") { // Zombie
       return "Zombie."
@@ -187,20 +212,17 @@ var Player = function(data) {
     }
   }
 }
-var Squad = function(data) {
+var Squad = function(data, game) {
   this.id = data.id
+  this.game = game
   this.leader_id = data.leader_id
   this.name = data.name
   this.members_id = data.members
   this.members = []
   this.score = 0
-  if (this.leader_id in thisgame.players_by_id) {
-    this.leader = thisgame.players_by_id[this.leader_id]
-  }
+  this.leader = this.game.players_by_id(this.leader_id)
   for (var i in this.members_id) {
-    if (this.members_id[i] in thisgame.players_by_id) {
-      this.members.push(thisgame.players_by_id[this.members_id[i]])
-    }
+    this.members.push(this.game.players_by_id(this.members_id[i]))
   }
   for (var i in this.members) {
     this.score += this.members[i].score

@@ -4,6 +4,9 @@ class RegistrationsController < ApplicationController
   before_filter :check_is_registered, :only => [:joinsquad]
   before_filter :start_registration_process, :only => [:new]
   layout "expanded", :only => [:new]
+
+  cache_sweeper :registration_sweeper
+
 	def new
 		if @current_game.id.nil? or @current_game.registration_begins.nil? or @current_game.registration_ends.nil?
 			flash[:error] = "Your administrators have not yet created a game to register for."
@@ -20,14 +23,17 @@ class RegistrationsController < ApplicationController
 			redirect_to root_url()
       return
 		end
+
 		@registration = Registration.find_or_initialize_by_person_id_and_game_id(@person.id, @current_game.id)
     @squads = @current_game.squads
 		if not @registration.card_code.nil?
       session[:is_registering] = false
+		if not @registration.created_at.nil?
 			redirect_to registration_url(@registration)
       return
 		end
 	end
+
 	def submit_waiver
 		@reg = Registration.find(params[:id])
 		@reg.has_waiver = params[:has]
@@ -36,13 +42,22 @@ class RegistrationsController < ApplicationController
 	end
 	def create
 		@registration = Registration.find_or_initialize_by_person_id_and_game_id(@person.id, @current_game.id)
-		@registration.attributes = params[:registration]
-		@registration.card_code = Registration.make_code
 		@registration.score = 0
+<<<<<<< HEAD
     @registration.squad = nil unless params[:squad_select] == "existing"
 		if @registration.save()
       session[:is_registering] = false
       
+=======
+    # If joining an existing squad, we can set it up now
+    if params[:squad_select] == "existing"
+      @registration.squad_id = params[:squad_existing_id]
+    else
+      @registration.squad = nil
+    end
+
+		if @registration.save() 
+>>>>>>> A flurry of tiny things. Or maybe a blizzard? Perhaps just a smoothie of changes.
       # Now worry about the squad, because we can't attribute squad leadership without a registration id
       if (params[:squad_select] == "create")
         @squad = Squad.new({

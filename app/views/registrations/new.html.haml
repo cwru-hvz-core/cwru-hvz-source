@@ -21,7 +21,7 @@
         var squad = document.createElement("li");
         squad.setAttribute("id", "squad-existing-" + thisgame.squads[i].id);
         squad.innerHTML = "<b>" + thisgame.squads[i].name + "</b><br>" +
-          "<em>Leader: " + thisgame.players_by_id[thisgame.squads[i].leader_id].name + "</em>";
+          "<em>Leader: " + thisgame.players_by_id(thisgame.squads[i].leader_id).name + "</em>";
         $(squad).bind("click", function(){ select_squad(this.id); });
         $("#squad_list").append(squad)
       }
@@ -58,7 +58,7 @@
           %b Game Ends:
         %td=@current_game.dates[:game_ends]
   %div#signuptable
-    =form_tag new_registration_url()
+    =form_tag "/players"
     %table
       %thead
         %th{:colspan=>2} Personal Information:
