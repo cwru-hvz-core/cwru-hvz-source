@@ -93,13 +93,13 @@ $(document).ready(function() {
       lineWidth: 2,
       marker: { radius: 0 }
     }]
-  }
+  };
   
   // Load data asynchronously using jQuery. On success, add the data
   // to the options and initiate the chart.
   showgame.append_on_load_info("info", function() {
     showgame.append_on_load_info("players", computePlayers);
-  })
+  });
 
   /* *************************************************************************
    * computePlayers() is called at the very beginning of the page loading.
@@ -125,22 +125,22 @@ $(document).ready(function() {
     
     // Initialize all Players and calculate some nice things
     //   like the total score and current faction.
-    showgame.load_players()
+    showgame.load_players();
     
     //////////////////////////////////////////////////////////////////////////
     // Calculate number of humans/zombies/deceased
     //////////////////////////////////////////////////////////////////////////
-    var factions = {0: 0, 1: 0, 2: 0}
-    var ozs = []
+    var factions = {0: 0, 1: 0, 2: 0};
+    var ozs = [];
     for (var i in showgame.players) {
-      var f = showgame.players[i]
+      var f = showgame.players[i];
       if (!(f.faction["key"] in factions)) {
-        factions[f.faction["key"]] = 0
+        factions[f.faction["key"]] = 0;
       }
-      factions[f.faction["key"]] += 1
+      factions[f.faction["key"]] += 1;
 
       if (f.is_oz == true) {
-        ozs.push(f)
+        ozs.push(f);
       }
     }
     $("td#human_count").html(factions[0]);
@@ -160,32 +160,30 @@ $(document).ready(function() {
     //////////////////////////////////////////////////////////////////////////
     // Create the graph.
     //////////////////////////////////////////////////////////////////////////
-    var human, zombie, deceased
+    var human, zombie, deceased;
     begin_date = new Date(showgame.retrieved_data["info"]["game_begins"]);
     end_date = new Date(showgame.retrieved_data["info"]["game_ends"]);
-    var granularity = 250
+    var granularity = 250;
     delta = (end_date - begin_date) / granularity;
-    var time_data = {}
+    var time_data = {};
     for (i=0; i < granularity; i++) {
       var now = new Date(begin_date.getTime() + delta * i);
       time_data[now] = {"-1": 0, "0": 0, "1": 0, "2": 0};
       for (var j in showgame.players) {
-        var f = showgame.players[j].get_faction_at(now)
-        time_data[now][f["key"]] += 1
+        var f = showgame.players[j].get_faction_at(now);
+        time_data[now][f["key"]] += 1;
       }
     }
     human = []; zombie = []; deceased = [];
     for (k in time_data) {
-      human.push([(new Date(k)).getTime(), time_data[k]["0"]])
+      human.push([(new Date(k)).getTime(), time_data[k]["0"]]);
     }
     for (k in time_data) {
-      zombie.push([(new Date(k)).getTime(), time_data[k]["1"]])
+      zombie.push([(new Date(k)).getTime(), time_data[k]["1"]]);
     }
     for (k in time_data) {
-      deceased.push([(new Date(k)).getTime(), time_data[k]["2"]])
+      deceased.push([(new Date(k)).getTime(), time_data[k]["2"]]);
     }
-   // zombie = Object.keys(time_data).map(function(k) { return [(new Date(k)).getTime(), time_data[k]["1"]] })
-   // deceased = Object.keys(time_data).map(function(k) { return [(new Date(k)).getTime(), time_data[k]["2"]] })
     options.series[0].data = human;
     options.series[1].data = zombie;
     options.series[2].data = deceased;
@@ -201,7 +199,7 @@ $(document).ready(function() {
  * the changed parts
  */
 function populate_player_list() {
-  showgame.sort_players(function(a,b) { return b.score - a.score; })
+  showgame.sort_players(function(a,b) { return b.score - a.score; });
   
   // If the user is logged in, show them on top of the leaderboard.
   if (showgame.logged_in_user_id != null) {
@@ -223,8 +221,8 @@ function populate_player_list() {
   filter_players();
 
   showgame.append_on_load_info("squads", function() {
-    showgame.load_squads()
-    showgame.sort_squads(function(a,b) { return b.score - a.score; })
+    showgame.load_squads();
+    showgame.sort_squads(function(a,b) { return b.score - a.score; });
     for (var i in showgame.squads_sorted) {
       if (i == "30") break;
       $("div#squad_list").append(
@@ -249,31 +247,31 @@ function update_player_list() {
 */
 function populate_zombie_tag_tree() {
   var tagdata = showgame.retrieved_data["tags"];    // for convenience.
-  var tags_by_tagger_id = {}
+  var tags_by_tagger_id = {};
   for (var i in tagdata) {
     if (!(tagdata[i].tagger_id in tags_by_tagger_id)) {
-      tags_by_tagger_id[tagdata[i].tagger_id] = []
+      tags_by_tagger_id[tagdata[i].tagger_id] = [];
     }
-    tags_by_tagger_id[tagdata[i].tagger_id].push(tagdata[i])
+    tags_by_tagger_id[tagdata[i].tagger_id].push(tagdata[i]);
   }
 
-  var root_players = []
+  var root_players = [];
   for (var i in tagdata) {
     if (tagdata[i].administrative) {
-      root_players.push(tagdata[i].tagged_id)
+      root_players.push(tagdata[i].tagged_id);
     }
   }
   for (var i in showgame.players) {
     if (showgame.players[i].is_oz) {
-      root_players.push(showgame.players[i].id)
+      root_players.push(showgame.players[i].id);
     }
   }
-  var children = []
+  var children = [];
   for (var i in root_players) {
     children.push( tag_tree_recursive(tags_by_tagger_id, root_players[i]) );
   }
   var tree = {id: "game", name: showgame.name, data:{}, children: children};
-  init_graph(tree)
+  init_graph(tree);
 }
 // TODO: These variable names are really confusing.
 function tag_tree_recursive(tags_by_tagger_id, tagger_id) {
@@ -286,7 +284,7 @@ function tag_tree_recursive(tags_by_tagger_id, tagger_id) {
   }
 
   // For each tag this player got, recursively build the tree
-  var children = []
+  var children = [];
   for (var i in tags_by_tagger_id[tagger_id]) {
     children.push( tag_tree_recursive(tags_by_tagger_id, tags_by_tagger_id[tagger_id][i].tagged_id) );
   }
@@ -325,12 +323,12 @@ function initialize_players_and_squads() {
       $("#filter_faction")[0].selectedIndex = 3;
     }
     showgame.append_on_load_info("info", function() {
-      showgame.append_on_load_info("players", populate_player_list)
+      showgame.append_on_load_info("players", populate_player_list);
     })
 }
 function initialize_zombie_tag_tree() {
   $("#game_content").html("<h3 class='dink'>Zombie Tag Tree</h3><div id='gametree'></div><div id='log' style='height:32px'></div>");
-  showgame.append_on_load_info("tags", populate_zombie_tag_tree)
+  showgame.append_on_load_info("tags", populate_zombie_tag_tree);
 }
 function filter_players() {
   var str = $("#filter_name")[0].value;
@@ -342,7 +340,7 @@ function filter_players() {
     return;
   }
   for (var i in showgame.players_sorted) {
-    var p = showgame.players_sorted[i]
+    var p = showgame.players_sorted[i];
     // Correct faction?
     if (p.faction.human_name == faction_filter || faction_filter == "All") {
       // Correct name substring?
