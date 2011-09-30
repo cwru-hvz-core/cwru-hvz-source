@@ -3,6 +3,7 @@ class Game < ActiveRecord::Base
 	has_many :registrations
 	has_many :tags
 	has_many :missions
+  has_many :waivers
 	has_many :contact_messages
   has_many :squads
 	has_many :ozs, :class_name => "Registration", :conditions => ["is_oz = ?", true]

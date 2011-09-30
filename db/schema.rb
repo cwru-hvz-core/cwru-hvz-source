@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110616213129) do
+ActiveRecord::Schema.define(:version => 20110930033812) do
 
   create_table "attendances", :force => true do |t|
     t.integer  "registration_id"
@@ -25,10 +25,10 @@ ActiveRecord::Schema.define(:version => 20110616213129) do
     t.string   "regarding"
     t.text     "body"
     t.datetime "occurred"
-    t.integer  "game_id"
-    t.boolean  "visible",    :default => true
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "game_id"
+    t.boolean  "visible",    :default => true
   end
 
   create_table "delayed_jobs", :force => true do |t|
@@ -123,9 +123,9 @@ ActiveRecord::Schema.define(:version => 20110616213129) do
   create_table "squads", :force => true do |t|
     t.string   "name"
     t.integer  "leader_id"
-    t.integer  "game_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "game_id"
   end
 
   create_table "tags", :force => true do |t|
@@ -138,6 +138,19 @@ ActiveRecord::Schema.define(:version => 20110616213129) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "admin_id"
+  end
+
+  create_table "waivers", :force => true do |t|
+    t.integer  "person_id"
+    t.integer  "game_id"
+    t.integer  "studentid"
+    t.date     "datesigned"
+    t.date     "dateofbirth"
+    t.string   "emergencyname"
+    t.string   "emergencyrelationship"
+    t.string   "emergencyphone"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
 end

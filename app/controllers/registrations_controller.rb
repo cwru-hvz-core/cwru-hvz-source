@@ -108,8 +108,13 @@ class RegistrationsController < ApplicationController
 
   def start_registration_process
     session[:is_registering] = true
+    current_waiver = Waiver.find_by_person_id_and_game_id(@logged_in_person.id, @current_game.id)
     if @logged_in_person.name.nil?
       redirect_to edit_person_url(@logged_in_person)
+      return false
+    end
+    if current_waiver.nil?
+      redirect_to sign_waiver_url(@logged_in_person)
       return false
     end
   end

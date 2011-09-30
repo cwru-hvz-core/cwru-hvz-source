@@ -1,0 +1,91 @@
+%h2.dink
+  = @current_game.short_name + " Registration (Step 2 of 3)"
+%div.registration
+  -form_for (@w) do |f|
+    %div.span-10
+      %table
+        %tr
+          %td
+            Name:
+          %td
+            =text_field_tag nil, @logged_in_person.name, {:disabled => true, :size=>15}
+        %tr
+          %td{:style=>"width:75px"}
+            =f.label :dateofbirth, "Date Of Birth:"
+          %td
+            =f.date_select :dateofbirth, {:order => [:month, :day, :year], :start_year=>1940, :end_year=>1996}
+    %div.span-1
+    %div.span-10
+      =f.label :studentid, "Student ID:"
+      =f.text_field :studentid
+    %div.span-22.last.clear
+      I,
+      %b=@logged_in_person.name
+      have asked to participate in the Big Games Club’s Humans vs.
+      Zombies game, scheduled to take place between October 5-October 14, 2011. My participation will include some
+      physical risks and I am aware of hazards that may be encountered during this program and I understand that there
+      is a risk of death, personal injury, and damage to property.
+      %br
+      I have been informed of hazards that may be encountered during this project and if I have any questions about
+      the activity's content, nature, risks or hazards, I have contacted the activity's coordinator and have discussed those
+      questions to my satisfaction.
+
+      As a condition of participating in this activity, I agree to the following:
+      %table
+        %tr
+          %td{:style=>"background-color:#58FF3A"}=f.check_box :chk1
+          %td
+            1. I am physically capable of participating in this activity. I understand that I am responsible for any health and
+            accident insurance which I may deem necessary.
+        %tr
+          %td{:style=>"background-color:#58FF3A"}=f.check_box :chk2
+          %td
+            2. I agree to abide by all rules and regulations set forth by the facilitators of the Humans vs. Zombies game.
+            Failure to follow these rules may result in my immediate dismissal from the game.
+        %tr
+          %td{:style=>"background-color:#58FF3A"}=f.check_box :chk3
+          %td
+            3. In consideration of being granted the opportunity to participate in this activity and use services and facilities
+            furnished or made available by Case Western Reserve University as well as the assistance and advice of
+            employees of the University, I hereby release and forever discharge Case Western Reserve University, the
+            officers of the Case Big Games Club, the Office of Student Activities and Leadership; and its trustees,
+            officers, employees, and agents from all legal claims for injuries, damages, or losses of any kind, which may
+            arise out of my participation in this program, other than those claims directly attributable to the grossly
+            negligent acts or omissions of Case Western Reserve University, or its trustees, officers or employees.
+        %tr
+          %td{:style=>"background-color:#58FF3A"}=f.check_box :chk4
+          %td
+            4. I agree to comply with all regulations, rules and policies of Case while participating in this activity. I fully
+            acknowledge that, I am responsible for following all policies and procedures as set forth by the 2011-2012
+            Student Services Guide. I understand that I am responsible for any medical or other personal insurance that
+            I may deem necessary. I also understand that Case Western Reserve University is not responsible for my
+            safety under any circumstances.
+
+      I certify that I have fully read this release and that I understand its terms and conditions and agree to be bound by
+      them. I certify that I am over the age of eighteen and have executed this agreement of my own free will.
+      %div.span-22.clear
+      %div.span-13
+        =f.label :signature, "Signature (type your name):"
+        =f.text_field :signature
+      %div.span-8
+        =f.label :datesigned, "Date Signed:"
+        =f.date_select :datesigned
+      %div.span-4.clear
+        :plain
+          &nbsp;
+      %div.span-12
+        %table
+          %thead
+            %th{:colspan=>"2"} Emergency Contact Information:
+          %tbody
+            %tr
+              %td=f.label :emergencyname, "Emergency Contact:"
+              %td=f.text_field :emergencyname
+            %tr
+              %td=f.label :emergencyrelationship, "Relationship:"
+              %td=f.text_field :emergencyrelationship
+            %tr
+              %td=f.label :emergencyphone, "Phone Number:"
+              %td=f.text_field :emergencyphone
+    %div.span-22
+      =f.submit "Onwards! (Continue Registration Process)"

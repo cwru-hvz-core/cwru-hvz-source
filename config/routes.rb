@@ -16,7 +16,8 @@ Hvz::Application.routes.draw do
 	resources :players, :as => :registrations, :controller => :registrations, :id=>/[0-9]*/ do
 		resources :infractions
 	end
-	match "/players/:id/submitwaiver/:has" => "registrations#submit_waiver", :as => "submit_waiver"
+  get 'players/:id/waiver' => "waiver#new", :as => "sign_waiver"
+  post 'players/:id/waiver' => "waiver#create", :as => "waivers"
 	match 'games/:id/rules' => "games#rules", :as => "game_rules"
 	match 'games/:id/graphdata' => "games#graphdata", :as => "game_graph_data"
 	match 'games/:id/tree' => "games#tree", :as => "game_tree"
