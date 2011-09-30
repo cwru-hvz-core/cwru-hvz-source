@@ -13,7 +13,7 @@
         = link_to "Deceased [" + r.score.to_s + "]", registration_url(r)
 - else
   %b Profile Incomplete! 
-  = "(" + session[:cas_user] + ")"
-  = link_to "Update Profile", new_person_url()
+  = "(" + @logged_in_person.caseid + ")"
+  = link_to "Update Profile", edit_person_url(@logged_in_person)
 %br
 =link_to "Logout", people_logout_url()

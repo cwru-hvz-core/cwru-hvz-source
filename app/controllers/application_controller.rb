@@ -30,12 +30,6 @@ class ApplicationController < ActionController::Base
 			# Use automatic method to find the user if they exist in the database and
 			#  create them otherwise.
 			@logged_in_person = Person.find_or_create_by_caseid(session[:cas_user])
-			if @logged_in_person.name.nil?
-				session[:needs_info] = true
-				session[:was_at] ||= request.env['PATH_INFO']
-				redirect_to edit_person_url(@logged_in_person) unless (params[:controller] == 'people' and (params[:action]== 'edit' or params[:action] == "update"))
-				return false
-			end
 		end
 		return true
 	end

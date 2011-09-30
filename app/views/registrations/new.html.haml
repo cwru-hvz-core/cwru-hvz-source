@@ -1,5 +1,5 @@
-%h2.dink 
-  = "Registration: " + @current_game.short_name
+%h2.dink
+  = @current_game.short_name + " Registration (Step 3 of 3)"
 %div.registration
   %div#infotable
     %table
@@ -13,10 +13,9 @@
         %td
           %b Game Ends:
         %td=@current_game.dates[:game_ends]
-  %div#signuptable
     %table
       %thead
-        %th{:colspan=>2} Registration:
+        %th{:colspan=>2} Your Information:
       %tbody
         %tr
           %td
@@ -33,6 +32,10 @@
             %b Phone Number:
           %td
             =@person.phone
+  %div#signuptable
+    %table
+      %thead
+        %th{:colspan=>2} Registration:
         - form_for(@registration) do |f|
           %tr
             %td

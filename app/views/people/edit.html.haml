@@ -4,6 +4,9 @@
 - if session[:needs_info]
   %div.span-24.last
     Your profile is incomplete! Please fill out this information to continue signup.
+- if session[:is_registering]
+  %h2.dink
+    = @current_game.short_name + " Registration (Step 1 of 3)"
 %div.span-4.clear
   &nbsp;
 %div.span-16

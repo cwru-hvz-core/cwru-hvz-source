@@ -1,6 +1,7 @@
 class RegistrationsController < ApplicationController
 	before_filter :check_admin, :only => [:index, :destroy, :submit_waiver]
 	before_filter :check_login, :only => [:new, :create, :show]
+  before_filter :start_registration_process, :only => [:new]
 	def new
 		if @current_game.id.nil? or @current_game.registration_begins.nil? or @current_game.registration_ends.nil?
 			flash[:error] = "Your administrators have not yet created a game to register for."
@@ -104,4 +105,12 @@ class RegistrationsController < ApplicationController
 		@registrations_people = @registrations.map{|x| x.person_id}
 		@allpeople = Person.all.map{|x| x if not @registrations_people.include?(x.id)}.compact
 	end
+
+  def start_registration_process
+    session[:is_registering] = true
+    if @logged_in_person.name.nil?
+      redirect_to edit_person_url(@logged_in_person)
+      return false
+    end
+  end
 end
