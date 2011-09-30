@@ -3,6 +3,11 @@
 Your card code is:
 %h2= @registration.card_code
 
+-if @registration.squad.nil?
+  You are not a member of a squad.
+-else
+  You are a member of the squad:
+  %h2= @registration.squad.name
 -if @current_game.ongoing?
   You are currently
   - if @registration.is_human?
