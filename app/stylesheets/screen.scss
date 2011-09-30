@@ -118,7 +118,7 @@ html {
 			@include box-shadow(darken(#EFEFEF, 20%), 0px, 0px, 30px, 0px, inset);
 		}
 	}
-	.info {
+	.headinfo {
 		@include prepend(4);
 		@include column(19);
 		@include append-bottom(20px);
