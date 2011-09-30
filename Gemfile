@@ -12,7 +12,7 @@ gem 'gchartrb'
 gem 'RedCloth'
 gem 'hassle', :git => 'git://github.com/koppen/hassle.git'
 gem 'dalli'
-gem 'jquery-rails'
+gem 'jquery-rails', '>= 1.0.12'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'

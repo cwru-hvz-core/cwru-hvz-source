@@ -14,7 +14,10 @@
       - @registrations.each do |r|
         - if r.person.nil?
           %tr
-            %td{:colspan=>9, :style=>"text-align:center"} Error - Missing Record
+            %td{:colspan=>9, :style=>"text-align:center"} 
+              Error - Missing Record [
+              =link_to("Delete", registration_url(r), :class=>"admin", :method=>:delete, :confirm=>"Are you sure you wish to delete this registration?")
+              ]
           - next
         %tr
           %td{:class=>("admin nocenter" if r.person.is_admin)}
