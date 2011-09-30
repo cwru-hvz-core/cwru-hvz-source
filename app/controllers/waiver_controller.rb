@@ -14,7 +14,7 @@ class WaiverController < ApplicationController
     # Shame on me for coding these here. They really should be in the validate method of Waiver.
     # TODO: Move them there.
 
-    if @w.chk1 and @w.chk2 and @w.chk3 and @w.chk4
+    if not @w.chk1 and @w.chk2 and @w.chk3 and @w.chk4
       flash[:error] = "Error: You must check all boxes to accept the waiver."
       render :new
       return
