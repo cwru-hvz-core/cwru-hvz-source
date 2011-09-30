@@ -13,7 +13,7 @@
           %td{:style=>"width:75px"}
             =f.label :dateofbirth, "Date Of Birth:"
           %td
-            =f.date_select :dateofbirth, {:order => [:month, :day, :year], :start_year=>1940, :end_year=>1996}
+            =f.date_select :dateofbirth, {:order => [:month, :day, :year], :start_year=>1940, :end_year=>1996, :default=>(Time.now-18.years)}
     %div.span-1
     %div.span-10
       =f.label :studentid, "Student ID:"
