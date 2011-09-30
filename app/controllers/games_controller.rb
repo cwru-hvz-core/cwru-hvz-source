@@ -1,7 +1,6 @@
 class GamesController < ApplicationController
 	before_filter :check_admin, :only => ['new', 'create', 'edit', 'update']
-  layout "expanded", :only => [:show]
-  #layout "application", :exclude => [:show]
+  layout "expanded"
 
 	def index
 		@games = Game.all

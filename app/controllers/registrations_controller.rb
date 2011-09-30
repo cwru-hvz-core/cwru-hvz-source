@@ -43,12 +43,6 @@ class RegistrationsController < ApplicationController
 	def create
 		@registration = Registration.find_or_initialize_by_person_id_and_game_id(@person.id, @current_game.id)
 		@registration.score = 0
-<<<<<<< HEAD
-    @registration.squad = nil unless params[:squad_select] == "existing"
-		if @registration.save()
-      session[:is_registering] = false
-      
-=======
     # If joining an existing squad, we can set it up now
     if params[:squad_select] == "existing"
       @registration.squad_id = params[:squad_existing_id]
@@ -57,7 +51,7 @@ class RegistrationsController < ApplicationController
     end
 
 		if @registration.save() 
->>>>>>> A flurry of tiny things. Or maybe a blizzard? Perhaps just a smoothie of changes.
+      session[:is_registering] = false
       # Now worry about the squad, because we can't attribute squad leadership without a registration id
       if (params[:squad_select] == "create")
         @squad = Squad.new({

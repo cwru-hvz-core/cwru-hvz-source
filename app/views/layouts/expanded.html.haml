@@ -9,38 +9,14 @@
       %h1#site_name.dink 
         %a{:href=>"/"} Case HvZ
       #button_row
-        %ul
-          %li.button 
-            %a{:href=>"/players/new"} Registration
-          %li.button Rules
-          %li.button Squads
-          %li.button Missions
-          %li.button Contact Admins
+        = render :partial => "layouts/top_navigation"
     #body.expanded
       #body_content
         #left_sidebar.sidebar
-
-          #persona.dink
-            #persona_img
-              %a{:href => "#"}
-                = image_tag "nerf-raider.jpg", {:width => "32", :height => "32"}
-            #persona_name
-              Tom Dooner
-            #persona_edit
-              edit
-
-          %ul
-            %li
-              %a{:href => "#"} My Profile
-            %li
-              %a{:href => "#"} My Squad
-            %li
-              %a{:href => "#"} My Achievements
-            %li
-              %a{:href => "#"} Human Message Board
-            %li
-              %a{:href => "#"} Log Out
-        
+          - if @logged_in_person.nil?
+            You should log in.
+          - else
+            = render :partial => "layouts/left_persona"
         #right_sidebar.sidebar
           %h3.dink
             %a{:href=>"#"} Game Statistics
