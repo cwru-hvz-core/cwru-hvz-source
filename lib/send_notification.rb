@@ -28,12 +28,12 @@ class SendNotification
 	end
 
 	def perform
-		api = GoogleVoice::Api.new(@un, @pw) unless (@un.empty? or @un.nil?)
+		api = GoogleVoice::Api.new(@un, @pw) unless (@un.nil? or @un.empty?)
 		
 		if not @mass_text.nil?
 			@mass_text.each do |x|
 				begin
-					api.sms(x[0].phone, x[1]) if (not x[0].phone.empty?)
+					api.sms(x[0].phone, x[1]) if (not x[0].phone.nil? and not x[0].phone.empty?)
 				rescue
 					puts "Could not log into Google Voice"
 				end
