@@ -11,15 +11,19 @@ class RegistrationsController < ApplicationController
 		if (Time.now + @current_game.utc_offset) < @current_game.registration_begins
 			flash[:error] = "Registration begins " + @current_game.dates[:registration_begins] + ". Please check back then!"
 			redirect_to root_url()
+      return
 		end
 		if (Time.now + @current_game.utc_offset) > @current_game.registration_ends
 			flash[:error] = "Registration ended " + @current_game.dates[:registration_ends] + ". If you would still like to play, please contact the administrators."
 			redirect_to root_url()
+      return
 		end
 		@registration = Registration.find_or_initialize_by_person_id_and_game_id(@person.id, @current_game.id)
     @squads = @current_game.squads
 		if not @registration.card_code.nil?
+      session[:is_registering] = false
 			redirect_to registration_url(@registration)
+      return
 		end
 	end
 	def submit_waiver
@@ -35,6 +39,7 @@ class RegistrationsController < ApplicationController
 		@registration.score = 0
     @registration.squad = nil unless params[:squad_select] == "existing"
 		if @registration.save()
+      session[:is_registering] = false
       
       # Now worry about the squad, because we can't attribute squad leadership without a registration id
       if (params[:squad_select] == "create")

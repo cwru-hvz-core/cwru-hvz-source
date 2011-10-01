@@ -4,13 +4,14 @@
   - if(not @current_game.nil? and @current_game.ongoing?)
     %br
     - r =  Registration.find_by_person_id(@logged_in_person.id)
-    %b{:title=>"View Player Profile"}
-      - if r.is_human?
-        = link_to "Human [" + r.score.to_s + "]", registration_url(r)
-      - elsif r.is_zombie?
-        = link_to "Zombie [" + r.score.to_s + "]", registration_url(r)
-      - else
-        = link_to "Deceased [" + r.score.to_s + "]", registration_url(r)
+    -unless r.nil?
+      %b{:title=>"View Player Profile"}
+        - if r.is_human?
+          = link_to "Human [" + r.score.to_s + "]", registration_url(r)
+        - elsif r.is_zombie?
+          = link_to "Zombie [" + r.score.to_s + "]", registration_url(r)
+        - else
+          = link_to "Deceased [" + r.score.to_s + "]", registration_url(r)
 - else
   %b Profile Incomplete! 
   = "(" + @logged_in_person.caseid + ")"
