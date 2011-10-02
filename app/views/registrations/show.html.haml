@@ -6,7 +6,7 @@ Your card code is:
 -if @registration.squad.nil?
   You are not a member of a squad.
   %br
-  =link_to "Join a Squad", squads_url()
+  =link_to "Join or Create a Squad", squads_url()
 -else
   You are a member of the squad:
   %h2= @registration.squad.name

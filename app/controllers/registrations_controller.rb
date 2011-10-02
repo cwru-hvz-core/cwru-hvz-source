@@ -136,10 +136,20 @@ class RegistrationsController < ApplicationController
       return
     end
     unless @current_game.has_begun?
-      @logged_in_registration.squad = Squad.find(params[:squadid])
-      @logged_in_registration.save()
-      redirect_to registration_url(@logged_in_registration)
-      return
+      if params[:squadid].eql?("new")
+        @squad = Squad.new({
+          :name => params[:new_squad_name], 
+          :leader_id => @logged_in_registration.id, 
+          :game_id => @current_game.id
+        })
+        if @squad.save()
+          @logged_in_registration.update_attribute(:squad, @squad)
+          redirect_to registration_url(@logged_in_registration)
+        end
+      else
+        @logged_in_registration.update_attribute(:squad, Squad.find(params[:squadid]))
+        redirect_to registration_url(@logged_in_registration)
+      end
     end
   end
 end

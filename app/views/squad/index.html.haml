@@ -29,3 +29,9 @@ Note: Once you join or create a squad, you must remain with that squad for the r
         %td
           %b Members:
           =s.registrations.map{|x| x.person.name}.join(", ")
+-if @logged_in_registration.squad == nil
+  %h2.dink 
+    Create a New Squad
+  =form_tag( join_squad_url(@logged_in_registration, "new") ) do
+    =text_field_tag("new_squad_name")
+    =submit_tag("Create and Join Squad!")
