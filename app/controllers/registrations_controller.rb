@@ -1,6 +1,7 @@
 class RegistrationsController < ApplicationController
 	before_filter :check_admin, :only => [:index, :destroy, :submit_waiver]
 	before_filter :check_login, :only => [:new, :create, :show]
+  before_filter :check_is_registered, :only => [:joinsquad]
   before_filter :start_registration_process, :only => [:new]
 	def new
 		if @current_game.id.nil? or @current_game.registration_begins.nil? or @current_game.registration_ends.nil?
@@ -121,6 +122,24 @@ class RegistrationsController < ApplicationController
     if current_waiver.nil?
       redirect_to sign_waiver_url(@logged_in_person)
       return false
+    end
+  end
+  def joinsquad
+    if not params[:id].to_i == @logged_in_registration.id.to_i
+      flash[:error] = "Error! Trying to sign someone else up into a squad?"
+      redirect_to root_url()
+      return
+    end
+    if @logged_in_registration.squad != nil
+      flash[:error] = "Error! You cannot change your squad."
+      redirect_to root_url()
+      return
+    end
+    unless @current_game.has_begun?
+      @logged_in_registration.squad = Squad.find(params[:squadid])
+      @logged_in_registration.save()
+      redirect_to registration_url(@logged_in_registration)
+      return
     end
   end
 end

@@ -25,6 +25,11 @@ Hvz::Application.routes.draw do
 	match "/contact/" => "contact_messages#create", :as => "new_contact_message",:via => "post"
 	match "/contact/list(/:all)" => "contact_messages#list", :as => "list_contact_messages", :via=>"get"
 	match "/contact/:id" => "contact_messages#destroy", :as => "delete_contact_message", :via=>"delete"
+
+  match "squads/:id" => "squad#show", :as=> "squad"
+  match "squads" => "squad#index", :as=> "squads"
+  match "players/:id/joinsquad/:squadid" => "registrations#joinsquad", :as => "join_squad"
+
   # Sample of regular route:
   #   match 'products/:id' => 'catalog#view'
   # Keep in mind you can assign values other than :controller and :action

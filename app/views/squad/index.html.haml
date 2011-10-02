@@ -1,0 +1,31 @@
+%h2.dink
+  Squad List
+Note: Once you join or create a squad, you must remain with that squad for the remainder of the game.
+
+%table
+  %thead
+    %th Squad Name
+    -if @logged_in_registration.squad_id == nil
+      %th Join?
+    %th Squad Members
+  %tbody
+    /TODO: Make this awful zebra-table logic in CSS
+    - i=0
+    - @squads.each do |s|
+      - i += 1
+      - if i%2 == 1
+        -col = "#FFFFFF"
+      -else
+        -col = "#EFEFEF"
+      %tr{:style=>"background-color:"+col}
+        %td{:rowspan=>2}
+          .dink{:style=>"font-size:2em"}=s.name
+        - if @logged_in_registration.squad_id == nil
+          %td{:rowspan=>2}=link_to "Join", join_squad_url(@logged_in_registration.id, s.id), :confirm=>"Are you sure you wish to join this squad?"
+        %td
+          %b Leader:
+          =s.leader.person.name
+      %tr{:style=>"background-color:"+col}
+        %td
+          %b Members:
+          =s.registrations.map{|x| x.person.name}.join(", ")
