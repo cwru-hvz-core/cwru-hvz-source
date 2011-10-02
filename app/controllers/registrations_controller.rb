@@ -107,6 +107,7 @@ class RegistrationsController < ApplicationController
 
 	def index
 		@registrations = Registration.find_all_by_game_id(@current_game.id, :include=>:person)
+    @registrations.sort { |x,y| x.created_at <=> y.created_at }
 
 		@registrations_people = @registrations.map{|x| x.person_id}
 		@allpeople = Person.all.map{|x| x if not @registrations_people.include?(x.id)}.compact
