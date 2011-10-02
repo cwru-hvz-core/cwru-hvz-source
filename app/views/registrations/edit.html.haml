@@ -35,6 +35,9 @@
           %td=f.check_box :wants_oz
         -if @is_admin
           %tr
+            %td.admin=f.label :squad, "Squad"
+            %td=collection_select :registration, :squad_id, Squad.all, :id, :name, {:include_blank => true}
+          %tr
             %td.admin=f.label :is_oz, "Is OZ?"
             %td=f.check_box :is_oz
         %tr
