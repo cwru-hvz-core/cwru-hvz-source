@@ -1,0 +1,39 @@
+%h2.dink The Check-In Wizard Says...
+- if @valid
+  Looks like you're at
+  %b=@location
+  at the 
+  %b right 
+  time of day.
+- else
+  - if not @location.nil?
+    Looks like you're at
+    %b=@location
+    at the
+    %b wrong
+    time of day.
+  - else
+    - if not @hostname.nil?
+      I see your hostname is
+      =@hostname+","
+      but I have no idea where that is.
+    - else
+      I cannot tell what computer you are using. If you are in Nord or Wade, please report this bug.
+%h2.dink And...
+- if @other_checkins.nil?
+  You have never checked in before.
+- else
+  - if @hours_since_last < 6
+    You have checked in recently.
+    %b="("+@hours_since_last.round(2).to_s+" hours ago)"
+  - else
+    You have
+    %b not
+    checked in within the last six hours.
+%h2.dink Therefore...
+- if @valid and @hours_since_last > 6
+  You can sign in! 
+  =link_to "Click here!", check_in_url()
+- else
+  You cannot sign in here and now.
+  =link_to "Click here!", check_in_url()

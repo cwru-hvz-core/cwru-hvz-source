@@ -1,4 +1,7 @@
 Hvz::Application.routes.draw do
+  get "check_ins" => "check_ins#index"
+  get "check_ins/new", :as => "check_in_wizard"
+  get "check_ins/create", :as => "check_in"
   get "feeds/create"
 
   # The priority is based upon order of creation:

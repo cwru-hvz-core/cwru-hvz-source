@@ -1,0 +1,2 @@
+module CheckInsHelper
+end

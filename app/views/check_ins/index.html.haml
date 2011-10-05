@@ -1,0 +1,29 @@
+%h2.dink Check-In Status
+%table
+  %thead
+    %th.admin Player Name
+    - @day_count.times do |t|
+      %th{:style=>"text-align:center"}="Day " + (t+1).to_s
+  %tbody
+    - @players.each do |p|
+      %tr
+        %td=p.person.name
+        - @day_count.times do |t|  #0 -> 9, for instance
+          - good = false
+          - begin_date = (@current_game.game_begins + t.days)
+          - if begin_date >= p.state_history[:zombie]
+            -text = "Zombie"
+            -good = true
+          - end_date = (@current_game.game_begins + (t+1).days)
+          - checkins = p.check_ins.reject{|x|  x.created_at < begin_date or x.created_at > end_date}
+          - checkins.each do |c|
+            -good = true
+            -text = CheckIn.get_location(c.hostname)
+          - if @current_day > t
+            - if good == true
+              - color = "#00FF00"
+            -else
+              - color = "#FF0000"
+          - else
+            - color = "#FFFFFF"
+          %td{:style=>"text-align:center;background-color:"+color}=text

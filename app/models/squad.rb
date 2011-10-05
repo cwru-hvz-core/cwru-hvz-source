@@ -4,4 +4,8 @@ class Squad < ActiveRecord::Base
   belongs_to :game
 
   validates_uniqueness_of :name, :scope => :game_id
+
+  def points
+    self.registrations.map{|x| x.display_score}.sum()
+  end
 end

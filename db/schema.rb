@@ -10,12 +10,19 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110930033812) do
+ActiveRecord::Schema.define(:version => 20111005023418) do
 
   create_table "attendances", :force => true do |t|
     t.integer  "registration_id"
     t.integer  "mission_id"
     t.integer  "score"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "check_ins", :force => true do |t|
+    t.integer  "registration_id"
+    t.string   "hostname"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -116,7 +123,6 @@ ActiveRecord::Schema.define(:version => 20110930033812) do
     t.datetime "updated_at"
     t.boolean  "wants_oz",      :default => false
     t.boolean  "is_off_campus", :default => false
-    t.boolean  "has_waiver",    :default => false
     t.integer  "squad_id"
   end
 

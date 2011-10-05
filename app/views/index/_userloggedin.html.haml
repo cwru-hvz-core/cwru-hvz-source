@@ -12,6 +12,9 @@
           = link_to "Zombie [" + r.score.to_s + "]", registration_url(r)
         - else
           = link_to "Deceased [" + r.score.to_s + "]", registration_url(r)
+      - if r.is_off_campus
+        %br
+        = link_to "Off-Campus Check In", check_in_url()
 - else
   %b Profile Incomplete! 
   = "(" + @logged_in_person.caseid + ")"
