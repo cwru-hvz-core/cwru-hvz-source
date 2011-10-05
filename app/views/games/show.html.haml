@@ -35,11 +35,11 @@
       - currentnum = 1
       - countnum = 1
       - @players.each do |p|
-        - if(p.score == prevscore)
+        - if(p.display_score == prevscore)
           - number = currentnum
         - else
           - number = currentnum = countnum
-          - prevscore = p.score
+          - prevscore = p.display_score
         = render(:partial => "scoreboard", :locals => {:player => p, :number => (number)})
         - countnum += 1
       :javascript
