@@ -8,13 +8,14 @@ class TagsController < ApplicationController
 			return
 	  end
 	  @tag = Tag.new
-	  @zombies = Registration.find_all_by_faction_id(1, :include=> [:tagged, :taggedby, :feeds,:missions,:person]).sort{|x,y| x.time_until_death <=> y.time_until_death}
+	  @zombies = Registration.find_all_by_game_id_and_faction_id(@current_game.id, 1, :include=> [:tagged, :taggedby, :feeds,:missions,:person]).sort{|x,y| x.time_until_death <=> y.time_until_death}
 	  
 	  if @is_admin
-		  @humans = Registration.find_all_by_faction_id(0, :include=>[:person]).sort{|x,y| x.card_code <=> y.card_code}
+		  @humans = Registration.find_all_by_game_id_and_faction_id(@current_game.id, 0, :include=>[:person]).sort{|x,y| x.card_code <=> y.card_code}
 		  @humans.collect{|x| not x.is_oz}.compact
-
-		  @zombies.concat(Registration.find_all_by_faction_id(2))
+  
+      # Add all the deceased zombies.
+		  @zombies.concat(Registration.find_all_by_game_id_and_faction_id(@current_game.id, 2))
 	  end
 	  
 	  @zombiebox = @zombies.collect{|x| 
