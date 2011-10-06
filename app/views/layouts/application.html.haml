@@ -51,6 +51,8 @@
               = link_to("Contact Admins", new_contact_message_url())
           = render :partial => "index/adminnavigation" if @is_admin
         %div.content
+          - unless flash[:message].nil?
+            %div.info=flash[:message]
           - unless flash[:error].nil?
             %div.error=flash[:error]
           = yield
