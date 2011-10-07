@@ -82,7 +82,12 @@ class RegistrationsController < ApplicationController
 
 	def update
 		r = Registration.find(params[:id])
-		r.update_attributes(params[:registration])
+    if !@is_admin and r.person != @logged_in_person
+      flash[:error] = "You do not have permission to edit this registration."
+      redirect_to root_url()
+    end
+    r.attributes = params[:registration]
+    r.save(!@is_admin) # if admin, then don't validate.
 		redirect_to edit_registration_url(params[:id])
 	end
 
