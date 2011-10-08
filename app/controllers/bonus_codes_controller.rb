@@ -1,6 +1,6 @@
 class BonusCodesController < ApplicationController
   before_filter :check_is_registered, :only => [:claim]
-  before_filter :check_admin, :only => [:new, :edit, :update, :create]
+  before_filter :check_admin, :only => [:new, :edit, :update, :create, :destroy]
   def new
     @code = BonusCode.new(params[:bonus_code])
   end
@@ -52,6 +52,16 @@ class BonusCodesController < ApplicationController
       flash[:error] = "Could not find Bonus Code ID"
       redirect_to bonus_codes_url()
     end
+  end
+
+  def destroy
+    @code = BonusCode.find(params[:id])
+    if @code.nil?
+      flash[:error] = "Could not find Bonus Code ID"
+    else
+      @code.delete()
+    end
+    redirect_to bonus_codes_url()
   end
 
   def claim
