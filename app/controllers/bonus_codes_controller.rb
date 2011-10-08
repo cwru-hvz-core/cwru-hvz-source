@@ -91,12 +91,11 @@ class BonusCodesController < ApplicationController
       @bonus_code.registration = @registration
       if not @bonus_code.save()
         flash[:error] = "There was a problem registering this code. Please report this."
-        redirect_to claim_bonus_code_url()
       end
     else
       flash[:error] = "This code has already been used!"
-      redirect_to claim_bonus_code_url()
     end
+    redirect_to claim_bonus_code_url()
   end
 
 end
