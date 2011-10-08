@@ -36,7 +36,7 @@ class UpdateGameState
 		calculate_mission_scores(@players)
 		calculate_human_scores(@players)
 		calculate_zombie_tag_scores(@players)
-
+    calculate_cache_scores(@players)
 
 		update_faction_cache({:human => @human_faction,
 					  :zombie => @zombie_faction,
@@ -78,6 +78,11 @@ class UpdateGameState
 			h.score += UpdateGameState.points_for_time_survived((h.time_survived / 1.hour).floor)
 		end
 	end
+  def calculate_cache_scores(all_players)
+    all_players.each do |h|
+      h.score += h.bonus_codes.sum(:points)
+    end
+  end
 	def calculate_mission_scores(all_players)
 		all_players.each do |h|
 			h.score += h.missions.sum(:score)

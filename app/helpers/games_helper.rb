@@ -8,7 +8,17 @@ module GamesHelper
 		time_survived ||= registration.time_survived
 
 		if registration.faction_id == 0 or appears_human   # Human
-			return "Survived <span class='highlight'>" + (time_survived/1.hour).floor.to_s + "</span> Hours + <span class='highlight'>"+registration.missions.length.to_s+"</span> Missions"
+      cache_string = ""
+      caches = registration.bonus_codes.length
+      if caches > 0
+        cache_string = " + <span class='highlight'>" + caches.to_s + "</span> "
+        if caches > 1
+          cache_string = cache_string + " Caches"
+        else
+          cache_string = cache_string + " Cache"
+        end
+      end
+			return "Survived <span class='highlight'>" + (time_survived/1.hour).floor.to_s + "</span> Hours + <span class='highlight'>"+registration.missions.length.to_s+"</span> Missions" + cache_string
 		elsif registration.faction_id == 1   # Zombie
 			dies_in = (registration.state_history[:deceased]-registration.game.utc_offset)-Game.now(registration.game)
 			return "<span class='highlight'>" + registration.tagged.length.to_s + "</span> Tags (Starves in less than <span class='highlight'>" + (dies_in/1.hour).ceil.to_s + "</span> Hours)"
