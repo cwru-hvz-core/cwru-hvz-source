@@ -1,5 +1,5 @@
 class BonusCodesController < ApplicationController
-  before_filter :check_is_registered, :only => [:claim]
+  before_filter :check_is_registered, :only => [:claim, :claim_submit]
   before_filter :check_admin, :only => [:new, :edit, :update, :create, :destroy]
   def new
     @code = BonusCode.new(params[:bonus_code])
@@ -71,15 +71,15 @@ class BonusCodesController < ApplicationController
   def claim_submit
     if @is_admin
       @registration = Registration.find_by_game_id_and_person_id(@current_game.id, params[:person_id])
-      if @registration.nil?
-        flash[:error] = "Invalid Person For Current Game."
-        redirect_to claim_bonus_code_url()
-        return
-      end
     else
       @registration = @logged_in_registration
     end
-    @bonus_code = BonusCode.find_by_game_id_and_code(@current_game.id, params[:code_bonus])
+    if @registration.nil?
+      flash[:error] = "Invalid Person For Current Game."
+      redirect_to claim_bonus_code_url()
+      return
+    end
+    @bonus_code = BonusCode.find_by_game_id_and_code(@current_game.id, params[:code_bonus].upcase)
     if @bonus_code.nil?
       flash[:error] = "Invalid Code!"
       redirect_to claim_bonus_code_url()
@@ -91,11 +91,15 @@ class BonusCodesController < ApplicationController
       @bonus_code.registration = @registration
       if not @bonus_code.save()
         flash[:error] = "There was a problem registering this code. Please report this."
+        redirect_to claim_bonus_code_url()
+        return
       end
     else
       flash[:error] = "This code has already been used!"
+      redirect_to claim_bonus_code_url()
+      return
     end
-    redirect_to claim_bonus_code_url()
+    redirect_to bonus_codes_url()
   end
 
 end
