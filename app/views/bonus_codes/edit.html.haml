@@ -1,0 +1,21 @@
+%h2.dink Edit Bonus Code:
+%div.span-5
+  :plain
+    &nbsp;
+%div.span-12
+  - form_for(@code) do |f|
+    %table
+      %tbody
+        %tr
+          %td.admin= f.label :code, "Code:"
+          %td= f.text_field :code
+        %tr
+          %td.admin= f.label :points, "Points:"
+          %td= f.text_field :points
+        %tr
+          %td.admin= f.label :person_name, "Claimed By:"
+          %td
+            = f.hidden_field :person_id
+            = f.autocomplete_field :person_name, autocomplete_person_name_missions_path, :id_element => "#bonus_code_person_id"
+        %tr
+          %td{:colspan=>2, :style=>"text-align:center"}=f.submit "Update Bonus Code"

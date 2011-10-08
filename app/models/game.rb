@@ -7,6 +7,7 @@ class Game < ActiveRecord::Base
 	has_many :contact_messages
   has_many :squads
 	has_many :ozs, :class_name => "Registration", :conditions => ["is_oz = ?", true]
+  has_many :bonus_codes
 	validates_with GameValidator  # Defined in ./lib/game_validator.rb
 
 	def self.current

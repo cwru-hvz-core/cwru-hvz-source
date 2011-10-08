@@ -10,6 +10,9 @@ Hvz::Application.routes.draw do
   	match "/people/logout/" => "people#logout"
 	resources :people, :games, :tags, :feeds
 	resources :attendances
+  get "bonus_codes/claim" => "bonus_codes#claim", :as => "claim_bonus_code"
+  put "bonus_codes/claim" => "bonus_codes#claim_submit", :as => "submit_bonus_code"
+  resources :bonus_codes
 	resources :missions, :id => /[0-9]*/ do
 		get :autocomplete_person_name, :on => :collection
 	end

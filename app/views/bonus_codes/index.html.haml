@@ -1,0 +1,34 @@
+Bonus Codes can be found at various points on campus.
+%br
+=link_to "Enter Bonus Code", claim_bonus_code_url()
+%table
+  %thead
+    -if @is_admin
+      %th.admin
+        %b Code
+    - else
+      %th
+        %b Code
+    %th
+      %b Point Value
+    %th
+      %b Claimed?
+    - if @is_admin
+      %th.admin
+        %b Edit
+      %th.admin
+        %b Delete
+  %tbody
+    - @codes.each do |c|
+      %tr
+        %td=c.code
+        %td=c.points
+        - if c.registration.nil?
+          %td="No"
+        - else
+          %td=c.registration.person.name
+        - if @is_admin
+          %td.admin=link_to "Edit", edit_bonus_code_url(c)
+          %td.admin=link_to "Delete", bonus_code_url(c), {:method=>:delete, :confirm=>"Are you sure you wish to delete this code?!"}
+-if @is_admin
+  =link_to "Create New Code", new_bonus_code_url(), {:class=>"admin"}

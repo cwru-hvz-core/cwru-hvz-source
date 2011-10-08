@@ -1,0 +1,26 @@
+%h2.dink Bonus Code Input
+Hidden around campus are various bonus codes. Input the code into this box and you will be rewarded points for finding it.
+
+= form_tag(submit_bonus_code_url(), :method => :put)
+%div.span-5
+  :plain
+    &nbsp;
+%div.span-12
+  %table
+    %tbody
+      %tr
+        %td=label_tag(:code_bonus, "Bonus Code:")
+        %td=text_field_tag(:code_bonus)
+      - if @is_admin
+        %th.admin{:colspan=>2}
+          Admin Options:
+        %tr
+          %td.admin
+            %b Person:
+          %td
+            = hidden_field_tag :person_id, @logged_in_person.id
+            = autocomplete_field_tag :person_name, @logged_in_person.name, autocomplete_person_name_missions_path, :id_element => "#person_id"
+      %tr
+        %td{:colspan=>2,:style=>"text-align:center"}=submit_tag("Claim the Code!")
+
+
