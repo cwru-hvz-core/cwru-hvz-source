@@ -18,6 +18,9 @@ class MissionsController < ApplicationController
   def feeds
   	@mission = Mission.find(params[:id])
 	  @feeds = @mission.feeds.sort{|x,y| y.created_at <=> x.created_at}
+    @all_zombies = @mission.attendances.map{|x| x.registration_id if x.registration.is_zombie?}.compact
+    @fed_players = @feeds.map{|x| x.registration_id}
+    @need_feeding = Registration.find(@all_zombies - @fed_players).sort{|x,y| x.score <=> y.score}
 	  @feed = Feed.new({:mission => @mission})
   end
 

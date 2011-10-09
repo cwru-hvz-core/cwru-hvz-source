@@ -17,6 +17,10 @@ are not counted towards any kill totals or point calculations.
             =@feed.mission.end.strftime("%A @ %I:%M %p")
           (to change this time, change the
           =link_to("mission end time",edit_mission_url(@feed.mission))+")"
-%h2.dink Current Feeds:
-#feeds
+.span-10#feeds
   =render :partial => "missionfeeds"
+.span-10#need_feeding
+  %h2.dink Need To Be Fed:
+  - @need_feeding.each do |r|
+    = r.person.name
+    %br
