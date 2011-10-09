@@ -6,7 +6,7 @@ class FeedsController < ApplicationController
 	  @mission = Mission.find(params[:feed][:mission_id])
 	  @feed.datetime = @mission.end
 	  @feed.save()
-	  @feeds = @mission.feeds
+	  @feeds = @mission.feeds.sort{|x,y| y.created_at <=> x.created_at}
   end
 
 end

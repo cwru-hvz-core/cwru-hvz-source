@@ -16,9 +16,9 @@ class MissionsController < ApplicationController
   end
 
   def feeds
-  	  @mission = Mission.find(params[:id])
-	  @feeds = @mission.feeds
-	  @feed = @feeds.new
+  	@mission = Mission.find(params[:id])
+	  @feeds = @mission.feeds.sort{|x,y| y.created_at <=> x.created_at}
+	  @feed = Feed.new({:mission => @mission})
   end
 
   def create
