@@ -10,11 +10,11 @@
         %td=p.person.name
         - @day_count.times do |t|  #0 -> 9, for instance
           - good = false
-          - begin_date = (@current_game.game_begins + t.days)
+          - begin_date = (@current_game.game_begins - @current_game.utc_offset + t.days)
           - if begin_date >= p.state_history[:zombie]
             -text = "Zombie"
             -good = true
-          - end_date = (@current_game.game_begins + (t+1).days)
+          - end_date = (@current_game.game_begins - @current_game.utc_offset + (t+1).days)
           - checkins = p.check_ins.reject{|x|  x.created_at < begin_date or x.created_at > end_date}
           - checkins.each do |c|
             -good = true
