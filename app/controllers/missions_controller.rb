@@ -7,7 +7,8 @@ class MissionsController < ApplicationController
   end
 
   def attendance
-  	  @mission = Mission.find(params[:id])
+  	@mission = Mission.find(params[:id])
+    @feeds = Feed.find_all_by_mission_id(params[:id]).map{|x| x.registration_id}
 	  @attendance = @mission.attendances.new
 	  @attendances = Attendance.find_all_by_mission_id(params[:id], :include=>:registration, :order => ["created_at DESC"])
 	  @humans = @attendances.map {|x| x if x.registration.is_human?}.compact

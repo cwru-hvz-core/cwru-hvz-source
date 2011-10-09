@@ -9,3 +9,5 @@ Humans:
     %li
       =(a.registration.person.name + ' [').html_safe
       =(link_to("x",attendance_url(a), :method=>:delete) + ' ]').html_safe
+      -if not @feeds.include?(a.registration_id)
+        [un-fed]
