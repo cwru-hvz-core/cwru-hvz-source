@@ -12,4 +12,15 @@ module IndexHelper
 
 		tagger_str + tagee.name + " " + distance_of_time_in_words(tag.datetime - @current_game.utc_offset, Time.now) + " ago."
 	end
+
+  def checkin_text(checkin)
+    begin
+      person = checkin.registration.person
+      place = CheckIn.get_location(checkin.hostname)
+      checkin_str = person.name + " checked in at " + place + " " + distance_of_time_in_words(checkin.created_at, Game.now(Game.current)) + " ago."
+    rescue
+      checkin_str = "Someone checked in somewhere."
+    end
+    checkin_str
+  end
 end
