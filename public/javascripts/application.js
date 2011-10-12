@@ -202,7 +202,7 @@ var Player = function(data, game) {
     if (this.faction.key == "0") { // Human
       var hours = (new Date(this.game.retrieved_data["info"]["now"]) - 
                               new Date(this.state_history.human))/1000/3600;
-      return "Survived " + Math.max(0, hours) + " hours.";
+      return "Survived " + Math.max(0, Math.round(hours)) + " hours.";
     }
     if (this.faction.key == "1") { // Zombie
       return "Zombie.";
