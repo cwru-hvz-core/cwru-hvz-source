@@ -1,0 +1,20 @@
+%ul
+  %li
+    %a{:href => "#"} My Profile
+  %li
+    %a{:href => "#"} My Squad
+  %li
+    %a{:href => "#"} My Achievements
+  %li
+    %a{:href => "#"} Human Message Board
+  %li
+    %a{:href => "/people/logout"} Log Out
+  - if @is_admin
+    %li.admin
+      %a{:href => "/games/"} Manage Games
+    %li.admin
+      %a{:href => "/players/"} Manage Players
+    %li.admin
+      %a{:href => "/missions/list"} Manage Missions
+    %li.admin
+      %a{:href => "/contact/list"} View Messages
