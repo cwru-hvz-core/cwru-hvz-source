@@ -17,10 +17,10 @@ class MissionsController < ApplicationController
   def feeds
   	@mission = Mission.find(params[:id])
 	  @feeds = @mission.feeds.sort{|x,y| y.created_at <=> x.created_at}
-    @all_zombies = Registration.find_all_by_game_id(@current_game).keep_if{|x| x.is_zombie? or x.is_deceased?}
+    @all_zombies = Registration.find_all_by_game_id(@current_game).map{|x| x if x.is_zombie? or x.is_deceased?}.compact
     @present_zombies = @mission.attendances.map{|x| x.registration if @all_zombies.include?(x.registration)}.compact
     @fed_players = @feeds.map{|x| x.registration}
-    @need_feeding = (@all_zombies - @fed_players).sort_by{|x| [ x.state_history[:deceased], x.score]}.keep_if{|x| Game.now(@current_game) + @current_game.utc_offset - x.state_history[:deceased] < -2.hours}
+    @need_feeding = (@all_zombies - @fed_players).sort_by{|x| [ x.state_history[:deceased], x.score]}.map{|x| x if Game.now(@current_game) + @current_game.utc_offset - x.state_history[:deceased] < -2.hours}.compact
 	  @feed = Feed.new({:mission => @mission})
   end
 
