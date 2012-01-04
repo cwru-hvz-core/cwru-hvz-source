@@ -22,5 +22,10 @@ are not counted towards any kill totals or point calculations.
 .span-10#need_feeding
   %h2.dink Need To Be Fed:
   - @need_feeding.each do |r|
-    = r.person.name
+    - if @present_zombies.include?(r)
+      %b= r.person.name
+      = "(" + (r.time_until_death/1.hour).ceil.to_s + " hours, " + r.score.to_s + " points)"
+    - else 
+      = r.person.name
+      = "(" + (r.time_until_death/1.hour).ceil.to_s + " hours, " + r.score.to_s + " points)"
     %br
