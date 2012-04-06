@@ -17,18 +17,4 @@
       %li= checkin_text(i)
   %h2.dink 
     Sponsors
-  =image_tag "rhalogo.jpg", :width=>"100"
-  %br
-  %br
   =image_tag "USGlogo.jpg", :width=>"100"
-  %br
-  - unless @current_game.id.nil?
-    %h2.dink
-      OZ Family Tree
-    %table
-      -cache({:controller => "games", :action=>"show", :action_suffix=>"oz_tree", :id=>@current_game}, :expires_in => 5.minutes) do
-        - @ozs.each do |z|
-          %tr
-            %td=z.person.name
-            %td=z.total_deaths_associated
-
