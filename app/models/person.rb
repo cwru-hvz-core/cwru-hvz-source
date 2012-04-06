@@ -1,6 +1,7 @@
 class Person < ActiveRecord::Base
 	has_many :infractions # Infractions submitted by this admin
 	has_many :registrations
+    has_many :waivers
 	validates :caseid, :presence => true
 
 	attr_accessible :name, :phone # The user-modifiable fields
