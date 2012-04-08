@@ -1,7 +1,7 @@
 class RegistrationsController < ApplicationController
 	before_filter :check_admin, :only => [:index, :destroy, :submit_waiver]
 	before_filter :check_login, :only => [:new, :create, :show]
-  before_filter :check_is_registered, :only => [:joinsquad]
+  before_filter :check_is_registered, :only => [:joinsquad, :forumsync]
   before_filter :start_registration_process, :only => [:new]
 	def new
 		if @current_game.id.nil? or @current_game.registration_begins.nil? or @current_game.registration_ends.nil?
@@ -157,5 +157,12 @@ class RegistrationsController < ApplicationController
         redirect_to registration_url(@logged_in_registration)
       end
     end
+  end
+
+  def forumsync
+    if @logged_in_registration.is_human?
+      @logged_in_registration.phpbb_convert_to_faction(0)
+    end
+    return redirect_to registration_url(@logged_in_registration)
   end
 end

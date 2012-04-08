@@ -69,6 +69,17 @@ class Game < ActiveRecord::Base
 		dst_off = 1.hour if Time.now.dst?
 		ActiveSupport::TimeZone.new(self.time_zone).utc_offset + dst_off
 	end
+    def connect_to_phpbb
+      if self.phpbb_database_host.nil? || self.phpbb_database_username.nil? || self.phpbb_database_password.nil? || self.phpbb_database.nil?
+        return false
+      end
+      begin
+        conn = Mysql.connect(self.phpbb_database_host, self.phpbb_database_username, self.phpbb_database_password, self.phpbb_database)
+      rescue
+        return false
+      end
+      return conn
+    end
 #	def game_begins=(value)
 #		write_attribute(:game_begins, value) unless has_begun?
 #	end
