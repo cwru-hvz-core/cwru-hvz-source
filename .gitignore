@@ -3,5 +3,5 @@ db/*.sqlite3
 log/*.log
 tmp/**/*
 config/private.rb
-public/stylesheets/compiled/*
 *.swp
+.sass-cache

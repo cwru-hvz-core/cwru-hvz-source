@@ -13,7 +13,7 @@
 @import "blueprint/interaction";
 @import "compass/utilities/tables";
 @import "compass/css3/box-shadow";
-@import "compass/css3/gradient";
+@import "compass/css3/images";
 @import "compass/utilities/general/min";
 
 // Generate the blueprint framework according to your configuration:
@@ -22,7 +22,7 @@
 @include blueprint-scaffolding;
 
 html { 
-	@include linear-gradient(color-stops(mix($hvz-green,$bgcolor, 25%), $bgcolor 20%, $bgcolor), top);
+	@include background-image(linear-gradient(top, color-stops(mix($hvz-green,$bgcolor, 25%), $bgcolor 20%, $bgcolor)));
 	background-repeat: no-repeat;
 	background-color: $bgcolor;
 }
