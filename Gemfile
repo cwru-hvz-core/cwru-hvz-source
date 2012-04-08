@@ -7,7 +7,7 @@ gem 'rubycas-client'
 gem "compass", ">= 0.10.6"
 gem "googlevoiceapi"
 gem "rails3-jquery-autocomplete"
-gem 'delayed_job'
+gem 'delayed_job_active_record'
 gem 'gchartrb'
 gem 'RedCloth'
 gem 'hassle', :git => 'git://github.com/koppen/hassle.git'
@@ -18,6 +18,7 @@ gem 'jquery-rails', '>= 1.0.12'
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
 #gem 'sqlite3-ruby', :require => 'sqlite3'
+gem 'mysql'
 gem 'pg'
 
 # Use unicorn as the web server
