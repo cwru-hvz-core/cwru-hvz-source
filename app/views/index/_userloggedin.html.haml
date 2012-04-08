@@ -1,7 +1,7 @@
 - unless (@logged_in_person.nil? or @logged_in_person.name.nil?)
   %b{:title=>"Edit Info"}
     = link_to @logged_in_person.name + " (" + @logged_in_person.caseid + ")", edit_person_url(@logged_in_person)
-  - if(not @current_game.nil? and @current_game.ongoing?)
+  - if(not @current_game.nil?)
     %br
     - r =  Registration.find_by_person_id_and_game_id(@logged_in_person.id, @current_game.id)
     -unless r.nil?
