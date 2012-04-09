@@ -24,7 +24,7 @@ Note: Once you join or create a squad, you must remain with that squad for the r
           %td{:rowspan=>2}=link_to "Join", join_squad_url(@logged_in_registration.id, s.id), :confirm=>"Are you sure you wish to join this squad?"
         %td
           %b Leader:
-          =s.leader.person.name
+          =s.leader.person.name if s.leader
       %tr{:style=>"background-color:"+col}
         %td
           %b Members:
