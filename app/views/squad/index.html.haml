@@ -8,6 +8,7 @@ Note: Once you join or create a squad, you must remain with that squad for the r
     -if @logged_in_registration.squad_id == nil
       %th Join?
     %th Squad Members
+    %th Points
   %tbody
     /TODO: Make this awful zebra-table logic in CSS
     - i=0
@@ -19,12 +20,13 @@ Note: Once you join or create a squad, you must remain with that squad for the r
         -col = "#EFEFEF"
       %tr{:style=>"background-color:"+col}
         %td{:rowspan=>2}
-          .dink{:style=>"font-size:2em"}=s.name
+          .dink{:style=>"font-size:1.3em"}=s.name
         - if @logged_in_registration.squad_id == nil
           %td{:rowspan=>2}=link_to "Join", join_squad_url(@logged_in_registration.id, s.id), :confirm=>"Are you sure you wish to join this squad?"
         %td
           %b Leader:
           =s.leader.person.name if s.leader
+        %td{:rowspan=>2}=s.points()
       %tr{:style=>"background-color:"+col}
         %td
           %b Members:

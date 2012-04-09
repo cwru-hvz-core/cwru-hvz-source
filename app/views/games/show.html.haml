@@ -1,22 +1,37 @@
 = stylesheet_link_tag "Testing"
+%div.game-header
+  %div.span-6.prepend-1
+    %h1.dink=@game.short_name
+    %h2.dink="(" + @game.dates[:date_range] + ")"
+  %div.span-14.prepend-1.last
+    - cache({:action=>"show", :action_suffix=>"gamegraph", :id=>@game}, :expires_in => 5.minutes) do
+      = render :partial => "gamegraph"
 %div.game
-  %h2.dink=@game.short_name + " (" + @game.dates[:date_range] + ")"
-  %div.span-4
+  %div.span-4.clear
     %table.players
       %thead
         %th{:colspan=>2}
           Players:
       - cache({:action=>"show", :action_suffix=>"gamestats", :id=>@game}, :expires_in => 1.minute) do
         = render :partial => "gamestats"
-    =link_to("Sort By Point Total", game_url(@game))
-    %br
-    =link_to("Sort By Deceased Time", game_sorted_url(@game,"deceased"))
-    =link_to_if(@game.ozs_revealed?, "Zombie Tag Tree", game_tree_url(@game))
-  %div.span-14
-    - cache({:action=>"show", :action_suffix=>"gamegraph", :id=>@game}, :expires_in => 5.minutes) do
-      = render :partial => "gamegraph"
-  %div.span-4.last
-    %table.ozs
+  %div.span-6.prepend-1
+    -if @squads.length > 0
+      %table.ozs#table-squads
+        %thead
+          %th{:colspan=>2}
+            %b Top 5 Squads:
+        %tbody
+          - @squads.each do |s|
+            %tr
+              %td
+                %b=s.name
+              %td=s.points
+    -else
+      %div{:style=>"height:130px"}
+        %b No squads found.
+        This is where the top squads would be listed, but it appears that there are no squads for this game.
+  %div.span-5.prepend-1
+    %table.ozs#table-ozs
       %thead
         %th{:colspan=>2}
           %b Original Zombies:
@@ -30,9 +45,12 @@
               %td
                 %b ??????
             %td=z.score
-  %div.span-2.clear
-    &nbsp;
-  %div.span-23
+  %div.span-4.prepend-1.last
+    =link_to("Sort By Point Total", game_url(@game))
+    %br
+    =link_to("Sort By Deceased Time", game_sorted_url(@game,"deceased"))
+    =link_to_if(@game.ozs_revealed?, "Zombie Tag Tree", game_tree_url(@game))
+  %div.span-23.clear{:style=>"margin-top:30px"}
     - cache({:action => "show", :action_suffix=>"scoreboard-"+(params[:sorttype] or ""), :id=>@game}, :expires_in => 5.minutes) do
       - number = 1
       - prevscore = -1

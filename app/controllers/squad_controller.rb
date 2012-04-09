@@ -6,7 +6,7 @@ class SquadController < ApplicationController
   end
 
   def index
-    @squads = @current_game.squads
+    @squads = @current_game.squads.includes({:registrations => :person}).sort_by{|x| x.points/x.registrations.length}.reverse
   end
 
 end

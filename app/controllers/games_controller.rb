@@ -7,8 +7,9 @@ class GamesController < ApplicationController
 	end
 
 	def show
-	
+      @squads = @game.squads.includes({:registrations => :person}).sort_by{|x| x.points/x.registrations.length}.reverse.first(5)
 	end
+
 	def graphdata
 		respond_to do |format|
 			format.csv

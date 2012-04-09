@@ -1469,7 +1469,12 @@ html {
   font-size: 24px;
 }
 
-/* line 144, ../../app/stylesheets/screen.scss */
+/* line 138, ../../app/stylesheets/screen.scss */
+div.game-header div {
+  margin: 10px 0 30px 0;
+}
+
+/* line 147, ../../app/stylesheets/screen.scss */
 div.registration {
   display: inline;
   float: left;
@@ -1480,7 +1485,7 @@ div.registration {
 * html div.registration {
   overflow-x: hidden;
 }
-/* line 147, ../../app/stylesheets/screen.scss */
+/* line 150, ../../app/stylesheets/screen.scss */
 div.registration #infotable {
   display: inline;
   float: left;
@@ -1492,7 +1497,7 @@ div.registration #infotable {
 * html div.registration #infotable {
   overflow-x: hidden;
 }
-/* line 151, ../../app/stylesheets/screen.scss */
+/* line 154, ../../app/stylesheets/screen.scss */
 div.registration #signuptable {
   display: inline;
   float: left;
@@ -1504,7 +1509,7 @@ div.registration #signuptable {
   overflow-x: hidden;
 }
 
-/* line 155, ../../app/stylesheets/screen.scss */
+/* line 158, ../../app/stylesheets/screen.scss */
 .error, .alert {
   padding: 0.8em;
   margin-bottom: 1em;
@@ -1523,48 +1528,48 @@ div.registration #signuptable {
   src: url("/fonts/DINk.ttf") format("truetype");
 }
 
-/* line 163, ../../app/stylesheets/screen.scss */
+/* line 166, ../../app/stylesheets/screen.scss */
 th.admin {
   text-align: center;
   background-color: #82050b;
   color: #FFF;
 }
-/* line 168, ../../app/stylesheets/screen.scss */
+/* line 171, ../../app/stylesheets/screen.scss */
 th.admin a {
   color: #FFF;
 }
 
-/* line 172, ../../app/stylesheets/screen.scss */
+/* line 175, ../../app/stylesheets/screen.scss */
 td.admin {
   text-align: center;
   color: #82050b;
 }
-/* line 176, ../../app/stylesheets/screen.scss */
+/* line 179, ../../app/stylesheets/screen.scss */
 td.admin a {
   color: #82050b;
 }
 
-/* line 180, ../../app/stylesheets/screen.scss */
+/* line 183, ../../app/stylesheets/screen.scss */
 td.nocenter {
   text-align: left;
 }
 
-/* line 183, ../../app/stylesheets/screen.scss */
+/* line 186, ../../app/stylesheets/screen.scss */
 a.admin {
   color: #82050b;
 }
 
 /* For games#index, games#list page */
-/* line 189, ../../app/stylesheets/screen.scss */
+/* line 192, ../../app/stylesheets/screen.scss */
 table.gamelist tbody tr td {
   height: 60px;
 }
-/* line 192, ../../app/stylesheets/screen.scss */
+/* line 195, ../../app/stylesheets/screen.scss */
 table.gamelist td.name {
   font-size: 2em;
 }
 
-/* line 197, ../../app/stylesheets/screen.scss */
+/* line 200, ../../app/stylesheets/screen.scss */
 textarea {
   max-width: 390px;
 }
