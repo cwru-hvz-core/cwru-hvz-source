@@ -11,6 +11,7 @@
     =link_to("Sort By Point Total", game_url(@game))
     %br
     =link_to("Sort By Deceased Time", game_sorted_url(@game,"deceased"))
+    =link_to_if(@game.ozs_revealed?, "Zombie Tag Tree", game_tree_url(@game))
   %div.span-14
     - cache({:action=>"show", :action_suffix=>"gamegraph", :id=>@game}, :expires_in => 5.minutes) do
       = render :partial => "gamegraph"
@@ -29,7 +30,6 @@
               %td
                 %b ??????
             %td=z.score
-    =link_to("Zombie Tag Tree", game_tree_url(@game))
   %div.span-2.clear
     &nbsp;
   %div.span-23
