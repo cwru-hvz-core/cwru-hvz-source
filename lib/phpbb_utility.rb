@@ -2,7 +2,7 @@ class PHPBBUtility
   def self.get_user_ids(conn, card_code)
     return false unless conn
     begin
-      find_stmnt = conn.prepare("SELECT user_id FROM phpbb_profile_fields_data WHERE pf_card_code = ?")
+      find_stmnt = conn.prepare("SELECT user_id FROM phpbb_profile_fields_data WHERE LOWER(pf_card_code) = LOWER(?)")
       res = find_stmnt.execute(card_code).fetch
       find_stmnt.close
     rescue

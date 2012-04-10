@@ -160,9 +160,7 @@ class RegistrationsController < ApplicationController
   end
 
   def forumsync
-    if @logged_in_registration.is_human?
-      @logged_in_registration.phpbb_convert_to_faction(0)
-    end
+    @logged_in_registration.phpbb_convert_to_faction(@logged_in_registration.faction_id)
     return redirect_to registration_url(@logged_in_registration)
   end
 end
