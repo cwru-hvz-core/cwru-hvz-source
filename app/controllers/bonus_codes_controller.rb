@@ -37,7 +37,7 @@ class BonusCodesController < ApplicationController
   end
 
   def index
-    @codes = BonusCode.all
+    @codes = @current_game.bonus_codes
     if !@is_admin
       @codes = @codes.each{|x| x.registration_id.nil? and x.code = "??????"}.sort{|x,y| x.points <=> y.points}
     end
