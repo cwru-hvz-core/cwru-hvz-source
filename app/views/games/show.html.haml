@@ -24,7 +24,7 @@
           - @squads.each do |s|
             %tr
               %td
-                %b=s.name
+                %b=link_to s.name, squad_url(s.id)
               %td=s.points
     -else
       %div{:style=>"height:130px"}

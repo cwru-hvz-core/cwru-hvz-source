@@ -1,2 +1,18 @@
-<h1>Squad#show</h1>
-<p>Find me in app/views/squad/show.html.erb</p>
+%h2.dink=@squad.game.short_name
+%h3.dink=@squad.name + " -- Led by: " + @squad.leader.person.name
+%div.span-14.prepend-4
+  %table
+    %thead
+      %th Member Name
+      %th Hours Survived
+      %th Tags
+      %th Points
+    %tbody
+      -@squad.registrations.each do |r|
+        %tr
+          %td=r.person.name
+          %td=(r.time_survived/1.hour).round
+          %td=r.tagged.length
+          %td=r.display_score
+%div.clear
+  %h3.dink=link_to "Back to Scoreboard", game_url(@squad.game)

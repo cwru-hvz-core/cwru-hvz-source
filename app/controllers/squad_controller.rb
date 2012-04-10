@@ -2,6 +2,7 @@ class SquadController < ApplicationController
   before_filter :check_is_registered, :only => [:index]
 
   def show
+    @squad = Squad.find(params[:id], :include=>{:registrations => [:person, :tagged]})
         
   end
 

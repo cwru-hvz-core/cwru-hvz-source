@@ -7,7 +7,7 @@ class GamesController < ApplicationController
 	end
 
 	def show
-      @squads = @game.squads.includes({:registrations => :person}).sort_by{|x| x.points/x.registrations.length}.reverse.first(5)
+      @squads = @game.squads.includes({:registrations => :person}).select{|x| x.registrations.length >=2 }.sort_by(&:points).reverse.first(5)
 	end
 
 	def graphdata
