@@ -20,6 +20,11 @@ class GamesController < ApplicationController
 	end
 	def tree
 		@game = Game.find(params[:id]) || @current_game
+
+        if !@game.ozs_revealed?
+          flash[:error] = "Original Zombies have not been revealed yet. No peeking at the tree!"
+          redirect_to :root
+        end
 	end
 	def new
 		@game = Game.new

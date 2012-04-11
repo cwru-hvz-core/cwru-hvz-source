@@ -66,7 +66,7 @@ class UpdateGameState
 			if h.faction_id == 2
 				Delayed::Job.enqueue SendNotification.new(h.person, "Due to an error in the site, you were mistakenly marked as \"deceased\". You are no longer deceased and should continue playing as a zombie until further notice. Sorry!")
 			end
-            if faction_id != 1
+            if h.faction_id != 1
               h.phpbb_convert_to_faction(1)
             end
 
