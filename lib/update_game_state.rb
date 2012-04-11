@@ -66,16 +66,21 @@ class UpdateGameState
 			if h.faction_id == 2
 				Delayed::Job.enqueue SendNotification.new(h.person, "Due to an error in the site, you were mistakenly marked as \"deceased\". You are no longer deceased and should continue playing as a zombie until further notice. Sorry!")
 			end
+            if faction_id != 1
+              h.phpbb_convert_to_faction(1)
+            end
 
 			h.faction_id = 1
-            h.phpbb_convert_to_faction(1)
 		end
 		factions[:deceased].each do |h|
 			if h.faction_id == 1
 				Delayed::Job.enqueue SendNotification.new(h.person, "Sorry, but your status has become \"deceased\". You are now out of the game until the Final Mission. If this is a mistake (e.g. because of a mission), it should be fixed shortly. Otherwise, we'll see you at the final mission!")
 			end
+            if h.faction_id != 2
+              h.phpbb_convert_to_faction(2)
+            end
+
 			h.faction_id = 2
-            h.phpbb_convert_to_faction(2)
 		end
 	end
 
