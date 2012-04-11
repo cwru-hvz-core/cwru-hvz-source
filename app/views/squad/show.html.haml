@@ -11,7 +11,7 @@
       -@squad.registrations.each do |r|
         %tr
           %td=r.person.name
-          %td=(r.time_survived/1.hour).round
+          %td=(r.display_time_survived/1.hour).round
           %td=r.tagged.length
           %td=r.display_score
 %div.clear

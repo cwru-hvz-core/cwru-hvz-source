@@ -41,6 +41,14 @@ class Registration < ActiveRecord::Base
 		return [0, tag.datetime - real_begins].max unless tag.nil?
 		return [0, Game.now(self.game) - real_begins].max
 	end
+    def display_time_survived
+      if self.is_oz && !self.game.ozs_revealed?
+		real_begins = self.game.game_begins - self.game.utc_offset
+		return [0, Game.now(self.game) - real_begins].max
+      else
+        return self.time_survived()
+      end
+    end
 
 	def killing_tag
 		# Each human should have only one killing tag. (That is, the tag that turned them
@@ -118,7 +126,7 @@ class Registration < ActiveRecord::Base
 		deceased_time = self.game.game_ends
 		if self.is_oz
 			zombie_time = self.game.game_begins
-			deceased_time = [self.game.game_begins, self.most_recent_feed].max + 48.hours
+			deceased_time = [self.game.game_begins, self.most_recent_feed].max + 48.hours if self.game.ozs_revealed?
 		end
 		if not tag.nil?
 			zombie_time = tag.datetime + 1.hour 
