@@ -76,7 +76,7 @@ class Registration < ActiveRecord::Base
 		#recursively generates json data for this player's family tree.
 		#(the following code uses & as string delimiter
 		#	to make things nicer)
-		json = %&{id:"player#{self.id}",name:"#{self.person.name}",data:{tags:#{self.tagged.length}},children:[&
+		json = %&{id:"player#{self.id}",name:"#{self.person.name.gsub('"','\"')}",data:{tags:#{self.tagged.length}},children:[&
 		children = self.tagged(:include=>[:tagged,:person]).collect{|x| x.tagee.zombietree_json}.compact
 		json += %&#{ children.to_sentence(:last_word_connector => ",", :two_words_connector => ",") unless children.empty?}]}&
 	end
