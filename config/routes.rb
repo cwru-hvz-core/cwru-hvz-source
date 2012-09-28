@@ -21,6 +21,7 @@ Hvz::Application.routes.draw do
 	match "/missions/:id/feeds/" => "missions#feeds", :as => "mission_feeds", :via=>"get"
 	resources :players, :as => :registrations, :controller => :registrations, :id=>/[0-9]*/ do
       get 'forumsync'
+      get 'waiver'
 		resources :infractions
 	end
   get 'players/:id/waiver' => "waiver#new", :as => "sign_waiver"

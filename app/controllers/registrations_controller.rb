@@ -1,5 +1,5 @@
 class RegistrationsController < ApplicationController
-	before_filter :check_admin, :only => [:index, :destroy, :submit_waiver]
+	before_filter :check_admin, :only => [:index, :destroy, :submit_waiver, :waiver]
 	before_filter :check_login, :only => [:new, :create, :show]
   before_filter :check_is_registered, :only => [:joinsquad, :forumsync]
   before_filter :start_registration_process, :only => [:new]
@@ -118,12 +118,17 @@ class RegistrationsController < ApplicationController
 	end
 
 	def index
-		@registrations = Registration.find_all_by_game_id(@current_game.id, :include=>:person)
+		@registrations = Registration.find_all_by_game_id(@current_game.id, :include=>[:person => :waivers])
     @registrations.sort { |x,y| x.created_at <=> y.created_at }
 
 		@registrations_people = @registrations.map{|x| x.person_id}
 		@allpeople = Person.all.map{|x| x if not @registrations_people.include?(x.id)}.compact
 	end
+
+  def waiver
+    @registration = Registration.find(params[:registration_id], :include => { :person => :waivers })
+    @waiver = @registration.person.waivers.where(:game_id => @current_game.id).first
+  end
 
   def start_registration_process
     session[:is_registering] = true

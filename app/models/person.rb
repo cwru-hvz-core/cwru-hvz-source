@@ -14,4 +14,8 @@ class Person < ActiveRecord::Base
 		return false unless self.is_a?(Person) and other.is_a?(Person)
 		self.caseid == other.caseid
 	end
+
+  def signed_waiver?(game)
+    !!self.waivers.find_by_game_id(game.id)
+  end
 end
