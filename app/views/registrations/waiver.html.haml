@@ -1,0 +1,18 @@
+%h2.dink Waiver (#{@registration.person.name})
+%table
+  %thead
+    %th{:colspan => 2} Waiver Details
+  %tbody
+    %tr
+      %th{:scope => "col"} Date Signed
+      %td=@waiver.datesigned.strftime("%m/%d/%Y")
+    %tr
+      %th{:scope => "col"} Date of Birth
+      %td=@waiver.dateofbirth.strftime("%m/%d/%Y")
+    %tr
+      %th Emergency Contact
+      %td
+        #{@waiver.emergencyname} (#{@waiver.emergencyrelationship})
+    %tr
+      %th Emergency Phone
+      %td=@waiver.emergencyphone
