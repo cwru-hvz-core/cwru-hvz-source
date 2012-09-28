@@ -1,0 +1,23 @@
+%h2.dink
+  = @current_game.short_name + " Registration (Step 2 of 3)"
+%div.registration
+  .error You cannot legally sign the waiver because you are under 18.
+  .row
+    .span-22
+      %h1.dink Important!
+  .row
+    .span-22
+      You must have parental consent to play HvZ. Here's how you get it:
+      %ol
+        %li
+          Send the Waiver to your parents (it's on the
+          =link_to 'Rules page', game_rules_path(Game.current)
+          )
+        %li
+          Have them send a signed copy back to casehvz@gmail.com or to Tom
+          Dooner, 2058 E. 115th St., Cleveland, OH 44106
+  .row 
+    .span-22
+      -form_for (@w) do |f| 
+        =hidden_field :waiver, :underage, :value => true
+        =f.submit "Onwards! (Continue Registration Process)"
