@@ -122,6 +122,10 @@ html {
 		@include prepend(4);
 		@include column(19);
 		@include append-bottom(20px);
+
+    .profile_photo {
+      float: left;
+    }
 	}
 	.footer {
 		text-align:center;

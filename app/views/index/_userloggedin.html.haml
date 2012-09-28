@@ -1,3 +1,6 @@
+.profile_photo
+  =link_to gravatar_profile_url(@logged_in_person) do
+    =image_tag profile_photo_url(@logged_in_person, 64, '')
 - unless (@logged_in_person.nil? or @logged_in_person.name.nil?)
   %b{:title=>"Edit Info"}
     = link_to @logged_in_person.name + " (" + @logged_in_person.caseid + ")", edit_person_url(@logged_in_person)

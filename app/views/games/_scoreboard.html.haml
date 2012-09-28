@@ -3,7 +3,7 @@
     %li.number
       = number.to_s +  "."
     %li.picture.right
-      %img{:width=>"30", :height=>"30"}
+      =image_tag profile_photo_url(player.person, 32)
     - unless player.person.nil?
       %li.name.right{:class=>("admin" if player.person.is_admin?)}
         = player.person.name
