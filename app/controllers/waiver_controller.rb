@@ -1,6 +1,7 @@
 class WaiverController < ApplicationController
   before_filter :check_login
   before_filter :check_for_waiver
+  before_filter :redirect_if_underage
 
   def new
     if !@current_game.can_register?
@@ -16,12 +17,23 @@ class WaiverController < ApplicationController
   end
 
   def create
+    # Pass the user through if they came from the under-18 page.
+    if params[:waiver][:underage]
+      session[:underage] = true
+      return redirect_to new_registration_url()
+    end
+
     @w = Waiver.new(params[:waiver])
     @w.person = @logged_in_person
     @w.game = @current_game
 
     # Shame on me for coding these here. They really should be in the validate method of Waiver.
     # TODO: Move them there.
+
+    @age = (@current_game.game_begins.to_date - @w.dateofbirth) * 1.day / 1.year
+    if @age < 18
+      return render :under18
+    end
 
     if @w.chk1.eql?("0") or @w.chk2.eql?("0") or @w.chk3.eql?("0") or @w.chk4.eql?("0")
       flash[:error] = "Error: You must check all boxes to accept the waiver."
@@ -61,5 +73,9 @@ class WaiverController < ApplicationController
       redirect_to root_url()
       return false
     end
+  end
+
+  def redirect_if_underage
+    redirect_to new_registration_url() if session[:underage]
   end
 end

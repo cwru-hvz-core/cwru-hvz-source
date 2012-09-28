@@ -125,7 +125,7 @@ class RegistrationsController < ApplicationController
       redirect_to edit_person_url(@logged_in_person)
       return false
     end
-    if current_waiver.nil?
+    if current_waiver.nil? && !session[:underage]
       redirect_to sign_waiver_url(@logged_in_person)
       return false
     end
