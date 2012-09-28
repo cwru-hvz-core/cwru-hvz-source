@@ -57,7 +57,8 @@
               =radio_button_tag(:squad_select, "existing")
               =label_tag(:squad_select_existing, "Join an existing squad")
               %br
-              =collection_select(:registration, :squad_id, @squads, :id, :name)
+              =collection_select(:registration, :squad_id, @squads, :id, :name,
+                {:disabled => lambda{|s| !s.can_be_joined?}})
               %hr
               =radio_button_tag(:squad_select, "create")
               =label_tag(:squad_select_create, "Create a new Squad")

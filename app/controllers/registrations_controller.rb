@@ -20,7 +20,7 @@ class RegistrationsController < ApplicationController
       return
 		end
 		@registration = Registration.find_or_initialize_by_person_id_and_game_id(@person.id, @current_game.id)
-    @squads = @current_game.squads
+    @squads = @current_game.squads(:include => :registrations)
 		if not @registration.card_code.nil?
       session[:is_registering] = false
 			redirect_to registration_url(@registration)
@@ -53,6 +53,13 @@ class RegistrationsController < ApplicationController
           @registration.update_attribute(:squad, @squad)
         else
           flash[:error] = "You have been successfully registered, but there was a problem creating your squad: " + @squad.errors.full_messages.first
+        end
+      end
+      if (params[:squad_select] == "existing")
+        # Validate that the user has joined an open squad
+        if !@registration.squad.can_be_joined?
+          @registration.update_attribute(:squad, nil)
+          flash[:error] = "You have been successfully registered, but you could not be joined to the squad because it is full."
         end
       end
 
@@ -141,7 +148,7 @@ class RegistrationsController < ApplicationController
       redirect_to root_url()
       return
     end
-    unless @current_game.has_begun?
+    if !@current_game.has_begun?
       if params[:squadid].eql?("new")
         @squad = Squad.new({
           :name => params[:new_squad_name], 
@@ -153,8 +160,14 @@ class RegistrationsController < ApplicationController
           redirect_to registration_url(@logged_in_registration)
         end
       else
-        @logged_in_registration.update_attribute(:squad, Squad.find(params[:squadid]))
-        redirect_to registration_url(@logged_in_registration)
+        squad = Squad.find(params[:squadid])
+        if squad.can_be_joined?
+          @logged_in_registration.update_attribute(:squad, squad)
+          redirect_to registration_url(@logged_in_registration)
+        else
+          flash[:error] = "This squad cannot be joined."
+          redirect_to squads_url()
+        end
       end
     end
   end

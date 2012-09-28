@@ -22,7 +22,10 @@ Note: Once you join or create a squad, you must remain with that squad for the r
         %td{:rowspan=>2}
           .dink{:style=>"font-size:1.3em"}=s.name
         - if @logged_in_registration.squad_id == nil
-          %td{:rowspan=>2}=link_to "Join", join_squad_url(@logged_in_registration.id, s.id), :confirm=>"Are you sure you wish to join this squad?"
+          -if s.can_be_joined?
+            %td{:rowspan=>2}=link_to "Join", join_squad_url(@logged_in_registration.id, s.id), :confirm=>"Are you sure you wish to join this squad?"
+          -else
+            %td{:rowspan=>2} Squad Full!
         %td
           %b Leader:
           =s.leader.person.name if s.leader

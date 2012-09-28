@@ -8,4 +8,9 @@ class Squad < ActiveRecord::Base
   def points
     self.registrations.map{|x| x.display_score}.sum()
   end
+
+  def can_be_joined?
+    # TODO: Well, I guess this is a race condition.
+    self.registrations.count < 8
+  end
 end
