@@ -1,5 +1,5 @@
 class RegistrationsController < ApplicationController
-	before_filter :check_admin, :only => [:index, :destroy, :submit_waiver, :waiver]
+	before_filter :check_admin, :only => [:index, :destroy, :submit_waiver, :showwaiver]
 	before_filter :check_login, :only => [:new, :create, :show]
   before_filter :check_is_registered, :only => [:joinsquad, :forumsync]
   before_filter :start_registration_process, :only => [:new]
@@ -125,7 +125,7 @@ class RegistrationsController < ApplicationController
 		@allpeople = Person.all.map{|x| x if not @registrations_people.include?(x.id)}.compact
 	end
 
-  def waiver
+  def showwaiver
     @registration = Registration.find(params[:registration_id], :include => { :person => :waivers })
     @waiver = @registration.person.waivers.where(:game_id => @current_game.id).first
   end

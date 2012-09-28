@@ -31,7 +31,7 @@
           %td{:style=>"text-align:center"}="Yes" if r.wants_oz
           %td{:style=>"text-align:center"}
             -if r.person.signed_waiver?(@current_game)
-              =link_to "View", registration_waiver_url(r)
+              =link_to "View", registration_showwaiver_url(r)
             -else
               Needs Waiver!
           %td{:style=>"text-align:center"}=link_to("Edit", edit_registration_url(r), :class=>"admin")
