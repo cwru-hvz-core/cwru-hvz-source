@@ -1,10 +1,37 @@
+-content_for :javascripts do
+  =javascript_include_tag 'https://www.google.com/jsapi'
+  :javascript
+    google.load("visualization", "1", {packages:["corechart"]});
+    google.setOnLoadCallback(drawChart);
+    function drawChart() {
+      var data = new google.visualization.DataTable();
+      data.addColumn('number', 'Hours');
+      data.addColumn('number', 'Humans');
+      data.addColumn('number', 'Zombies');
+      data.addColumn('number', 'Deceased');
+      data.addRows(#{@graphdata.to_json});
+
+      for (var i=0; i < data.getNumberOfRows(); i++) {
+        var hour = Math.floor(data.getValue(i,0))
+        var day = Math.floor(hour / 24);
+        data.setFormattedValue(i, 0, "Day " + (day + 1) + ", " + (hour % 24) + ":00");
+      }
+
+      var options = {
+        width: '500',
+        height: '140',
+        chartArea: {left:0, top:0, width:'100%', height:'100%'},
+      };
+
+      var chart = new google.visualization.LineChart(document.getElementById('game_graph'));
+      chart.draw(data, options);
+    }
 %div.game-header
   %div.span-6.prepend-1
     %h1.dink=@game.short_name
     %h2.dink="(" + @game.dates[:date_range] + ")"
   %div.span-14.prepend-1.last
-    - cache({:action=>"show", :action_suffix=>"gamegraph", :id=>@game}, :expires_in => 5.minutes) do
-      = render :partial => "gamegraph"
+    #game_graph
 %div.game
   %div.span-4.clear
     %table.players
@@ -23,8 +50,8 @@
           - @squads.each do |s|
             %tr
               %td
-                %b=link_to s.name, squad_url(s.id)
-              %td=s.points
+                %b=link_to s["name"], squad_url(s["id"])
+              %td=s["points"]
     -else
       %div{:style=>"height:130px"}
         %b No squads found.
@@ -45,9 +72,6 @@
                 %b ??????
             %td=z.score
   %div.span-4.prepend-1.last
-    =link_to("Sort By Point Total", game_url(@game))
-    %br
-    =link_to("Sort By Deceased Time", game_sorted_url(@game,"deceased"))
     =link_to_if(@game.ozs_revealed?, "Zombie Tag Tree", game_tree_url(@game))
   %div.span-23.clear{:style=>"margin-top:30px"}
     - cache({:action => "show", :action_suffix=>"scoreboard-"+(params[:sorttype] or ""), :id=>@game}, :expires_in => 5.minutes) do

@@ -15,5 +15,7 @@ CASClient::Frameworks::Rails::Filter.configure(
       :cas_base_url => "https://login.case.edu/cas/"
     )
 
+ActiveRecord::Base.include_root_in_json = false
+
 # Initialize the rails application
 Hvz::Application.initialize!

@@ -80,6 +80,44 @@ class Game < ActiveRecord::Base
       end
       return conn
     end
+
+  def graph_data
+    states = self.registrations.map{ |x| x.state_history }
+    tslength = ((self.game_ends - self.game_begins) / 240).floor
+    @data = {}
+    240.times do |dt|
+      now = self.game_begins + (dt.seconds.to_i*tslength)
+      if (now - self.utc_offset) >= Time.now
+        break
+      end
+      @data[now] = {:zombies => 0, :deceased => 0, :humans=>0}
+      states.each do |s|
+        # States is a hash of important times of players. Like
+        # state = {:human => [time became human], :zombie => [time zombified],
+        #          :deceased => [time of death]}
+        # So, determining who is at which state is now pretty easy.
+        if s[:human] <= now
+          if s[:zombie] <= now
+            if s[:deceased] <= now
+              @data[now][:deceased] += 1
+              next
+            end
+            @data[now][:zombies] += 1
+            next
+          end
+          @data[now][:humans] += 1
+        end
+      end
+    end
+    @data = @data.sort.map do |x,y|
+      [
+        (x - game_begins) / 1.hour,
+        y[:humans],
+        y[:zombies],
+        y[:deceased]
+      ]
+    end
+  end
 #	def game_begins=(value)
 #		write_attribute(:game_begins, value) unless has_begun?
 #	end

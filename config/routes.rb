@@ -26,7 +26,6 @@ Hvz::Application.routes.draw do
 	end
   get 'players/:id/waiver' => "waiver#new", :as => "sign_waiver"
   post 'players/:id/waiver' => "waiver#create", :as => "waivers"
-	match 'games/:id/sortby/:sorttype' => "games#show", :as => "game_sorted"
 	match 'games/:id/rules' => "games#rules", :as => "game_rules"
 	match 'games/:id/graphdata' => "games#graphdata", :as => "game_graph_data"
 	match 'games/:id/tree' => "games#tree", :as => "game_tree"

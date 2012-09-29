@@ -1,23 +1,34 @@
 class GamesController < ApplicationController
 	before_filter :check_admin, :only => ['new', 'create', 'edit', 'update']
-	before_filter :get_graph_data, :only => ['show', 'graphdata']
 
 	def index
 		@games = Game.all
 	end
 
-	def show
-      @squads = @game.squads.includes({:registrations => :person}).select{|x| x.registrations.length >=2 }.sort_by(&:points).reverse.first(5)
-	end
+  def show
+    @game = Game.find(params[:id])
+    @players = @game.registrations.sort_by{ |x| -x.display_score }
+    @ozs = @game.registrations.where(:is_oz => true).includes(:person)
 
-	def graphdata
-		respond_to do |format|
-			format.csv
-		end
-	end
+    @graphdata = JSON.parse(
+      Rails.cache.fetch("v1_games_#{@game.id}_show_graphdata", :expires_in => 1.minute) do
+        @game.graph_data.to_json
+      end
+    )
+
+    @squads = JSON.parse(
+      Rails.cache.fetch("v1_games_#{@game.id}_show_squads", :expires_in => 1.minute) do
+        @game.squads.includes({:registrations => :person}).
+          select{|x| x.registrations.length >=2 }.
+          sort_by(&:points).reverse.first(5).to_json(:methods => :points)
+      end
+    )
+  end
+
 	def rules
 		@game = Game.find(params[:id]) || @current_game
 	end
+
 	def tree
 		@game = Game.find(params[:id]) || @current_game
 
@@ -58,53 +69,6 @@ class GamesController < ApplicationController
 		else
 			flash[:error] = @game.errors.full_messages.first
 			render :action => :edit
-		end
-	end
-
-	def get_graph_data
-		@game = Game.find(params[:id], :include=>:tags)
-    @players = Registration.find_all_by_game_id(@game, :include=>[:person,:taggedby,:missions,:infractions,:bonus_codes])
-    if params[:sorttype] == "deceased"
-		  @players = @players.sort_by{ |x| [x.state_history[:deceased], -x.display_score, x.person.name] }
-    else
-		  @players = @players.sort_by{ |x| [-x.display_score, x.person.name] }
-    end
-
-		@ozs = @players.map{ |x| x if x.is_oz }.compact
-		
-		# This stuff is for drawing the graph.	
-		if not fragment_exist?(:action => self.action_name, :action_suffix => "gamegraph", :id => @game.id)
-			states = @players.map{|x| x.state_history}
-			tslength = ((@game.game_ends - @game.game_begins) / 240).floor
-			@data = {}
-			240.times do |dt|
-				now = @game.game_begins + (dt.seconds.to_i*tslength)
-				if (now - @game.utc_offset) >= Time.now
-					break
-				end
-				@data[now] = {:zombies => 0, :deceased => 0, :humans=>0}
-				states.each do |s|
-					# States is a hash of important times of players. Like
-					# state = {:human => [time became human], :zombie => [time zombified], 
-					#          :deceased => [time of death]}
-					# So, determining who is at which state is now pretty easy.
-					if s[:human] <= now
-						if s[:zombie] <= now
-							if s[:deceased] <= now
-								@data[now][:deceased] += 1
-								next
-							end
-							@data[now][:zombies] += 1
-							next
-						end
-						@data[now][:humans] += 1
-					end
-				end
-			end
-			@data = @data.sort
-			@human_v_time = @data.map{|x,y| [(x - @game.game_begins)/1.hour, y[:humans]]}
-			@zombie_v_time = @data.map{|x,y| [(x - @game.game_begins)/1.hour, y[:zombies]]}
-			@deceased_v_time = @data.map{|x,y| [(x - @game.game_begins)/1.hour, y[:deceased]]}
 		end
 	end
 end
