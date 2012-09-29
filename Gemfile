@@ -2,6 +2,7 @@ source 'http://rubygems.org'
 
 gem 'rails', '3.0.3'
 gem 'haml'
+gem 'json'
 gem 'breadcrumbs'
 gem 'rubycas-client'
 gem "compass", ">= 0.10.6"
