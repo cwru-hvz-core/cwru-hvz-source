@@ -3,7 +3,9 @@
     %th From
     %th Regarding
     %th Body
+    %th Note
     %th Occurred
+    %th Edit
     %th.admin Delete
   %tbody
     - @messages.each do |m|
@@ -11,5 +13,7 @@
         %td=m.from
         %td=m.regarding
         %td=m.body
+        %td=m.note
         %td=m.occurred.strftime("%A, %B %e, %Y @ %I:%M %p")
-        %td=link_to("Delete", delete_contact_message_url(m), :class=>"admin", :method=>:delete)
+        %td=link_to("Edit", edit_contact_message_url(m))
+        %td=link_to("Delete", contact_message_url(m), :class=>"admin", :method=>:delete)
