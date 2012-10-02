@@ -36,7 +36,7 @@
         -if @is_admin
           %tr
             %td.admin=f.label :squad, "Squad"
-            %td=collection_select :registration, :squad_id, Squad.all, :id, :name, {:include_blank => true}
+            %td=collection_select :registration, :squad_id, @squads, :id, :name, {:include_blank => true}
           %tr
             %td.admin=f.label :is_off_campus, "Is Off Campus?"
             %td=f.check_box :is_off_campus

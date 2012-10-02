@@ -100,6 +100,7 @@ class RegistrationsController < ApplicationController
 
 	def edit
 		@registration = Registration.find(params[:id])
+    @squads = @current_game.squads.sort_by { |x| x.name }
 		@person = @registration.person;
 		if !@is_admin and @person != @logged_in_person
 			flash[:error] = "You do not have permission to edit this registration."
