@@ -29,10 +29,11 @@ Hvz::Application.routes.draw do
 	match 'games/:id/rules' => "games#rules", :as => "game_rules"
 	match 'games/:id/graphdata' => "games#graphdata", :as => "game_graph_data"
 	match 'games/:id/tree' => "games#tree", :as => "game_tree"
-	match "/contact/" => "contact_messages#new", :as=>"contact_messages", :via => "get"
-	match "/contact/" => "contact_messages#create", :as => "new_contact_message",:via => "post"
-	match "/contact/list(/:all)" => "contact_messages#list", :as => "list_contact_messages", :via=>"get"
-	match "/contact/:id" => "contact_messages#destroy", :as => "delete_contact_message", :via=>"delete"
+	resources :contact, :as => :contact_messages, :controller => :contact_messages do
+		collection do
+			get :list
+		end
+	end
 
   match "squads/:id" => "squad#show", :as=> "squad"
   match "squads" => "squad#index", :as=> "squads"

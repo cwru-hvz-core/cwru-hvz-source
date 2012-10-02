@@ -20,7 +20,9 @@ gem 'jquery-rails', '>= 1.0.12'
 
 gem 'sqlite3-ruby', :require => 'sqlite3'
 gem 'mysql'
-gem 'pg'
+group :production do
+	gem 'pg'
+end
 
 # Use unicorn as the web server
 # gem 'unicorn'
