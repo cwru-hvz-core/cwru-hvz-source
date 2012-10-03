@@ -6,9 +6,9 @@ gem 'json'
 gem 'breadcrumbs'
 gem 'rubycas-client'
 gem "compass", ">= 0.10.6"
-gem "googlevoiceapi"
 gem "rails3-jquery-autocomplete"
 gem 'delayed_job_active_record'
+gem 'twilio'
 gem 'gchartrb'
 gem 'RedCloth'
 gem 'hassle', :git => 'git://github.com/koppen/hassle.git'

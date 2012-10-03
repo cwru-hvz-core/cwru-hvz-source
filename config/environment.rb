@@ -3,7 +3,6 @@ require File.expand_path('../application', __FILE__)
 
 require 'casclient'
 require 'casclient/frameworks/rails/filter'
-require 'googlevoiceapi'
 require 'hassle'
 require './lib/update_game_state.rb'
 require './lib/send_notification.rb'

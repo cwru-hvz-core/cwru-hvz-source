@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121002214152) do
+ActiveRecord::Schema.define(:version => 20121003162040) do
 
   create_table "attendances", :force => true do |t|
     t.integer   "registration_id"
@@ -73,27 +73,25 @@ ActiveRecord::Schema.define(:version => 20121002214152) do
   end
 
   create_table "games", :force => true do |t|
-    t.string    "short_name"
-    t.timestamp "registration_begins"
-    t.timestamp "registration_ends"
-    t.timestamp "game_begins"
-    t.timestamp "game_ends"
-    t.timestamp "created_at"
-    t.timestamp "updated_at"
-    t.boolean   "is_current"
-    t.text      "information",                :default => "No information given."
-    t.text      "rules",                      :default => "No rules have been posted yet. Check back later!"
-    t.string    "time_zone",                  :default => "Eastern Time (US & Canada)"
-    t.string    "gv_username"
-    t.string    "gv_password"
-    t.timestamp "oz_reveal"
-    t.string    "phpbb_database_host"
-    t.string    "phpbb_database_username"
-    t.string    "phpbb_database_password"
-    t.string    "phpbb_database"
-    t.string    "phpbb_field_identification"
-    t.integer   "phpbb_human_group"
-    t.integer   "phpbb_zombie_group"
+    t.string   "short_name"
+    t.datetime "registration_begins"
+    t.datetime "registration_ends"
+    t.datetime "game_begins"
+    t.datetime "game_ends"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.boolean  "is_current"
+    t.text     "information",                :default => "No information given."
+    t.text     "rules",                      :default => "No rules have been posted yet. Check back later!"
+    t.string   "time_zone",                  :default => "Eastern Time (US & Canada)"
+    t.datetime "oz_reveal"
+    t.string   "phpbb_database_host"
+    t.string   "phpbb_database_username"
+    t.string   "phpbb_database_password"
+    t.string   "phpbb_database"
+    t.string   "phpbb_field_identification"
+    t.integer  "phpbb_human_group"
+    t.integer  "phpbb_zombie_group"
   end
 
   create_table "infractions", :force => true do |t|

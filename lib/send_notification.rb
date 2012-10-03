@@ -10,9 +10,6 @@
 
 class SendNotification
   def initialize(*params)
-    @un = Game.current.gv_username
-    @pw = Game.current.gv_password
-
     if params[0].is_a?(Symbol)
       case params[0]
       when :tag then enqueue_tag_messages(params[1], params[2], params[3])
@@ -28,23 +25,23 @@ class SendNotification
   end
 
   def perform
-    api = GoogleVoice::Api.new(@un, @pw) unless (@un.nil? or @un.empty?)
+    Twilio.connect(ENV['TWILIO_ACCOUNT_SID'], ENV['TWILIO_AUTH_TOKEN'])
 
     if not @mass_text.nil?
       @mass_text.each do |x|
         begin
-          api.sms(x[0].phone, x[1]) if (not x[0].phone.nil? and not x[0].phone.empty?)
+          Twilio::Sms.message(ENV['TWILIO_PHONE_NUMBER'], x[0].phone, x[1]) if (not x[0].phone.nil? and not x[0].phone.empty?)
         rescue
-          puts "Could not log into Google Voice"
+          puts "Could not send Twilio message."
         end
       end
     end
 
-    if not @to_player.nil? and not @to_player.phone.nil? and not @to_player.phone.empty? and api
+    if not @to_player.nil? and not @to_player.phone.nil? and not @to_player.phone.empty?
       begin
-        api.sms(@to_player.phone, @message) if (not @to_player.phone.empty?)
+        Twilio::Sms.message(ENV['TWILIO_PHONE_NUMBER'], @to_player.phone, @message) if (not @to_player.phone.empty?)
       rescue
-        puts "Could not log into Google Voice"
+        puts "Could not send Twilio message."
       end
     end
   end
@@ -62,10 +59,7 @@ class SendNotification
       end
       messages.push([@tagee.person, msg])
     end
-    #@tagger = tag.tagger
-    #unless @tagger.nil?
-    # messages.push([@tagger.person, "You have gotten a tag!" + @tagger.card_code])
-    #end
+
     unless feed1.registration.nil?
       if tag.tagger.nil?
         # If it was an administrative kill...
@@ -75,6 +69,7 @@ class SendNotification
         messages.push([feed1.registration.person, "You have been fed by " + tag.tagger.person.name + ". You now need a feed before " + feed1.registration.state_history[:deceased].strftime("%A @ %I:%M %p")])
       end
     end
+
     unless feed2.registration.nil?
       if tag.tagger.nil?
         # If it was an administrative kill...
