@@ -37,6 +37,11 @@ class GamesController < ApplicationController
           redirect_to :root
         end
 	end
+
+  def heatmap
+    @tags = @current_game.tags
+  end
+
 	def new
 		@game = Game.new
 	end
