@@ -16,6 +16,6 @@ class Person < ActiveRecord::Base
 	end
 
   def signed_waiver?(game)
-    !!self.waivers.find_by_game_id(game.id)
+    !!self.waivers.detect{ |w| w.game_id == game.id }
   end
 end
