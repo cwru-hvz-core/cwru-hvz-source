@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121002143805) do
+ActiveRecord::Schema.define(:version => 20121002214152) do
 
   create_table "attendances", :force => true do |t|
     t.integer   "registration_id"
@@ -161,6 +161,8 @@ ActiveRecord::Schema.define(:version => 20121002143805) do
     t.timestamp "created_at"
     t.timestamp "updated_at"
     t.integer   "admin_id"
+    t.decimal   "latitude"
+    t.decimal   "longitude"
   end
 
   create_table "waivers", :force => true do |t|
