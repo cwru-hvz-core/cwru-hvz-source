@@ -8,7 +8,7 @@ Hvz::Application.routes.draw do
   # first created -> highest priority.
   	match "/people/login/" => "people#login"
   	match "/people/logout/" => "people#logout"
-	resources :people, :games, :tags, :feeds
+	resources :people, :tags, :feeds
 	resources :attendances
   get "bonus_codes/claim" => "bonus_codes#claim", :as => "claim_bonus_code"
   put "bonus_codes/claim" => "bonus_codes#claim_submit", :as => "submit_bonus_code"
@@ -26,9 +26,15 @@ Hvz::Application.routes.draw do
 	end
   get 'players/:id/waiver' => "waiver#new", :as => "sign_waiver"
   post 'players/:id/waiver' => "waiver#create", :as => "waivers"
-	match 'games/:id/rules' => "games#rules", :as => "game_rules"
-	match 'games/:id/graphdata' => "games#graphdata", :as => "game_graph_data"
-	match 'games/:id/tree' => "games#tree", :as => "game_tree"
+
+  resources :games do
+    member do
+      get 'rules'
+      get 'tree'
+      get 'heatmap'
+    end
+  end
+
 	resources :contact, :as => :contact_messages, :controller => :contact_messages do
 		collection do
 			get :list

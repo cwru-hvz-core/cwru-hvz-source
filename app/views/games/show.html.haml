@@ -90,7 +90,7 @@
                 %b ??????
             %td=z.score
   %div.span-4.prepend-1.last
-    =link_to_if(@game.ozs_revealed?, "Zombie Tag Tree", game_tree_url(@game))
+    =link_to_if(@game.ozs_revealed?, "Zombie Tag Tree", tree_game_url(@game))
   %div.span-23.clear{:style=>"margin-top:30px"}
     - cache({:action => "show", :action_suffix=>"scoreboard-"+(params[:sorttype] or ""), :id=>@game}, :expires_in => 5.minutes) do
       - number = 1
