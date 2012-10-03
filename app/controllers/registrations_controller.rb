@@ -118,13 +118,10 @@ class RegistrationsController < ApplicationController
 		end
 	end
 
-	def index
-		@registrations = Registration.find_all_by_game_id(@current_game.id, :include=>[:person => :waivers])
-    @registrations.sort { |x,y| x.created_at <=> y.created_at }
-
-		@registrations_people = @registrations.map{|x| x.person_id}
-		@allpeople = Person.all.map{|x| x if not @registrations_people.include?(x.id)}.compact
-	end
+  def index
+    @registrations = Registration.find_all_by_game_id(@current_game.id, :include=>[:person => :waivers])
+    @registrations.sort_by { |r| r.score }
+  end
 
   def showwaiver
     @registration = Registration.find(params[:registration_id], :include => { :person => :waivers })
