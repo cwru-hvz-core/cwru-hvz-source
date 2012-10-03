@@ -9,7 +9,24 @@
       data.addColumn('number', 'Humans');
       data.addColumn('number', 'Zombies');
       data.addColumn('number', 'Deceased');
-      data.addRows(#{@graphdata.to_json});
+      /*
+      Here's the data!
+
+        Column 1:   Hours since the beginning of the game.
+        Calumn 2-4: Humans, Zombies, Deceased at that Hour
+
+      There will always be 240 entries in the data set.
+
+      If you're going to do something with this data, let us know! You don't
+      have to, but we're curious where our data ends up :). For example, a
+      biology professor used our data to write a disease spread rate calculation
+      lab.
+
+      casehvz@gmail.com
+      */
+      var graph_data = #{@graphdata.to_json}
+
+      data.addRows(graph_data);
 
       for (var i=0; i < data.getNumberOfRows(); i++) {
         var hour = Math.floor(data.getValue(i,0))
