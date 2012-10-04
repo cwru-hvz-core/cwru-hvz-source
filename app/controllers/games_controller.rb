@@ -1,5 +1,5 @@
 class GamesController < ApplicationController
-	before_filter :check_admin, :only => ['new', 'create', 'edit', 'update']
+	before_filter :check_admin, :only => [:new, :create, :edit, :update, :heatmap]
 
 	def index
 		@games = Game.all
@@ -39,7 +39,7 @@ class GamesController < ApplicationController
 	end
 
   def heatmap
-    @tags = @current_game.tags
+    @tags = @current_game.tags.sort_by { |x| x.latitude }
   end
 
 	def new
