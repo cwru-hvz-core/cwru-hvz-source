@@ -2,7 +2,7 @@ class CheckIn < ActiveRecord::Base
   belongs_to :registration
 
   def self.get_location(hostname)
-    nord = [/[0-9a-z]*\.scl.case.edu/, /[0-9a-z]*\.scl.cwru.edu/]
+    nord = [/cse-xdnord-[0-9]+\.engineering.case.edu/, /cse-xdnord-[0-9]+\.engineering.cwru.edu/]
     wade = [/benewah.stuaff.cwru.edu/, /acpe-184-59-134-35.neo.res.rr.com/, /minnehaha.stuaff.cwru.edu/, /antrim.stuaff.cwru.edu/, /lapeer.stuaff.cwru.edu/]
     nord.each do |n|
       if n.match(hostname.downcase)
@@ -21,7 +21,7 @@ class CheckIn < ActiveRecord::Base
   # time must be from Time.now.utc + Game.current.utc_offset/1.hour
   # TODO: I think this will break if Game.current.utc_offset > 6 hours... but I'm not 100% sure.
     if location == "Wade"
-      return true if time.hour < 6 or time.hour >= 18    
+      return true if time.hour < 6 or time.hour >= 18
     end
     if location == "Nord"
       return true if time.hour >=6 and time.hour < 18
