@@ -17,6 +17,10 @@ are not counted towards any kill totals or point calculations.
             =@feed.mission.end.strftime("%A @ %I:%M %p")
           (to change this time, change the
           =link_to("mission end time",edit_mission_url(@feed.mission))+")"
+      %tr
+        %td Mass Feeds?
+        %td
+          .admin=link_to "Feed The Whole Horde", feeds_create_url(:mass_feed => 'true', :mission_id => @feed.mission_id), :confirm => "Are you sure you wish to feed the whole horde?"
 .span-10#feeds
   =render :partial => "missionfeeds"
 .span-10#need_feeding
