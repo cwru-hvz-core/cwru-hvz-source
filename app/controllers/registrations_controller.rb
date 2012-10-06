@@ -1,6 +1,6 @@
 class RegistrationsController < ApplicationController
-	before_filter :check_admin, :only => [:index, :destroy, :submit_waiver, :showwaiver]
-	before_filter :check_login, :only => [:new, :create, :show]
+  before_filter :check_admin, :only => [:index, :destroy, :submit_waiver, :showwaiver, :find_by_code]
+  before_filter :check_login, :only => [:new, :create, :show]
   before_filter :check_is_registered, :only => [:joinsquad, :forumsync]
   before_filter :start_registration_process, :only => [:new]
 	def new
@@ -178,5 +178,9 @@ class RegistrationsController < ApplicationController
   def forumsync
     @logged_in_registration.phpbb_convert_to_faction(@logged_in_registration.faction_id)
     return redirect_to registration_url(@logged_in_registration)
+  end
+
+  def find_by_code
+    @players = @current_game.registrations.includes(:person)
   end
 end

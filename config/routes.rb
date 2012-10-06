@@ -24,6 +24,7 @@ Hvz::Application.routes.draw do
       get 'showwaiver'
 		resources :infractions
 	end
+  match '/players/find_by_code/' => 'registrations#find_by_code', :as => 'find_registration_by_code', :via => 'get'
   get 'players/:id/waiver' => "waiver#new", :as => "sign_waiver"
   post 'players/:id/waiver' => "waiver#create", :as => "waivers"
 
