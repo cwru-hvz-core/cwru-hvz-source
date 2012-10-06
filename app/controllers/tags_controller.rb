@@ -8,8 +8,10 @@ class TagsController < ApplicationController
 			return
 	  end
 	  @tag = Tag.new
-	  @zombies = Registration.find_all_by_game_id_and_faction_id(@current_game.id, 1, :include=> [:tagged, :taggedby, :feeds,:missions,:person]).sort{|x,y| x.time_until_death <=> y.time_until_death}
-	  
+    @zombies = Registration.where(:game_id => @current_game, :faction_id => 1).
+      includes(:tagged, :taggedby, :feeds, :missions, :person).
+      sort_by { |x| [ (x.time_until_death / 1.hour).ceil, -x.tagged.length ] }
+
 	  if @is_admin
 		  @humans = Registration.find_all_by_game_id_and_faction_id(@current_game.id, 0, :include=>[:person]).sort{|x,y| x.card_code <=> y.card_code}
 		  @humans.collect{|x| not x.is_oz}.compact
@@ -18,13 +20,13 @@ class TagsController < ApplicationController
 		  @zombies.concat(Registration.find_all_by_game_id_and_faction_id(@current_game.id, 2))
 	  end
 	  
-	  @zombiebox = @zombies.collect{|x| 
-		  if x.time_until_death > 0
-			  [x.person.name + " ("+x.missions.length.to_s+" missions, "+x.tagged.length.to_s+" tags, " + (x.time_until_death/1.hour).ceil.to_s + " hours left) ", x.id]
-	  	  else
-			  [x.person.name + " (Deceased)", x.id]
-		  end
-	  }
+    @zombiebox = @zombies.map do |x|
+      if x.time_until_death > 0
+        ["#{x.person.name} (#{x.missions.length} missions, #{x.tagged.length} tags, #{(x.time_until_death/1.hour).ceil} hours left) ", x.id]
+        else
+        ["#{x.person.name} (Deceased)", x.id]
+      end
+    end
   end
 
   def create
