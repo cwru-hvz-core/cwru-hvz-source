@@ -111,14 +111,21 @@ class Registration < ActiveRecord::Base
     # A player is human if and only if they have not been tagged in game (i.e. outside a mission)
     self.killing_tag.nil? and not self.is_oz
   end
+
   def is_zombie?
     # A player is a zombie if they have been tagged in game and have not yet starved.
     return true if self.is_oz and self.most_recent_feed + 48.hours >= Game.now(self.game)+Game.current.utc_offset
     return (!self.killing_tag.nil? and self.most_recent_feed + 48.hours >= Game.now(self.game)+Game.current.utc_offset)
   end
+
   def is_deceased?
     # A player is deceased if they are not human and not a zombie.
     return (!self.is_human? and !self.is_zombie?)
+  end
+
+  def is_recently_deceased?
+    # If the player has died in the past 2 hours
+    (Game.now(self.game) - (self.state_history[:deceased] - self.game.utc_offset)) < 2.hours
   end
 
   def state_history
