@@ -17,7 +17,9 @@ class MissionsController < ApplicationController
   def feeds
     @mission = Mission.find(params[:id])
     @feeds = @mission.feeds.sort{|x,y| y.created_at <=> x.created_at}
-    @all_zombies = Registration.find_all_by_game_id(@current_game).map{|x| x if x.is_zombie? or x.is_deceased?}.compact
+    @all_zombies = Registration.where(:game_id => @current_game.id).
+      includes(:attendances).
+      select{|x| x.is_zombie? || x.is_deceased?}
     @present_zombies = @mission.attendances.map{|x| x.registration if @all_zombies.include?(x.registration)}.compact
     @fed_players = @feeds.map{|x| x.registration}
     @need_feeding = (@all_zombies - @fed_players).sort_by{|x| [ x.state_history[:deceased], x.score]}

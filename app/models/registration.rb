@@ -12,6 +12,7 @@ class Registration < ActiveRecord::Base
   has_many :taggedby, :foreign_key => "tagee_id", :class_name => "Tag"
   has_many :check_ins
   has_many :bonus_codes
+  has_many :attendances
 
   validates_uniqueness_of :person_id, :scope => :game_id
   validates_uniqueness_of :card_code, :scope => :game_id
