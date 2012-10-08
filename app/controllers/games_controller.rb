@@ -39,7 +39,7 @@ class GamesController < ApplicationController
 	end
 
   def heatmap
-    @tags = @current_game.tags.sort_by { |x| x.latitude }
+    @tags = @current_game.tags.sort_by { |x| x.latitude || 0 }
   end
 
 	def new
