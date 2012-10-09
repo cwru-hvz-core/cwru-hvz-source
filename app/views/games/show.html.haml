@@ -7,15 +7,20 @@
       var data = new google.visualization.DataTable();
       data.addColumn('number', 'Hours');
       data.addColumn('number', 'Humans');
+      data.addColumn({type: 'boolean', role: 'certainty'});
       data.addColumn('number', 'Zombies');
+      data.addColumn({type: 'boolean', role: 'certainty'});
       data.addColumn('number', 'Deceased');
+      data.addColumn({type: 'boolean', role: 'certainty'});
       /*
       Here's the data!
 
         Column 1:   Hours since the beginning of the game.
-        Calumn 2-4: Humans, Zombies, Deceased at that Hour
+        Column 2-4: Humans, Zombies, Deceased at that Hour
+        Column 5:   Whether this is the actual game state (true) or a projection
+                    (false)
 
-      There will always be 240 entries in the data set.
+      There will up to 240 entries in the data set.
 
       If you're going to do something with this data, let us know! You don't
       have to, but we're curious where our data ends up :). For example, a

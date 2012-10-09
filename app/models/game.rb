@@ -87,7 +87,7 @@ class Game < ActiveRecord::Base
     @data = {}
     240.times do |dt|
       now = self.game_begins + (dt.seconds.to_i*tslength)
-      if (now - self.utc_offset) >= Time.now
+      if (now - self.utc_offset) >= (Time.now + 48.hours)
         break
       end
       @data[now] = {:zombies => 0, :deceased => 0, :humans=>0}
@@ -113,8 +113,11 @@ class Game < ActiveRecord::Base
       [
         (x - game_begins) / 1.hour,
         y[:humans],
+        (x - utc_offset) < Time.now, # Certainty of the Human points
         y[:zombies],
-        y[:deceased]
+        (x - utc_offset) < Time.now, # Certainty of the Zombie points
+        y[:deceased],
+        (x - utc_offset) < Time.now, # Certainty of the Deceased points
       ]
     end
   end
