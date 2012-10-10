@@ -40,6 +40,9 @@ class GamesController < ApplicationController
 
   def heatmap
     @tags = @current_game.tags.sort_by { |x| x.latitude || 0 }
+		if params[:tagger_id].present?
+			@tags.select!{|tag| tag.tagger_id == params[:tagger_id].to_i}
+		end
   end
 
 	def new
