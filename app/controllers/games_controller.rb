@@ -1,5 +1,5 @@
 class GamesController < ApplicationController
-	before_filter :check_admin, :only => [:new, :create, :edit, :update, :heatmap]
+	before_filter :check_admin, :only => [:new, :create, :edit, :update]
 
 	def index
 		@games = Game.all
