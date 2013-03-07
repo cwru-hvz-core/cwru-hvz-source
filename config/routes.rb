@@ -36,6 +36,7 @@ Hvz::Application.routes.draw do
     end
   end
 
+  match '/contact' => 'contact_messages#new'
 	resources :contact, :as => :contact_messages, :controller => :contact_messages do
 		collection do
 			get :list
