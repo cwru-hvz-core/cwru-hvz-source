@@ -2,7 +2,7 @@ class GamesController < ApplicationController
 	before_filter :check_admin, :only => [:new, :create, :edit, :update]
 
 	def index
-		@games = Game.includes(:registrations).all
+		@games = Game.includes(:registrations).order(:game_begins).all
 	end
 
   def show
