@@ -37,6 +37,10 @@ GEM
       activemodel (= 3.0.19)
       activesupport (= 3.0.19)
     activesupport (3.0.19)
+    airbrake (3.1.8)
+      activesupport
+      builder
+      json
     arel (2.0.10)
     breadcrumbs (0.1.6)
       i18n
@@ -121,6 +125,7 @@ PLATFORMS
 
 DEPENDENCIES
   RedCloth
+  airbrake
   breadcrumbs
   compass (>= 0.10.6)
   dalli
