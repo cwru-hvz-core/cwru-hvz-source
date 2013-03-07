@@ -3,7 +3,7 @@
     Error:
     =flash[:message]
 %table
-  - form_for(@game) do |f|
+  = form_for(@game) do |f|
     %tr
       %td= f.label :short_name, "Short Name:"
       %td= f.text_field :short_name

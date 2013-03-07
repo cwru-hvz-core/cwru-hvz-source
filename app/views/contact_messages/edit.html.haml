@@ -5,7 +5,7 @@
     %thead
       %th{:colspan=>2} Edit Note
     %tbody
-      -form_for(@contact_message) do |j|
+      =form_for(@contact_message) do |j|
         %tr
           %td= j.label :note, "Notes regarding this: "
           %td= j.text_area :note

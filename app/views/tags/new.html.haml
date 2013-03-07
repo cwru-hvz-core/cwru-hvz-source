@@ -32,7 +32,7 @@
     %thead
       %th{:colspan=>2} Report a Tag
     %tbody
-      - form_for(@tag) do |f|
+      = form_for(@tag) do |f|
         %tr
           %td=f.label :tagee_card_code, "Victim Card Code:"
           %td=f.text_field :tagee_card_code
@@ -65,7 +65,7 @@
           %td{:colspan=>2}
             Except in the case of an incorrectly represented tag, all players (admins included) should use the above "Report a Tag" form.
             This special "Admin Tag Report" is only to be used to report a tag for a player or to convert a player to the zombie team.
-        -form_for(@tag) do |f|
+        =form_for(@tag) do |f|
           %tr
             %td=f.label :tagee_id, "Person Tagged:"
             %td=select :tag, :tagee_id, @humans.collect{|x| ["(" + x.card_code + ") - " + x.person.name, x.id]}

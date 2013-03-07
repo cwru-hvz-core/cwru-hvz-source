@@ -1,5 +1,5 @@
 %h2.dink Add New Attendee:
-- form_for(@attendance,:remote=>:true,:update=>"attendances") do |f|
+= form_for(@attendance,:remote=>:true,:update=>"attendances") do |f|
   = f.hidden_field :person_id
   = f.autocomplete_field :person_name, autocomplete_person_name_missions_path, :id_element => "#attendance_person_id"
   = f.hidden_field :mission_id, :value => @mission.id

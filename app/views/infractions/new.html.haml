@@ -4,7 +4,7 @@
       %th.admin{:colspan=>2}Report an Infraction
     %tbody
       %tr
-        -form_for(@infraction, :url => registration_infractions_path, :html => {:method => :post}) do |f|
+        =form_for(@infraction, :url => registration_infractions_path, :html => {:method => :post}) do |f|
           %tr
             %td=f.label :registration_id, "Offender:"
             %td=select :infraction, :registration_id, @players.collect{|x| [x.person.name, x.id]}, :default => @registration

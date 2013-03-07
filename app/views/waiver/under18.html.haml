@@ -18,6 +18,6 @@
           Dooner, 2058 E. 115th St., Cleveland, OH 44106
   .row 
     .span-22
-      -form_for (@w) do |f| 
+      =form_for (@w) do |f|
         =hidden_field :waiver, :underage, :value => true
         =f.submit "Onwards! (Continue Registration Process)"

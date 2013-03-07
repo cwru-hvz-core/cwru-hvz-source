@@ -36,7 +36,7 @@
     %table
       %thead
         %th{:colspan=>2} Registration:
-        - form_for(@registration) do |f|
+        = form_for(@registration) do |f|
           %tr
             %td
               %b=f.label :wants_oz, "Place me in the Original Zombie Pool:"

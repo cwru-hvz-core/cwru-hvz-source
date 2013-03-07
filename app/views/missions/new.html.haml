@@ -2,7 +2,7 @@
   %thead
     %th{:colspan=>2} New Mission!
   %tbody
-    -form_for(@mission) do |f|
+    =form_for(@mission) do |f|
       %tr
         %td
           %b=f.label :title, "Title:"

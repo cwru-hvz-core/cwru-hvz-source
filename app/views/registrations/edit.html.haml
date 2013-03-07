@@ -3,7 +3,7 @@
     %thead
       %th{:colspan=>2} Person Details
     %tbody
-      -form_for (@person) do |f|
+      =form_for (@person) do |f|
         %tr
           %td=f.label :name, "Full Name:"
           %td=f.text_field :name
@@ -26,7 +26,7 @@
     %thead
       %th{:colspan=>2} Registration Details
     %tbody
-      -form_for (@registration) do |f|
+      =form_for (@registration) do |f|
         %tr
           %td=f.label :card_code, "Card Code:"
           %td=f.text_field :card_code, :disabled => :true
