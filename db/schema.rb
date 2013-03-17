@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121003162040) do
+ActiveRecord::Schema.define(:version => 20130317215828) do
 
   create_table "attendances", :force => true do |t|
     t.integer   "registration_id"
@@ -59,6 +59,7 @@ ActiveRecord::Schema.define(:version => 20121003162040) do
     t.string    "locked_by"
     t.timestamp "created_at"
     t.timestamp "updated_at"
+    t.string    "queue"
   end
 
   add_index "delayed_jobs", ["priority", "run_at"], :name => "delayed_jobs_priority"
