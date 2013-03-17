@@ -1,6 +1,6 @@
 source 'http://rubygems.org'
 
-gem 'rails', '3.0.19'
+gem 'rails', '3.2.12'
 gem 'haml'
 gem 'json'
 gem 'breadcrumbs'
