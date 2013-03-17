@@ -29,6 +29,10 @@ Hvz::Application.routes.draw do
   post 'players/:id/waiver' => "waiver#create", :as => "waivers"
 
   resources :games do
+    collection do
+      post 'update_current'
+    end
+
     member do
       get 'rules'
       get 'tree'

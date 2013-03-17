@@ -1,17 +1,24 @@
 %div.span-22.last
-  %table.gamelist
-    %thead
-      %th Game
-      %th Players
-      %th Victor
-      - if @is_admin
-        %th.admin Edit Link
-    %tbody
-      - @games.each do |g| 
-        %tr
-          %td.name=link_to(g.short_name, game_url(g))
-          %td NumPlayers
-          %td Victor
-          - if @is_admin
-            %td.admin=link_to "Edit Link", edit_game_url(g)
-  = link_to("Add New Game", new_game_url(),:class=>"admin") if @is_admin
+  =form_tag(update_current_games_path) do
+    %table.gamelist
+      %thead
+        %th Game
+        %th{ :width => 200 } Players
+        %th{ :width => 200 } Current Game?
+        - if @is_admin
+          %th.admin Edit Link
+      %tbody
+        - @games.each do |g|
+          %tr
+            %td.name=link_to(g.short_name, game_url(g))
+            %td= g.registrations.length
+            %td= radio_button_tag :active_game, g.id, g.is_current
+            - if @is_admin
+              %td.admin=link_to "Edit Link", edit_game_url(g)
+      %tfoot
+        %th
+        %th
+        %th= submit_tag 'Update Current Game'
+        %th
+    %div
+      = link_to("Add New Game", new_game_url(),:class=>"admin") if @is_admin

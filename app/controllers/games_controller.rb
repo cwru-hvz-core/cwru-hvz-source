@@ -2,7 +2,7 @@ class GamesController < ApplicationController
 	before_filter :check_admin, :only => [:new, :create, :edit, :update]
 
 	def index
-		@games = Game.all
+		@games = Game.includes(:registrations).order(:game_begins).all
 	end
 
   def show
@@ -79,4 +79,11 @@ class GamesController < ApplicationController
 			render :action => :edit
 		end
 	end
+
+  def update_current
+    @game = Game.find(params[:active_game])
+    @game.set_current
+
+    redirect_to games_url
+  end
 end

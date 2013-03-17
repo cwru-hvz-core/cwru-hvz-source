@@ -121,11 +121,13 @@ class Game < ActiveRecord::Base
       ]
     end
   end
-#	def game_begins=(value)
-#		write_attribute(:game_begins, value) unless has_begun?
-#	end
-#	def game_ends=(value)
-#		assign_multiparameter_attributes(:game_ends, value) unless has_ended?
-#	end
+
+  def set_current
+   if update_attribute(:is_current, true)
+     Game.where('is_current = ? AND id <> ?', true, id).each do |g|
+       g.update_attribute(:is_current, false)
+     end
+   end
+  end
 end
 
