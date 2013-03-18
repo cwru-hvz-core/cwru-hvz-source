@@ -71,6 +71,7 @@ GEM
     mime-types (1.21)
     multi_json (1.7.0)
     multi_xml (0.5.3)
+    newrelic_rpm (3.5.8.72)
     pg (0.14.1)
     polyglot (0.3.3)
     rack (1.4.5)
@@ -138,6 +139,7 @@ DEPENDENCIES
   haml
   jquery-rails (>= 1.0.12)
   json
+  newrelic_rpm
   pg
   rails (= 3.2.12)
   rails3-jquery-autocomplete
