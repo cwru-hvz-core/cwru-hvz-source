@@ -30,7 +30,7 @@ class RegistrationsController < ApplicationController
 	def submit_waiver
 		@reg = Registration.find(params[:id])
 		@reg.has_waiver = params[:has]
-		@reg.save(false)
+		@reg.save(:validate => false)
 		redirect_to registrations_url()
 	end
 	def create
@@ -94,7 +94,7 @@ class RegistrationsController < ApplicationController
       redirect_to root_url()
     end
     r.attributes = params[:registration]
-    r.save(!@is_admin) # if admin, then don't validate.
+    r.save(:validate => !@is_admin) # if admin, then don't validate.
 		redirect_to edit_registration_url(params[:id])
 	end
 
