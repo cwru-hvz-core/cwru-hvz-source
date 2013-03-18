@@ -1,6 +1,6 @@
 source 'http://rubygems.org'
 
-gem 'rails', '3.0.19'
+gem 'rails', '3.2.12'
 gem 'haml'
 gem 'json'
 gem 'breadcrumbs'
@@ -11,7 +11,6 @@ gem 'delayed_job_active_record'
 gem 'twilio'
 gem 'gchartrb'
 gem 'RedCloth'
-gem 'hassle', :git => 'git://github.com/koppen/hassle.git'
 gem 'dalli'
 gem 'jquery-rails', '>= 1.0.12'
 gem 'airbrake'
@@ -19,7 +18,10 @@ gem 'airbrake'
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
-gem 'sqlite3-ruby', :require => 'sqlite3'
+group :development do
+  gem 'sqlite3-ruby', :require => 'sqlite3'
+end
+
 group :production do
   gem 'pg'
 end

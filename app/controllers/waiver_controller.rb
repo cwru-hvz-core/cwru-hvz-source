@@ -10,9 +10,9 @@ class WaiverController < ApplicationController
     end
     last_waiver = @logged_in_person.waivers.last
     if last_waiver
-      @w = Waiver.new({:person_id => @logged_in_person, :dateofbirth => last_waiver.dateofbirth, :studentid => last_waiver.studentid})
+      @w = Waiver.new({:person_id => @logged_in_person.id, :dateofbirth => last_waiver.dateofbirth, :studentid => last_waiver.studentid})
     else
-      @w = Waiver.new({:person_id => @logged_in_person})
+      @w = Waiver.new({:person_id => @logged_in_person.id})
     end
   end
 

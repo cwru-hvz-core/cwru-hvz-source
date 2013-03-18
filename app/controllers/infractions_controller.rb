@@ -49,7 +49,7 @@ class InfractionsController < ApplicationController
 			@registration = Registration.find(params[:registration_id], :include=>:infractions)
 			@infraction = @registration.infractions.find(params[:id])
 			@infraction.nullified = true
-                        @infraction.save(false)
+                        @infraction.save(:validate => false)
 			redirect_to registration_infractions_url(@registration)
 		else
 			flash[:error] = "You do not have permission to nullify infractions!"
