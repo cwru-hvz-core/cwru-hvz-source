@@ -40,5 +40,8 @@ module Hvz
 
     # Configure sensitive parameters which will be filtered from the log file.
     config.filter_parameters += [:password]
+
+    # Remove for Rails 4.0. Needed to satisfy Heroku Cedar stack:
+    config.assets.initialize_on_precompile = false
   end
 end
