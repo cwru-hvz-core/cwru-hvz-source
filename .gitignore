@@ -5,3 +5,4 @@ tmp/**/*
 config/private.rb
 *.swp
 .sass-cache
+.env
