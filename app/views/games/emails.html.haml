@@ -1,0 +1,8 @@
+%h2 Humans
+= @game.registrations.select { |r| r.faction_id == 0 }.map { |r| "#{r.person.name} <#{r.person.caseid}@case.edu>" }.join ','
+%h2 Zombies
+= @game.registrations.select { |r| r.faction_id == 1 }.map { |r| "#{r.person.name} <#{r.person.caseid}@case.edu>" }.join ','
+%h2 Deceased
+= @game.registrations.select { |r| r.faction_id == 2 }.map { |r| "#{r.person.name} <#{r.person.caseid}@case.edu>" }.join ','
+%h2 All Players
+= @game.registrations.map { |r| "#{r.person.name} <#{r.person.caseid}@case.edu>" }.join ','

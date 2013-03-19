@@ -37,6 +37,7 @@ Hvz::Application.routes.draw do
       get 'rules'
       get 'tree'
       get 'heatmap'
+      get 'emails'
     end
   end
 

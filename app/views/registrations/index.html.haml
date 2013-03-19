@@ -1,6 +1,8 @@
 - unless @registrations.empty?
   %h3.dink Currently Registered:
-  %p{ :style => "float: right" }= link_to "Find A Player By Code", find_registration_by_code_url
+  %ul{ :style => "float: right; list-style: none; text-align: right;" }
+    %li= link_to "Find A Player By Code", find_registration_by_code_url
+    %li= link_to "Get Mass Email Addresses", emails_game_url(@current_game)
   %table
     %thead
       %th Full Name

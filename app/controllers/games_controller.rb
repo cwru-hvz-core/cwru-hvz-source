@@ -1,5 +1,5 @@
 class GamesController < ApplicationController
-	before_filter :check_admin, :only => [:new, :create, :edit, :update]
+	before_filter :check_admin, :only => [:new, :create, :edit, :update, :emails]
 
 	def index
 		@games = Game.includes(:registrations).order(:game_begins).all
@@ -85,5 +85,9 @@ class GamesController < ApplicationController
     @game.set_current
 
     redirect_to games_url
+  end
+
+  def emails
+    @game = Game.find(params[:id], :include => { :registrations => :person })
   end
 end
