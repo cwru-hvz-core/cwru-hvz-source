@@ -3,43 +3,41 @@ class RegistrationsController < ApplicationController
   before_filter :check_login, :only => [:new, :create, :show]
   before_filter :check_is_registered, :only => [:joinsquad, :forumsync]
   before_filter :start_registration_process, :only => [:new]
-	def new
-		if @current_game.id.nil? or @current_game.registration_begins.nil? or @current_game.registration_ends.nil?
-			flash[:error] = "Your administrators have not yet created a game to register for."
-			redirect_to root_url()
-			return
-		end
-		if Time.now < @current_game.registration_begins
-			flash[:error] = "Registration begins " + @current_game.dates[:registration_begins] + ". Please check back then!"
-			redirect_to root_url()
+  def new
+    if @current_game.id.nil? or @current_game.registration_begins.nil? or @current_game.registration_ends.nil?
+      flash[:error] = "Your administrators have not yet created a game to register for."
+      redirect_to root_url()
       return
-		end
-		if Time.now > @current_game.registration_ends
-			flash[:error] = "Registration ended " + @current_game.dates[:registration_ends] + ". If you would still like to play, please contact the administrators."
-			redirect_to root_url()
-      return
-		end
-		@registration = Registration.find_or_initialize_by_person_id_and_game_id(@person.id, @current_game.id)
+    end
+    if Time.now < @current_game.registration_begins
+      flash[:error] = "Registration begins " + @current_game.dates[:registration_begins] + ". Please check back then!"
+      return redirect_to root_url()
+    end
+    if Time.now > @current_game.registration_ends
+      flash[:error] = "Registration ended " + @current_game.dates[:registration_ends] + ". If you would still like to play, please contact the administrators."
+      return redirect_to root_url()
+    end
+    @registration = Registration.find_or_initialize_by_person_id_and_game_id(@person.id, @current_game.id)
     @squads = @current_game.squads(:include => :registrations)
-		if not @registration.card_code.nil?
+    if not @registration.card_code.nil?
       session[:is_registering] = false
-			redirect_to registration_url(@registration)
+      redirect_to registration_url(@registration)
       return
-		end
-	end
-	def submit_waiver
-		@reg = Registration.find(params[:id])
-		@reg.has_waiver = params[:has]
-		@reg.save(:validate => false)
-		redirect_to registrations_url()
-	end
-	def create
-		@registration = Registration.find_or_initialize_by_person_id_and_game_id(@person.id, @current_game.id)
-		@registration.attributes = params[:registration]
-		@registration.card_code = Registration.make_code
-		@registration.score = 0
+    end
+  end
+  def submit_waiver
+    @reg = Registration.find(params[:id])
+    @reg.has_waiver = params[:has]
+    @reg.save(:validate => false)
+    redirect_to registrations_url()
+  end
+  def create
+    @registration = Registration.find_or_initialize_by_person_id_and_game_id(@person.id, @current_game.id)
+    @registration.attributes = params[:registration]
+    @registration.card_code = Registration.make_code
+    @registration.score = 0
     @registration.squad = nil unless params[:squad_select] == "existing"
-		if @registration.save()
+    if @registration.save()
       session[:is_registering] = false
       
       # Now worry about the squad, because we can't attribute squad leadership without a registration id
@@ -63,60 +61,60 @@ class RegistrationsController < ApplicationController
         end
       end
 
-			unless (@registration.person.phone.nil? or @registration.person.phone.empty?)
-				Delayed::Job.enqueue SendNotification.new(@person, "Thank you for registering for HvZ. Your card code is: " + @registration.card_code + ". Please keep this code on you at all times. Have fun!")
-			end
-			redirect_to registration_url(@registration)
-		else
-			redirect_to new_registration_url()
-		end
-	end
+      unless (@registration.person.phone.nil? or @registration.person.phone.empty?)
+        Delayed::Job.enqueue SendNotification.new(@person, "Thank you for registering for HvZ. Your card code is: " + @registration.card_code + ". Please keep this code on you at all times. Have fun!")
+      end
+      redirect_to registration_url(@registration)
+    else
+      redirect_to new_registration_url()
+    end
+  end
 
-	def destroy
-		@registration = Registration.find(params[:id])
-		@registration.delete() unless @registration.nil?
-		redirect_to registrations_url()
-	end
+  def destroy
+    @registration = Registration.find(params[:id])
+    @registration.delete() unless @registration.nil?
+    redirect_to registrations_url()
+  end
 
-	def show
-		@registration = Registration.find(params[:id])
-		if @registration.person_id != @person.id
-			flash[:error] = "This is not your registration!!"
-			redirect_to root_url()
-			return
-		end
-	end
+  def show
+    @registration = Registration.find(params[:id])
+    if @registration.person_id != @person.id
+      flash[:error] = "This is not your registration!!"
+      redirect_to root_url()
+      return
+    end
+  end
 
-	def update
-		r = Registration.find(params[:id])
+  def update
+    r = Registration.find(params[:id])
     if !@is_admin and r.person != @logged_in_person
       flash[:error] = "You do not have permission to edit this registration."
       redirect_to root_url()
     end
     r.attributes = params[:registration]
     r.save(:validate => !@is_admin) # if admin, then don't validate.
-		redirect_to edit_registration_url(params[:id])
-	end
+    redirect_to edit_registration_url(params[:id])
+  end
 
-	def edit
-		@registration = Registration.find(params[:id])
+  def edit
+    @registration = Registration.find(params[:id])
     @squads = @current_game.squads.sort_by { |x| x.name }
-		@person = @registration.person;
-		if !@is_admin and @person != @logged_in_person
-			flash[:error] = "You do not have permission to edit this registration."
-			redirect_to root_url()
-			return
-		end
-	end
+    @person = @registration.person;
+    if !@is_admin and @person != @logged_in_person
+      flash[:error] = "You do not have permission to edit this registration."
+      redirect_to root_url()
+      return
+    end
+  end
 
-	def report
-		@registration = Registration.find(params[:id])
-		if(!@is_admin)
-			flash[:error] = "You do not have permission to report infractions."
-			redirect_to root_url()
-			return
-		end
-	end
+  def report
+    @registration = Registration.find(params[:id])
+    if(!@is_admin)
+      flash[:error] = "You do not have permission to report infractions."
+      redirect_to root_url()
+      return
+    end
+  end
 
   def index
     @registrations = Registration.find_all_by_game_id(@current_game.id, :include=>[:person => :waivers])

@@ -1,11 +1,11 @@
 module ApplicationHelper
-	def date_humanize(date)
-		return date.strftime("%A, %B %e, %Y @ %I:%M %p")
-	end
+  def date_humanize(date)
+    return date.strftime("%A, %B %e, %Y @ %I:%M %p")
+  end
 
-	def date_humanize_dayofweek_and_time(date)
-		return date.strftime("%A, %I:%M %p")
-	end
+  def date_humanize_dayofweek_and_time(date)
+    return date.strftime("%A, %I:%M %p")
+  end
 
   def profile_photo_url(person, size=32, default=image_path('http://casehvz.com/images/gravatar_default.png'))
     ["http://www.gravatar.com/avatar/",

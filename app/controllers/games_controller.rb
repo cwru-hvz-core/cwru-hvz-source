@@ -1,9 +1,9 @@
 class GamesController < ApplicationController
-	before_filter :check_admin, :only => [:new, :create, :edit, :update, :emails, :admin_register, :admin_register_create]
+  before_filter :check_admin, :only => [:new, :create, :edit, :update, :emails, :admin_register, :admin_register_create]
 
-	def index
-		@games = Game.includes(:registrations).order(:game_begins).all
-	end
+  def index
+    @games = Game.includes(:registrations).order(:game_begins).all
+  end
 
   def show
     @game = Game.find(params[:id])
@@ -25,60 +25,60 @@ class GamesController < ApplicationController
     )
   end
 
-	def rules
-		@game = Game.find(params[:id]) || @current_game
-	end
+  def rules
+    @game = Game.find(params[:id]) || @current_game
+  end
 
-	def tree
-		@game = Game.find(params[:id]) || @current_game
+  def tree
+    @game = Game.find(params[:id]) || @current_game
 
         if !@game.ozs_revealed?
           flash[:error] = "Original Zombies have not been revealed yet. No peeking at the tree!"
           redirect_to :root
         end
-	end
+  end
 
   def heatmap
     @tags = Game.find(params[:id]).tags.sort_by { |x| x.latitude || 0 }
-		if params[:tagger_id].present?
-			@tags = @tags.select{|tag| tag.tagger_id == params[:tagger_id].to_i}
-		end
+    if params[:tagger_id].present?
+      @tags = @tags.select{|tag| tag.tagger_id == params[:tagger_id].to_i}
+    end
   end
 
-	def new
-		@game = Game.new
-	end
+  def new
+    @game = Game.new
+  end
 
-	def edit
-		@game = Game.find(params[:id])
-		unless params[:game].nil?
-			@game = Game.new(params[:game])
-		end
-	end
+  def edit
+    @game = Game.find(params[:id])
+    unless params[:game].nil?
+      @game = Game.new(params[:game])
+    end
+  end
 
-	def create
-		@game = Game.new(params[:game])
-		if Game.current.id.nil?
-			@game.is_current = true
-		end
+  def create
+    @game = Game.new(params[:game])
+    if Game.current.id.nil?
+      @game.is_current = true
+    end
 
-		if @game.save()
-			redirect_to :action => :index
-		else
-			flash[:message] = @game.errors.full_messages.first
-			redirect_to :action => :new
-		end
-	end
+    if @game.save()
+      redirect_to :action => :index
+    else
+      flash[:message] = @game.errors.full_messages.first
+      redirect_to :action => :new
+    end
+  end
 
-	def update
-		@game = Game.find(params[:id])
-		if @game.update_attributes(params[:game])
-			redirect_to :action => :edit
-		else
-			flash[:error] = @game.errors.full_messages.first
-			render :action => :edit
-		end
-	end
+  def update
+    @game = Game.find(params[:id])
+    if @game.update_attributes(params[:game])
+      redirect_to :action => :edit
+    else
+      flash[:error] = @game.errors.full_messages.first
+      render :action => :edit
+    end
+  end
 
   def update_current
     @game = Game.find(params[:active_game])
