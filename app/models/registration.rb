@@ -158,23 +158,25 @@ class Registration < ActiveRecord::Base
   def phpbb_convert_to_faction(faction_id)
     # Faction id: Human => 0, Zombie => 1, Deceased => 2
     @conn = self.game.connect_to_phpbb()
-    if @conn
-      ids = PHPBBUtility.get_user_ids(@conn, card_code)
-      convert_stmt = @conn.prepare("DELETE FROM phpbb_user_group WHERE group_id = ? AND user_id = ?")
-      add_stmt = @conn.prepare("INSERT INTO phpbb_user_group (group_id, user_id, group_leader, user_pending) VALUES (?, ?, 0, 0)")
-      ids.each do |id|
-        convert_stmt.execute(self.game.phpbb_human_group, id)
-        convert_stmt.execute(self.game.phpbb_zombie_group, id)
-        case faction_id
-        when 0
-          add_stmt.execute(self.game.phpbb_human_group, id)
-        when 1
-          add_stmt.execute(self.game.phpbb_zombie_group, id)
-        end
+    return false unless @conn
+
+    ids = PHPBBUtility.get_user_ids(@conn, card_code)
+    convert_stmt = @conn.prepare("DELETE FROM phpbb_user_group WHERE group_id = ? AND user_id = ?")
+    add_stmt = @conn.prepare("INSERT INTO phpbb_user_group (group_id, user_id, group_leader, user_pending) VALUES (?, ?, 0, 0)")
+    ids.each do |id|
+      convert_stmt.execute(self.game.phpbb_human_group, id)
+      convert_stmt.execute(self.game.phpbb_zombie_group, id)
+      case faction_id
+      when 0
+        add_stmt.execute(self.game.phpbb_human_group, id)
+      when 1
+        add_stmt.execute(self.game.phpbb_zombie_group, id)
       end
-      convert_stmt.close()
-      add_stmt.close()
-      PHPBBUtility.clear_permissions(@conn, ids)
     end
+    convert_stmt.close()
+    add_stmt.close()
+    PHPBBUtility.clear_permissions(@conn, ids)
+
+    return true
   end
 end

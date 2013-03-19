@@ -176,8 +176,13 @@ class RegistrationsController < ApplicationController
   end
 
   def forumsync
-    @logged_in_registration.phpbb_convert_to_faction(@logged_in_registration.faction_id)
-    return redirect_to registration_url(@logged_in_registration)
+    success = @logged_in_registration.phpbb_convert_to_faction(@logged_in_registration.faction_id)
+
+    if !success
+      flash[:error] = "Could not sync forum account: an error has occurred."
+    end
+
+    redirect_to registration_url(@logged_in_registration)
   end
 
   def find_by_code
