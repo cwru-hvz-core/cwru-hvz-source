@@ -33,7 +33,7 @@ Note: Once you join or create a squad, you must remain with that squad for the r
       %tr{:style=>"background-color:"+col}
         %td
           %b Members:
-          =s.registrations.map{|x| x.person.name}.join(", ")
+          =s.registrations.map{|x| x.try(:person).try(:name) || '[An Unknown Player]' }.join(", ")
 -if @logged_in_registration.squad == nil
   %h2.dink 
     Create a New Squad
