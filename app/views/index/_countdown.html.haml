@@ -1,11 +1,11 @@
 - if @current_game.ongoing?
   :javascript
     $(function() {
-      $("#countdown").countdown({until: new Date(Date.UTC(#{(@current_game.game_ends-1.month).utc.strftime("%Y, %m, %d, %H, %M, %S")})), description: "left to survive!"})
+      $("#countdown").countdown({until: new Date(Date.UTC(#{@current_game.game_ends.utc.strftime("%Y, %m - 1, %d, %H, %M, %S")})), description: "left to survive!"})
     });
 - else
   :javascript
     $(function() {
-      $("#countdown").countdown({until: new Date(Date.UTC(#{(@current_game.game_begins-1.month).utc.strftime("%Y, %m, %d, %H, %M, %S")})), description: "until the game begins!"})
+      $("#countdown").countdown({until: new Date(Date.UTC(#{@current_game.game_begins.utc.strftime("%Y, %m - 1, %d, %H, %M, %S")})), description: "until the game begins!"})
     });
 #countdown
