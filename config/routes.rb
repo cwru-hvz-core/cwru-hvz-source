@@ -38,6 +38,8 @@ Hvz::Application.routes.draw do
       get 'tree'
       get 'heatmap'
       get 'emails'
+      get 'admin_register' => 'games#admin_register_new'
+      post 'admin_register' => 'games#admin_register_create'
     end
   end
 

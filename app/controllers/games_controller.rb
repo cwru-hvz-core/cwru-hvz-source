@@ -1,5 +1,5 @@
 class GamesController < ApplicationController
-	before_filter :check_admin, :only => [:new, :create, :edit, :update, :emails]
+	before_filter :check_admin, :only => [:new, :create, :edit, :update, :emails, :admin_register, :admin_register_create]
 
 	def index
 		@games = Game.includes(:registrations).order(:game_begins).all
@@ -89,5 +89,41 @@ class GamesController < ApplicationController
 
   def emails
     @game = Game.find(params[:id], :include => { :registrations => :person })
+  end
+
+  def admin_register_new
+    @game = Game.find(params[:id])
+    @squads = @game.squads
+  end
+
+  def admin_register_create
+    @game = Game.find(params[:id])
+    @person = Person.where(:caseid => params[:person][:caseid]).first_or_initialize(
+      :name => params[:person][:name],
+      :phone => params[:person][:phone],
+    )
+    return redirect_to(admin_register_game_url(@game), :flash => { :error => 'You need to input a name for the person.' }) if !@person.name.present?
+    return redirect_to(admin_register_game_url(@game), :flash => { :error => "Could not create or find person! #{@person.errors.full_messages.first}" }) if !@person.save
+
+    @registration = Registration.where(:person_id => @person.id, :game_id => @game.id).first_or_initialize(
+      :wants_oz => params[:registration][:wants_oz],
+      :is_off_campus => params[:registration][:is_off_campus],
+    )
+
+    if @registration.persisted?
+      flash[:error] = 'User is already registered for this game!'
+      redirect_to admin_register_game_url(@game)
+    else
+      @registration.card_code = Registration.make_code
+      @registration.score = 0
+
+      if @registration.save(:validate => false)
+        @registration.update_attribute(:squad_id, params[:registration][:squad_id]) if params[:registration][:squad_id].present?
+      else
+        flash[:error] = 'Could not register due to an error!'
+        redirect_to admin_register_game_url(@game)
+      end
+    end
+
   end
 end
