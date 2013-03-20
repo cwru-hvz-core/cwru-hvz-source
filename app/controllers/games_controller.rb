@@ -98,10 +98,10 @@ class GamesController < ApplicationController
 
   def admin_register_create
     @game = Game.find(params[:id])
-    @person = Person.where(:caseid => params[:person][:caseid]).first_or_initialize(
-      :name => params[:person][:name],
-      :phone => params[:person][:phone],
-    )
+    @person = Person.where(:caseid => params[:person][:caseid]).first_or_initialize
+    if @person.persisted?
+      @person.update_attributes(:name => params[:person][:name], :phone => params[:person][:phone])
+    end
     return redirect_to(admin_register_game_url(@game), :flash => { :error => 'You need to input a name for the person.' }) if !@person.name.present?
     return redirect_to(admin_register_game_url(@game), :flash => { :error => "Could not create or find person! #{@person.errors.full_messages.first}" }) if !@person.save
 
