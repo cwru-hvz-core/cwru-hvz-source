@@ -10,7 +10,7 @@ module IndexHelper
 		tagger_str ||= "An administrator converted "
 		tagee = tag.tagee.person
 
-		tagger_str + tagee.name + " " + distance_of_time_in_words(tag.datetime - @current_game.utc_offset, Time.now) + " ago."
+		tagger_str + tagee.name + " " + distance_of_time_in_words(tag.datetime - @current_game, Time.now) + " ago."
 	end
 
   def checkin_text(checkin)

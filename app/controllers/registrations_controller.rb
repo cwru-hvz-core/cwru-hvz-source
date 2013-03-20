@@ -9,12 +9,12 @@ class RegistrationsController < ApplicationController
 			redirect_to root_url()
 			return
 		end
-		if (Time.now + @current_game.utc_offset) < @current_game.registration_begins
+		if Time.now < @current_game.registration_begins
 			flash[:error] = "Registration begins " + @current_game.dates[:registration_begins] + ". Please check back then!"
 			redirect_to root_url()
       return
 		end
-		if (Time.now + @current_game.utc_offset) > @current_game.registration_ends
+		if Time.now > @current_game.registration_ends
 			flash[:error] = "Registration ended " + @current_game.dates[:registration_ends] + ". If you would still like to play, please contact the administrators."
 			redirect_to root_url()
       return

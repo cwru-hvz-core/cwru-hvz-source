@@ -42,7 +42,7 @@ class CheckInsController < ApplicationController
       @hostname = Socket.gethostbyaddr(request.remote_ip.split(".").map{|x| x.to_i}.pack("CCCC"))[0]
       @location = CheckIn.get_location(@hostname) # Either "Wade" or "Nord"
       if @location != nil
-        @valid = CheckIn.is_valid_place_and_time?(@location, Game.now(@current_game).utc + @current_game.utc_offset)
+        @valid = CheckIn.is_valid_place_and_time?(@location, Game.now(@current_game))
       end
     rescue
       @hostname = nil

@@ -35,7 +35,7 @@ class Tag < ActiveRecord::Base
 		errors.add_to_base "Tag occurred before game started!" if self.datetime < self.game.game_begins
 		errors.add_to_base "Tag occurs after game ends!" if self.datetime >= self.game.game_ends
 
-		errors.add_to_base "Tag occurs in the future?!" if self.datetime-self.game.utc_offset>=Game.now(self.game)
+		errors.add_to_base "Tag occurs in the future?!" if self.datetime >= Game.now(self.game)
 	end
 
 	def count_resulting_tags

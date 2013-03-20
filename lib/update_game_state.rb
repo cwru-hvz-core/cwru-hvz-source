@@ -19,6 +19,8 @@ class UpdateGameState
 	end
 
 	def perform
+    Time.zone = @current_game.time_zone
+
 		@players = @current_game.registrations
 
 		@human_faction = @players.map{|p| 

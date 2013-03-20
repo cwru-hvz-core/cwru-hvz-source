@@ -38,25 +38,31 @@ class Game < ActiveRecord::Base
 		return false if self.game_begins.nil? or self.game_ends.nil?
 		self.has_begun? and not self.has_ended?
 	end
-	def has_begun?	
-		Time.now + self.utc_offset >= self.game_begins
-	end
-	def has_ended?
-		Time.now + self.utc_offset >= self.game_ends
-	end
-	def ozs_revealed?
-		Time.now + self.utc_offset >= self.oz_reveal
-	end
-	def can_register?
-		(self.registration_begins < Time.now.utc) and (self.registration_ends > Time.now.utc)
-	end
-	def self.now(game)
-		# Returns the effective time so states won't change after the game ends. (Hopefully)
-		[Time.now.utc, game.game_ends].min
-	end
+
+  def has_begun?
+    Time.now >= self.game_begins
+  end
+
+  def has_ended?
+    Time.now >= self.game_ends
+  end
+
+  def ozs_revealed?
+    Time.now >= self.oz_reveal
+  end
+
+  def can_register?
+    self.registration_begins < Time.now && self.registration_ends > Time.now
+  end
+
+  def self.now(game)
+    # Returns the effective time so states won't change after the game ends. (Hopefully)
+    [ Time.now, game.game_ends ].min
+  end
+
 	def since_begin
 		return 0 unless self.has_begun?
-		Game.now(self) - (self.game_begins - self.utc_offset)
+		Game.now(self) - self.game_begins
 	end
 	def mode_score
 		UpdateGameState.points_for_time_survived((self.since_begin/1.hour).floor)
@@ -64,11 +70,7 @@ class Game < ActiveRecord::Base
 		#return 0 if m.nil?
 		#m.first.score
 	end
-	def utc_offset
-		dst_off = 0
-		dst_off = 1.hour if Time.now.dst?
-		ActiveSupport::TimeZone.new(self.time_zone).utc_offset + dst_off
-	end
+
     def connect_to_phpbb
       if self.phpbb_database_host.nil? || self.phpbb_database_username.nil? || self.phpbb_database_password.nil? || self.phpbb_database.nil?
         return false
@@ -87,7 +89,7 @@ class Game < ActiveRecord::Base
     @data = {}
     240.times do |dt|
       now = self.game_begins + (dt.seconds.to_i*tslength)
-      if (now - self.utc_offset) >= (Time.now + 48.hours)
+      if now >= (Time.now + 48.hours)
         break
       end
       @data[now] = {:zombies => 0, :deceased => 0, :humans=>0}
@@ -113,11 +115,14 @@ class Game < ActiveRecord::Base
       [
         (x - game_begins) / 1.hour,
         y[:humans],
-        (x - utc_offset) < Time.now, # Certainty of the Human points
+        # Certainty of the Human points:
+        x < Time.now,
         y[:zombies],
-        (x - utc_offset) < Time.now, # Certainty of the Zombie points
+        # Certainty of the Zombie points:
+        x < Time.now,
         y[:deceased],
-        (x - utc_offset) < Time.now, # Certainty of the Deceased points
+        # Certainty of the Deceased points:
+        x < Time.now,
       ]
     end
   end

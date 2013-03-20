@@ -4,7 +4,7 @@ class ContactMessage < ActiveRecord::Base
 	
 
 	def validate
-		if self.occurred >= (Time.now + self.game.utc_offset)
+		if self.occurred >= Time.now
 			errors.add(:occurred, "is in the future.")
 		end
 	end

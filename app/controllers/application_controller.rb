@@ -4,7 +4,8 @@ class ApplicationController < ActionController::Base
 	
 	def setup
 		@current_game = Game.current
-		
+    Time.zone = @current_game.time_zone
+
 		# If they're logged in, we'll grab detect if they're an admin
 		@logged_in = !(session[:cas_user].nil?)
 		@logged_in_person = Person.find_or_create_by_caseid(session[:cas_user]) if @logged_in

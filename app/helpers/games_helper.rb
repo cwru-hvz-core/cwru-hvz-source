@@ -20,7 +20,7 @@ module GamesHelper
       end
 			return "Survived <span class='highlight'>" + (time_survived/1.hour).floor.to_s + "</span> Hours + <span class='highlight'>"+registration.missions.length.to_s+"</span> Missions" + cache_string
 		elsif registration.faction_id == 1   # Zombie
-			dies_in = (registration.state_history[:deceased]-registration.game.utc_offset)-Game.now(registration.game)
+			dies_in = (registration.state_history[:deceased])-Game.now(registration.game)
 			return "<span class='highlight'>" + registration.tagged.length.to_s + "</span> Tags (Starves in less than <span class='highlight'>" + (dies_in/1.hour).ceil.to_s + "</span> Hours)"
 		else
 			return "DECEASED!"

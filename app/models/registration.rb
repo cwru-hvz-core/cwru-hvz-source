@@ -31,8 +31,8 @@ class Registration < ActiveRecord::Base
   end
 
   def validate
-    errors.add_to_base("Registration has not yet begun for this game!")	if (Time.now + self.game.utc_offset) < self.game.registration_begins
-    errors.add_to_base("Registration has already ended for this game!") if (Time.now + self.game.utc_offset) > self.game.registration_ends
+    errors.add_to_base("Registration has not yet begun for this game!") if Time.now < self.game.registration_begins
+    errors.add_to_base("Registration has already ended for this game!") if Time.now > self.game.registration_ends
   end
 
   # Note: These methods are costly and should only be called asynchronously.
@@ -40,14 +40,14 @@ class Registration < ActiveRecord::Base
   def time_survived
     return 0 if self.is_oz
     tag = self.killing_tag
-    real_begins = self.game.game_begins - self.game.utc_offset
+    real_begins = self.game.game_begins
     return [0, tag.datetime - real_begins].max unless tag.nil?
     return [0, Game.now(self.game) - real_begins].max
   end
 
   def display_time_survived
     if self.is_oz && !self.game.ozs_revealed?
-      real_begins = self.game.game_begins - self.game.utc_offset
+      real_begins = self.game.game_begins
       return [0, Game.now(self.game) - real_begins].max
     else
       return self.time_survived()
@@ -104,7 +104,7 @@ class Registration < ActiveRecord::Base
   end
 
   def time_until_death
-    return (self.most_recent_feed - self.game.utc_offset + 48.hours)  - Time.now
+    return (self.most_recent_feed + 48.hours) - Time.now
   end
 
   def is_human?
@@ -114,8 +114,8 @@ class Registration < ActiveRecord::Base
 
   def is_zombie?
     # A player is a zombie if they have been tagged in game and have not yet starved.
-    return true if self.is_oz and self.most_recent_feed + 48.hours >= Game.now(self.game)+Game.current.utc_offset
-    return (!self.killing_tag.nil? and self.most_recent_feed + 48.hours >= Game.now(self.game)+Game.current.utc_offset)
+    return true if self.is_oz and self.most_recent_feed + 48.hours >= Game.now(self.game)
+    return (!self.killing_tag.nil? and self.most_recent_feed + 48.hours >= Game.now(self.game))
   end
 
   def is_deceased?
@@ -125,7 +125,7 @@ class Registration < ActiveRecord::Base
 
   def is_recently_deceased?
     # If the player has died in the past 2 hours
-    (Game.now(self.game) - (self.state_history[:deceased] - self.game.utc_offset)) < 2.hours
+    (Game.now(self.game) - self.state_history[:deceased]) < 2.hours
   end
 
   def state_history

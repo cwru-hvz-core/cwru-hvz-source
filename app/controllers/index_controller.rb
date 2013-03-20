@@ -6,7 +6,7 @@ class IndexController < ApplicationController
     # Put everything into a hash, items, that has a key with the timestamp.
     # And then use that as a key for sorting.
     @items = {}
-    @tags.map{|x| {(x.datetime - @current_game.utc_offset) => x}}.each{|x| @items = @items.merge(x)}
+    @tags.map{|x| {x.datetime => x}}.each{|x| @items = @items.merge(x)}
     @checkins.map{|x| {x.created_at => x}}.each{|x| @items = @items.merge(x)}
     @items = @items.sort{|x,y| y <=> x}.map{|x| x[1]}   #Just the item! 
 		@ozs = @current_game.ozs

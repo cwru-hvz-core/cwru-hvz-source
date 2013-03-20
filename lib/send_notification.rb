@@ -52,7 +52,7 @@ class SendNotification
     unless @tagee.nil?
       # If the tagged player is now a zombie, show then more pertinent information.
       states = @tagee.state_history
-      if (states[:zombie] - @tagee.game.utc_offset) < Time.now
+      if states[:zombie] < Time.now
         msg = "You have officially been tagged and you're now a zombie! Wear your bandana around your head now, and tag humans! (You need a feed before " + states[:deceased].strftime("%A %I:%M %p") + ")"
       else
         msg = "You have officially been tagged. You become a zombie at " + states[:zombie].strftime("%I:%M %p") + " and have 48 hours from then to get a feed."
