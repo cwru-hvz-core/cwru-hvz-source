@@ -19,4 +19,14 @@ class Person < ActiveRecord::Base
   def signed_waiver?(game)
     !!self.waivers.detect{ |w| w.game_id == game.id }
   end
+
+  def can_change_name?
+    return true if is_admin
+
+    current_game = Game.current
+    current_registration = registrations.where(:game_id => current_game.id).first
+
+    return true if !current_registration.present?
+    return false if current_game.has_begun?
+  end
 end

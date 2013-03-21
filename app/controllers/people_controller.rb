@@ -5,12 +5,20 @@ class PeopleController < ApplicationController
 	# Note: On every page load where check_login is called as a before_filter 
 	
 	def update
-		@person = Person.find(params[:id]) or Person.new
-		if not @is_admin and @person != @logged_in_person
+		@person = Person.find(params[:id], :include => :registrations) or Person.new
+		if !@is_admin && (@person != @logged_in_person)
 			flash[:error] = "You do not have permissions to edit this person's details."
 			redirect_to root_url()
 			return
 		end
+
+    if @person.can_change_name? || @is_admin
+      @person.update_attribute(:name, params[:person][:name])
+    else
+      flash[:error] = 'You cannot change your name once the game has begun!'
+    end
+    params[:person].delete(:name)
+
 		@person.update_attributes(params[:person])
 
 		if @is_admin and not params[:person][:is_admin].nil?
