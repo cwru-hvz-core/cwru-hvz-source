@@ -57,7 +57,7 @@ class Game < ActiveRecord::Base
 
   def self.now(game)
     # Returns the effective time so states won't change after the game ends. (Hopefully)
-    [ Time.now, game.game_ends ].min
+    [ Time.zone.now, game.game_ends ].min
   end
 
 	def since_begin
