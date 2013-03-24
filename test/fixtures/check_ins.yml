@@ -1,9 +1,0 @@
-# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
-
-one:
-  registration_id: 1
-  hostname: MyString
-
-two:
-  registration_id: 1
-  hostname: MyString
