@@ -12,10 +12,12 @@ class PeopleController < ApplicationController
 			return
 		end
 
-    if @person.can_change_name? || @is_admin
-      @person.update_attribute(:name, params[:person][:name])
-    else
-      flash[:error] = 'You cannot change your name once the game has begun!'
+    if params[:person][:name] != @person.name
+      if @person.can_change_name? || @is_admin
+        @person.update_attribute(:name, params[:person][:name])
+      else
+        flash[:error] = 'You cannot change your name once the game has begun!'
+      end
     end
     params[:person].delete(:name)
 
