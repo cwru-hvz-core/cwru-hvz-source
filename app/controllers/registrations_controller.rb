@@ -39,12 +39,12 @@ class RegistrationsController < ApplicationController
     @registration.squad = nil unless params[:squad_select] == "existing"
     if @registration.save()
       session[:is_registering] = false
-      
+
       # Now worry about the squad, because we can't attribute squad leadership without a registration id
       if (params[:squad_select] == "create")
         @squad = Squad.new({
-          :name => params[:new_squad_name], 
-          :leader_id => @registration.id, 
+          :name => params[:new_squad_name],
+          :leader_id => @registration.id,
           :game_id => @current_game.id
         })
         if @squad.save()
@@ -152,8 +152,8 @@ class RegistrationsController < ApplicationController
     if !@current_game.has_begun?
       if params[:squadid].eql?("new")
         @squad = Squad.new({
-          :name => params[:new_squad_name], 
-          :leader_id => @logged_in_registration.id, 
+          :name => params[:new_squad_name],
+          :leader_id => @logged_in_registration.id,
           :game_id => @current_game.id
         })
         if @squad.save()

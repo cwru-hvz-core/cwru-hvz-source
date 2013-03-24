@@ -1,7 +1,7 @@
 class InfractionsController < ApplicationController
   before_filter :check_admin, :only => [:new, :create, :destroy]
   before_filter :check_login, :only => [:show,:index]
-  
+
   def index
     @registration = Registration.find(params[:registration_id], :include=>:infractions)
     if @is_admin || @registration.person_id == @person.id

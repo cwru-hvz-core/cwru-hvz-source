@@ -23,7 +23,7 @@ class ContactMessagesController < ApplicationController
     end
 
   end
-  
+
   def list
     if params[:all].nil?
       @messages = ContactMessage.find_all_by_game_id_and_visible(@current_game, true)
@@ -31,7 +31,7 @@ class ContactMessagesController < ApplicationController
       @messages = ContactMessage.find_all_by_game_id(@current_game)
     end
   end
-  
+
   def destroy
     @message = ContactMessage.find(params[:id])
     @message.visible = false
@@ -45,7 +45,7 @@ class ContactMessagesController < ApplicationController
 
   def update
     @contact_message = ContactMessage.find(params[:id])
-    
+
     if @contact_message.update_attributes(params[:contact_message])
       flash[:notice] = "Note updated"
       redirect_to list_contact_messages_url

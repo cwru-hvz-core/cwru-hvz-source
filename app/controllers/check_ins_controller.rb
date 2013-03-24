@@ -5,7 +5,7 @@ class CheckInsController < ApplicationController
 
   def index
     @players = Registration.find_all_by_game_id_and_is_off_campus(@current_game.id, true, :include=>[:check_ins, :person])
-    @day_count = ((@current_game.game_ends - @current_game.game_begins)/1.day).ceil 
+    @day_count = ((@current_game.game_ends - @current_game.game_begins)/1.day).ceil
     @current_day = (Game.now(@current_game) - @current_game.game_begins)/1.day
   end
 

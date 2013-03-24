@@ -32,13 +32,13 @@ class MissionsController < ApplicationController
     @mission.game = @current_game
     if @mission.save()
       redirect_to list_mission_url()
-    else 
+    else
       flash[:error] = @mission.errors.full_messages.first
       redirect_to new_mission_url()
     end
   end
 
-  def index 
+  def index
     @missions = @current_game.missions.sort{|x,y| x.start <=> y.start}
   end
 

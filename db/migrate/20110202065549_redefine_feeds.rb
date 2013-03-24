@@ -5,6 +5,6 @@ class RedefineFeeds < ActiveRecord::Migration
   end
 
   def self.down
-	raise ActiveRecord::IrreversibleMigration, "Can't recover the deleted columns"	    
+	raise ActiveRecord::IrreversibleMigration, "Can't recover the deleted columns"
   end
 end

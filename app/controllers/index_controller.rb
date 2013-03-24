@@ -8,7 +8,7 @@ class IndexController < ApplicationController
     @items = {}
     @tags.map{|x| {x.datetime => x}}.each{|x| @items = @items.merge(x)}
     @checkins.map{|x| {x.created_at => x}}.each{|x| @items = @items.merge(x)}
-    @items = @items.sort{|x,y| y <=> x}.map{|x| x[1]}   #Just the item! 
+    @items = @items.sort{|x,y| y <=> x}.map{|x| x[1]}   #Just the item!
     @ozs = @current_game.ozs
   end
 end

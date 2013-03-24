@@ -23,14 +23,14 @@ class UpdateGameState
 
 		@players = @current_game.registrations
 
-		@human_faction = @players.map{|p| 
+		@human_faction = @players.map{|p|
 			p if p.is_human?
-		}.compact	
+		}.compact
 
 		@zombie_faction = @players.map{|p|
 			p if p.is_zombie?
 		}.compact
-	
+
 		@deceased_faction = @players.map{|p|
 			p if p.is_deceased?
 		}.compact
@@ -114,6 +114,6 @@ class UpdateGameState
 	end
 
 	def update_score_cache(registrations)
-		
+
 	end
 end
