@@ -48,7 +48,13 @@ GEM
     delayed_job_active_record (0.4.3)
       activerecord (>= 2.1.0, < 4)
       delayed_job (~> 3.0)
+    diff-lcs (1.2.1)
     erubis (2.7.0)
+    factory_girl (4.2.0)
+      activesupport (>= 3.0.0)
+    factory_girl_rails (4.2.1)
+      factory_girl (~> 4.2.0)
+      railties (>= 3.0.0)
     fssm (0.2.10)
     gchartrb (0.8)
     haml (4.0.0)
@@ -103,6 +109,17 @@ GEM
     rake (10.0.3)
     rdoc (3.12.2)
       json (~> 1.4)
+    rspec-core (2.13.1)
+    rspec-expectations (2.13.0)
+      diff-lcs (>= 1.1.3, < 2.0)
+    rspec-mocks (2.13.0)
+    rspec-rails (2.13.0)
+      actionpack (>= 3.0)
+      activesupport (>= 3.0)
+      railties (>= 3.0)
+      rspec-core (~> 2.13.0)
+      rspec-expectations (~> 2.13.0)
+      rspec-mocks (~> 2.13.0)
     rubycas-client (2.3.9)
       activesupport
     sass (3.2.7)
@@ -136,6 +153,7 @@ DEPENDENCIES
   compass (>= 0.10.6)
   dalli
   delayed_job_active_record
+  factory_girl_rails
   gchartrb
   haml
   jquery-rails (>= 1.0.12)
@@ -145,6 +163,7 @@ DEPENDENCIES
   pg
   rails (= 3.2.12)
   rails3-jquery-autocomplete
+  rspec-rails
   rubycas-client
   sqlite3
   twilio

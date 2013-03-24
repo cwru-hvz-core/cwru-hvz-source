@@ -25,6 +25,11 @@ group :development do
   gem 'sqlite3'
 end
 
+group :development, :test do
+  gem 'rspec-rails'
+  gem 'factory_girl_rails'
+end
+
 group :production do
   gem 'pg'
 end
