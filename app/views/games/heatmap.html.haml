@@ -4,7 +4,7 @@
     var init = function() {
       var centerLatLng = new google.maps.LatLng(41.5037,-81.6082);
       var tags = [
-        #{@tags.map { |t| "new google.maps.LatLng(#{t.latitude || 0},#{t.longitude || 0})," }.join('\n')}
+        #{@tags.reject{|t| t.latitude.nil? && t.longitude.nil? || t.longitude==0 && t.latitude==0}.map{ |t| "new google.maps.LatLng(#{t.latitude || 0},#{t.longitude || 0})," }.join('\n')}
       ];
       var map = new google.maps.Map(document.getElementById("heatmap"), {
         'zoom': 17,
