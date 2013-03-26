@@ -81,7 +81,7 @@ class Registration < ActiveRecord::Base
     #(the following code uses & as string delimiter
     # to make things nicer)
     json = %&{id:"player#{self.id}",name:"#{self.person.name.gsub('"','\"')}",data:{tags:#{self.tagged.length}},children:[&
-    children = self.tagged(:include=>[:tagged,:person]).collect{|x| x.tagee.zombietree_json}.compact
+    children = self.tagged(:include=>[:tagged,:person]).collect{|x| x.tagee.zombietree_json if x.tagee}.compact
     json += %&#{ children.to_sentence(:last_word_connector => ",", :two_words_connector => ",") unless children.empty?}]}&
   end
 
