@@ -23,6 +23,7 @@ Hvz::Application.routes.draw do
       get 'attendance'
       get 'feeds'
       get 'points'
+      post 'points' => 'missions#save_points'
     end
   end
 	resources :players, :as => :registrations, :controller => :registrations, :id=>/[0-9]*/ do

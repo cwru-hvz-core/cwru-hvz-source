@@ -5,6 +5,7 @@ class Attendance < ActiveRecord::Base
   validates_uniqueness_of :registration_id, :scope => :mission_id
   validates_presence_of :registration_id, :mission_id
 
+  attr_accessible :score
   attr_accessor :person_id, :person_name
 
   def person_id=(value)

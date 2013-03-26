@@ -72,4 +72,33 @@ class MissionsController < ApplicationController
       @mission.attendances.group_by { |a| a.registration.state_at(@mission.start) }
     )
   end
+
+  def save_points
+    @mission = Mission.find(params[:id], :include => {
+      :attendances => { :registration => [:person, :game, :taggedby, :tagged, :feeds]}
+    })
+
+    @player_factions = Hash.new([]).merge(
+      @mission.attendances.group_by { |a| a.registration.state_at(@mission.start) }
+    )
+
+    # If this is a mass assignment:
+    if params[:mass_points].present?
+      [ :human, :zombie, :deceased ].each do |faction|
+        Attendance.
+          where(:id => @player_factions[faction].map(&:id)).
+          update_all(:score => params[:mass_points][faction].to_i)
+      end
+      return redirect_to points_mission_url(@mission)
+    end
+
+    # If this is an individual assignment:
+    if params[:points].present?
+      params[:points].each do |id, points|
+        next if points.empty?
+        Attendance.find(id).update_attribute(:score, points)
+      end
+      return redirect_to points_mission_url(@mission)
+    end
+  end
 end
