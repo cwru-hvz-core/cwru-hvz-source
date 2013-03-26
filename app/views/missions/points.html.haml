@@ -1,4 +1,30 @@
 %h2.dink Points
+
+%h3.dink Mass Point Assignment
+=form_for(points_mission_url, :method => :post) do |f|
+  %table
+    %thead
+      %th Faction At Mission Begin
+      %th Number of Players
+      %th Points
+    %tbody
+      %tr
+        %td Human
+        %td
+        %td= text_field 'mass_points[human]', 0
+      %tr
+        %td Zombie
+        %td
+        %td= text_field 'mass_points[human]', 0
+      %tr
+        %td Deceased
+        %td
+        %td= text_field 'mass_points[human]', 0
+  =f.submit "Mass Assign Points", :confirm => 'Are you sure you wish to mass assign points? This will eliminate any individual point assignments!'
+
+%br
+%br
+%h3.dink Individual Point Assignment
 =form_for(points_mission_url, :method => :post) do |f|
   %table
     %thead
@@ -10,5 +36,5 @@
         %tr
           %td= a.registration.person.name
           %td 
-          %td=text_field "points[#{a.id}]", a.score, :class => 'span1'
+          %td= text_field "points[#{a.id}]", a.score
   =f.submit "Save Scores"
