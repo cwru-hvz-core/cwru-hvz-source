@@ -131,6 +131,9 @@ class Registration < ActiveRecord::Base
   def state_history
     # Returns the times at which the human transitioned between factions, according to the
     # current database.
+    #
+    # You're going to want to include
+    #   :game, :taggedby, :tagged, :feeds
     human_time = self.game.game_begins
     tag = self.killing_tag
     zombie_time = self.game.game_ends
@@ -147,6 +150,15 @@ class Registration < ActiveRecord::Base
     end
 
     { :human => human_time, :zombie => zombie_time, :deceased => deceased_time }
+  end
+
+  def state_at(time = Game.now(game))
+    history = state_history
+
+    return :human if (history[:human]..history[:zombie]).cover?(time)
+    return :zombie if (history[:zombie]..history[:deceased]).cover?(time)
+    return :deceased if history[:deceased] < time
+    return :unknown
   end
 
   def ==(other)

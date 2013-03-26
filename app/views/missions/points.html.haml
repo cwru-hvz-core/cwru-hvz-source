@@ -10,16 +10,16 @@
     %tbody
       %tr
         %td Human
-        %td
+        %td= @player_factions[:human].length
         %td= text_field 'mass_points[human]', 0
       %tr
         %td Zombie
-        %td
-        %td= text_field 'mass_points[human]', 0
+        %td= @player_factions[:zombie].length
+        %td= text_field 'mass_points[zombie]', 0
       %tr
         %td Deceased
-        %td
-        %td= text_field 'mass_points[human]', 0
+        %td= @player_factions[:deceased].length
+        %td= text_field 'mass_points[deceased]', 0
   =f.submit "Mass Assign Points", :confirm => 'Are you sure you wish to mass assign points? This will eliminate any individual point assignments!'
 
 %br
@@ -35,6 +35,6 @@
       - @mission.attendances.each do |a|
         %tr
           %td= a.registration.person.name
-          %td 
+          %td= a.registration.state_at(@mission.start).capitalize
           %td= text_field "points[#{a.id}]", a.score
   =f.submit "Save Scores"
