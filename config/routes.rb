@@ -13,12 +13,18 @@ Hvz::Application.routes.draw do
   get "bonus_codes/claim" => "bonus_codes#claim", :as => "claim_bonus_code"
   put "bonus_codes/claim" => "bonus_codes#claim_submit", :as => "submit_bonus_code"
   resources :bonus_codes
-	resources :missions, :id => /[0-9]*/ do
-		get :autocomplete_person_name, :on => :collection
-	end
-	match "/missions/list/" => "missions#list", :as=> "list_mission", :via=>"get"
-	match "/missions/:id/attendance/" => "missions#attendance", :as => "mission_attendance", :via=>"get"
-	match "/missions/:id/feeds/" => "missions#feeds", :as => "mission_feeds", :via=>"get"
+  resources :missions, :id => /[0-9]*/ do
+    collection do
+      get :autocomplete_person_name
+      get 'list'
+    end
+
+    member do
+      get 'attendance'
+      get 'feeds'
+      get 'points'
+    end
+  end
 	resources :players, :as => :registrations, :controller => :registrations, :id=>/[0-9]*/ do
       get 'forumsync'
       get 'showwaiver'

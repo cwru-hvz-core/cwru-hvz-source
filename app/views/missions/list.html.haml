@@ -6,6 +6,7 @@
     %th Delete Link
     %th Attendance
     %th Feeds
+    %th Points
   %tbody
     - @missions.each do |m|
       %tr
@@ -13,6 +14,7 @@
         %td=m.times[:start]
         %td=link_to("Edit", edit_mission_url(m))
         %td=link_to("Delete", mission_url(m), :method=>:delete)
-        %td=link_to("Attendance", mission_attendance_url(m))
-        %td=link_to("Feeds", mission_feeds_url(m))
+        %td=link_to("Attendance", attendance_mission_url(m))
+        %td=link_to("Feeds", feeds_mission_url(m))
+        %td=link_to("Points", points_mission_url(m))
 =link_to "Add New Mission", new_mission_url()

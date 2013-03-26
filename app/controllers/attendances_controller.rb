@@ -15,10 +15,10 @@ class AttendancesController < ApplicationController
   def destroy
     @attendance = Attendance.find(params[:id])
     if @attendance.delete
-      redirect_to mission_attendance_path(@attendance.mission.id)
+      redirect_to attendance_mission_path(@attendance.mission.id)
     else
       flash[:error] = "Could not delete attendance!"
-      redirect_to mission_attendance_path(@attendance.mission.id)
+      redirect_to attendance_mission_path(@attendance.mission.id)
     end
   end
 end

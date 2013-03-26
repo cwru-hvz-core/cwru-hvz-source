@@ -13,7 +13,7 @@ class FeedsController < ApplicationController
         @feed.save()
       end
 
-      return redirect_to mission_feeds_url(@mission)
+      return redirect_to feeds_mission_url(@mission)
     end
 
     @feed = Feed.new(params[:feed])

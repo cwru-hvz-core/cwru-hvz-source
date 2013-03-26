@@ -31,7 +31,7 @@ class MissionsController < ApplicationController
     @mission = Mission.new(params[:mission])
     @mission.game = @current_game
     if @mission.save()
-      redirect_to list_mission_url()
+      redirect_to missions_list_url()
     else
       flash[:error] = @mission.errors.full_messages.first
       redirect_to new_mission_url()
@@ -64,4 +64,5 @@ class MissionsController < ApplicationController
   end
   end
 
+  def points; end
 end
