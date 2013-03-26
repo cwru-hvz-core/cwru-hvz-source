@@ -47,7 +47,7 @@ class MissionsController < ApplicationController
   end
 
   def list
-    @missions = @current_game.missions
+    @missions = @current_game.missions.sort_by(&:start)
   end
 
   def edit
