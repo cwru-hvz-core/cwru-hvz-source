@@ -1,0 +1,14 @@
+%h2.dink Points
+=form_for(points_mission_url, :method => :post) do |f|
+  %table
+    %thead
+      %th Player
+      %th Faction At Mission Begin
+      %th Points
+    %tbody
+      - @mission.attendances.each do |a|
+        %tr
+          %td= a.registration.person.name
+          %td 
+          %td=text_field "points[#{a.id}]", a.score, :class => 'span1'
+  =f.submit "Save Scores"

@@ -1,5 +1,5 @@
 class MissionsController < ApplicationController
-  before_filter :check_admin, :only => [:new, :create, :list, :edit, :update]
+  before_filter :check_admin, :except => [ :show, :index ]
   autocomplete :person, :name
 
   def new
@@ -64,5 +64,7 @@ class MissionsController < ApplicationController
   end
   end
 
-  def points; end
+  def points
+    @mission = Mission.find(params[:id], :include => { :attendances => { :registration => :person }})
+  end
 end
