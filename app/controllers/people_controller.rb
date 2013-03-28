@@ -14,7 +14,7 @@ class PeopleController < ApplicationController
 
     # Protect against name changes
     if params[:person][:name] != @person.name
-      if @person.can_change_name?
+      if @is_admin || @person.can_change_name?
         @person.update_attribute(:name, params[:person][:name])
       else
         return redirect_to edit_person_url(@person), :flash => {
