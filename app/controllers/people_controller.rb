@@ -11,6 +11,19 @@ class PeopleController < ApplicationController
       redirect_to root_url()
       return
     end
+
+    # Protect against name changes
+    if params[:person][:name] != @person.name
+      if @person.can_change_name?
+        @person.update_attribute(:name, params[:person][:name])
+      else
+        return redirect_to edit_person_url(@person), :flash => {
+          :error => "You cannot edit your name now!"
+        }
+      end
+    end
+    params[:person].delete(:name)
+
     @person.update_attributes(params[:person])
 
     if @is_admin and not params[:person][:is_admin].nil?
