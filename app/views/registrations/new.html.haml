@@ -51,7 +51,7 @@
             %td
               %b=f.label :squad_select, "Squad:"
             %td
-          %tr 
+          %tr
             %td{:style=>"text-align:right", :colspan=>2}
               %hr
               =radio_button_tag(:squad_select, "existing")
@@ -73,6 +73,3 @@
               =f.submit "Register!"
 Don't want to register just yet? It's all good. Registration is open until
 = @current_game.dates[:registration_ends] + "."
-
-
-
