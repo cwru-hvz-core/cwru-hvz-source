@@ -1,41 +1,48 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
-  before_filter :setup
+  before_filter :set_game,
+                :set_time_zone,
+                :set_logged_in_person
 
-  def setup
+  def set_game
     @current_game = Game.current
-    Time.zone = @current_game.time_zone
+  end
 
-    # If they're logged in, we'll grab detect if they're an admin
-    @logged_in = !session[:cas_user].nil?
+  def set_time_zone
+    Time.zone = @current_game.time_zone
+  end
+
+  def set_logged_in_person
     @is_admin ||= false
-    if @logged_in
-      @logged_in_person = Person.find_or_create_by_caseid(session[:cas_user])
-      @person = Person.find_by_caseid(session[:cas_user])
-      @is_admin ||= @person.is_admin unless @person.nil?
+
+    if session[:cas_user].present?
+      @logged_in_person = Person.where(caseid: session[:cas_user]).first_or_create
+      # todo[tdooner]: %s/@person/@logged_in_person/
+      @person = @logged_in_person
+      @is_admin = @logged_in_person.is_admin
     end
   end
 
   def check_admin
     unless @is_admin
-      redirect_to root_url and return
+      redirect_to root_url
     end
   end
 
   def check_login
     if session[:cas_user].nil?
       session[:was_at] = request.env['PATH_INFO']
-      redirect_to people_login_url and return
+      redirect_to people_login_url
     else
-      @logged_in_person = Person.find_or_create_by_caseid(session[:cas_user])
+      @logged_in_person = Person.where(caseid: session[:cas_user]).first_or_create
     end
   end
 
   def check_is_registered
-    @logged_in_registration = Registration.find_by_person_id_and_game_id(@logged_in_person,@current_game)
+    @logged_in_registration = Registration.where(person_id: @logged_in_person, game_id: @current_game).first
     if @logged_in_registration.nil?
       flash[:error] = "You must register for the game before you can view this page."
-      redirect_to root_url and return
+      redirect_to root_url
     end
   end
 end
