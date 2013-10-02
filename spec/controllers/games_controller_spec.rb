@@ -29,4 +29,36 @@ describe GamesController do
       end
     end
   end
+
+  describe '#edit' do
+    subject { get :edit, id: game.id }
+
+    it 'redirects you home' do
+      subject.should redirect_to(root_path)
+    end
+
+    context 'when logged in as a non-admin user' do
+      let(:user) { FactoryGirl.create(:person) }
+      
+      before do
+        log_in_as(user)
+      end
+
+      it 'redirects you home' do
+        subject.should redirect_to(root_path)
+      end
+    end
+
+    context 'as an admin' do
+      let(:user) { FactoryGirl.create(:admin) }
+
+      before do
+        log_in_as(user)
+      end
+
+      it 'redirects you home' do
+        subject.should be_success
+      end
+    end
+  end
 end

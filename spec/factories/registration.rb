@@ -10,12 +10,23 @@ FactoryGirl.define do
     wants_oz false
     is_off_campus false
 
-    factory :human do
+    trait :human do
       faction_id 0
     end
 
-    factory :zombie do
+    trait :zombie do
       faction_id 1
+
+      after(:create) do |registration|
+        registration.taggedby << FactoryGirl.create(:tag,
+                                    tagee: registration,
+                                    game: registration.game,
+                                    datetime: 2.hours.ago) # XXX: incubation
+      end
+    end
+
+    trait :oz do
+      is_oz true
     end
   end
 end

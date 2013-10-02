@@ -20,6 +20,10 @@ FactoryGirl.define do
 
     factory :current_game do
       is_current true
+
+      before(:create) do
+        Game.where(is_current: true).destroy_all
+      end
     end
   end
 end

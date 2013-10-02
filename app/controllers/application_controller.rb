@@ -17,7 +17,6 @@ class ApplicationController < ActionController::Base
   end
 
   def check_admin
-    check_login
     unless @is_admin
       redirect_to root_url and return
     end
@@ -33,7 +32,6 @@ class ApplicationController < ActionController::Base
   end
 
   def check_is_registered
-    check_login
     @logged_in_registration = Registration.find_by_person_id_and_game_id(@logged_in_person,@current_game)
     if @logged_in_registration.nil?
       flash[:error] = "You must register for the game before you can view this page."
