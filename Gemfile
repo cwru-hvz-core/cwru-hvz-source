@@ -24,5 +24,10 @@ group :development, :test do
   gem 'factory_girl_rails'
 end
 
+group :test do
+  gem 'sqlite3'
+  gem 'debugger'
+end
+
 # Use unicorn as the web server
 gem 'unicorn'
