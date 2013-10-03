@@ -8,11 +8,11 @@
       %tr
         %td
           %b Game Begins:
-        %td=@current_game.dates[:game_begins]
+        %td=@current_game.to_s(:game_begins)
       %tr
         %td
           %b Game Ends:
-        %td=@current_game.dates[:game_ends]
+        %td=@current_game.to_s(:game_ends)
     %table
       %thead
         %th{:colspan=>2} Your Information:
@@ -72,4 +72,4 @@
             %td{:colspan=>2}
               =f.submit "Register!"
 Don't want to register just yet? It's all good. Registration is open until
-= @current_game.dates[:registration_ends] + "."
+= @current_game.to_s(:registration_ends) + "."

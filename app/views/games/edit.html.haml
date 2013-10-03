@@ -18,7 +18,7 @@
           %b Game Begins:
         %td
           - if @game.has_begun?
-            = @game.dates[:game_begins]
+            = @game.to_s(:game_begins)
           - else
             =f.datetime_select :game_begins
       %tr
@@ -26,7 +26,7 @@
           %b Reveal OZs At:
         %td
           - if @game.ozs_revealed?
-            = @game.dates[:oz_reveal]
+            = @game.to_s(:oz_reveal)
           - else
             =f.datetime_select :oz_reveal
       %tr
@@ -34,7 +34,7 @@
           %b Game Ends:
         %td
           - if @game.has_ended?
-            =@game.dates[:game_ends]
+            =@game.to_s(:game_ends)
           -else
             =f.datetime_select :game_ends
       %tr
@@ -48,7 +48,7 @@
       %tr
         %td
           %b Front Page:
-          (Uses 
+          (Uses
           =link_to("Textile", "http://www.textism.com/tools/textile/") + ")"
         %td=f.text_area :information
       %tr

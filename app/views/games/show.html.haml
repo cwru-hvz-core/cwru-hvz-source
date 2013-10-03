@@ -52,7 +52,7 @@
 %div.game-header
   %div.span-6.prepend-1
     %h1.dink=@game.short_name
-    %h2.dink="(" + @game.dates[:date_range] + ")"
+    %h2.dink="(" + @game.to_s(:date_range) + ")"
   %div.span-14.prepend-1.last
     #game_graph
 %div.game

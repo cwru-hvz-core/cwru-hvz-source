@@ -10,11 +10,11 @@ class RegistrationsController < ApplicationController
       return
     end
     if Time.now < @current_game.registration_begins
-      flash[:error] = "Registration begins " + @current_game.dates[:registration_begins] + ". Please check back then!"
+      flash[:error] = "Registration begins " + @current_game.to_s(:registration_begins) + ". Please check back then!"
       return redirect_to root_url()
     end
     if Time.now > @current_game.registration_ends
-      flash[:error] = "Registration ended " + @current_game.dates[:registration_ends] + ". If you would still like to play, please contact the administrators."
+      flash[:error] = "Registration ended " + @current_game.to_s(:registration_ends) + ". If you would still like to play, please contact the administrators."
       return redirect_to root_url()
     end
     @registration = Registration.find_or_initialize_by_person_id_and_game_id(@person.id, @current_game.id)
