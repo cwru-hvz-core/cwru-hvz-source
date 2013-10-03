@@ -39,7 +39,7 @@ describe GamesController do
 
     context 'when logged in as a non-admin user' do
       let(:user) { FactoryGirl.create(:person) }
-      
+
       before do
         log_in_as(user)
       end

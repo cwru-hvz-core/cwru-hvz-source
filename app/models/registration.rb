@@ -57,7 +57,7 @@ class Registration < ActiveRecord::Base
   def killing_tag
     # Each human should have only one killing tag. (That is, the tag that turned them
     # into a zombie)
-    self.taggedby.map{|x| x if x.mission_id.nil? or x.mission_id==0 }.compact.first
+    taggedby.first
   end
 
   def total_deaths_associated

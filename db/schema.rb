@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130320021932) do
+ActiveRecord::Schema.define(:version => 20131003052211) do
 
   create_table "attendances", :force => true do |t|
     t.integer  "registration_id"
@@ -183,7 +183,6 @@ ActiveRecord::Schema.define(:version => 20130320021932) do
     t.integer  "game_id"
     t.integer  "tagger_id"
     t.integer  "tagee_id"
-    t.integer  "mission_id"
     t.datetime "datetime"
     t.integer  "score"
     t.datetime "created_at", :null => false

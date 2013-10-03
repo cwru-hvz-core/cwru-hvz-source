@@ -25,6 +25,17 @@ FactoryGirl.define do
       end
     end
 
+    trait :deceased do
+      faction_id 2
+
+      after(:create) do |registration|
+        registration.taggedby << FactoryGirl.create(:tag,
+                                    tagee: registration,
+                                    game: registration.game,
+                                    datetime: 24.hours.ago)
+      end
+    end
+
     trait :oz do
       is_oz true
     end
