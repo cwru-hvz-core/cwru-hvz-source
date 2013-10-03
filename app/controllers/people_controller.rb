@@ -2,8 +2,6 @@ class PeopleController < ApplicationController
   before_filter :check_login, :except => ["login", "logout"]
   before_filter CASClient::Frameworks::Rails::Filter, :only => "login"
 
-  # Note: On every page load where check_login is called as a before_filter
-
   def update
     @person = Person.find(params[:id], :include => :registrations) or Person.new
     if !@is_admin && (@person != @logged_in_person)
