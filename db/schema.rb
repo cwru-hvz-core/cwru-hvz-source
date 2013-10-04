@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131003052211) do
+ActiveRecord::Schema.define(:version => 20131004040634) do
 
   create_table "attendances", :force => true do |t|
     t.integer  "registration_id"
@@ -142,9 +142,10 @@ ActiveRecord::Schema.define(:version => 20131003052211) do
     t.binary   "picture"
     t.string   "phone"
     t.datetime "last_login"
-    t.boolean  "is_admin",   :default => false
-    t.datetime "created_at",                    :null => false
-    t.datetime "updated_at",                    :null => false
+    t.boolean  "is_admin",      :default => false
+    t.datetime "created_at",                       :null => false
+    t.datetime "updated_at",                       :null => false
+    t.date     "date_of_birth"
   end
 
   add_index "people", ["caseid"], :name => "index_people_on_caseid"
@@ -201,7 +202,6 @@ ActiveRecord::Schema.define(:version => 20131003052211) do
     t.integer  "game_id"
     t.integer  "studentid"
     t.date     "datesigned"
-    t.date     "dateofbirth"
     t.string   "emergencyname"
     t.string   "emergencyrelationship"
     t.string   "emergencyphone"

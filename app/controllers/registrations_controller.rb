@@ -2,24 +2,12 @@ class RegistrationsController < ApplicationController
   before_filter :check_admin, :only => [:index, :destroy, :submit_waiver, :showwaiver, :find_by_code]
   before_filter :check_login, :only => [:new, :create, :show]
   before_filter :check_is_registered, :only => [:joinsquad, :forumsync]
-  before_filter :start_registration_process, :only => [:new]
+
+  before_filter :require_can_register, only: :new
+  before_filter :require_personal_information, only: :new
+  before_filter :require_waiver, only: :new
 
   def new
-    if !@current_game.persisted? || @current_game.registration_begins.blank? || @current_game.registration_ends.blank?
-      flash[:error] = 'Your administrators have not yet created a game to register for.'
-      return redirect_to root_url
-    end
-
-    if @current_game.now < @current_game.registration_begins
-      flash[:error] = "Registration begins #{@current_game.to_s(:registration_begins)}. Please check back then!"
-      return redirect_to root_url
-    end
-
-    if @current_game.now > @current_game.registration_ends
-      flash[:error] = "Registration ended #{@current_game.to_s(:registration_ends)}. If you would still like to play, please contact the administrators."
-      return redirect_to root_url
-    end
-
     @registration = Registration.where(person_id: @person, game_id: @current_game).first_or_initialize
     @squads = @current_game.squads.includes(:registrations)
 
@@ -144,17 +132,41 @@ class RegistrationsController < ApplicationController
 
 private
 
-  def start_registration_process
-    session[:is_registering] = true
-    current_waiver = Waiver.where(person_id: @logged_in_person, game_id: @current_game).first
+  def require_can_register
+    if !@current_game.can_register?
+      # TODO: Get these strings into a helper or something
+      if @current_game.registration_begins.blank? || @current_game.registration_ends.blank?
+        flash[:error] = 'Registration times for this game have not yet been configured'
+      end
 
+      if @current_game.now < @current_game.registration_begins
+        flash[:error] = "Registration begins #{@current_game.to_s(:registration_begins)}. Please check back then!"
+      end
+
+      if @current_game.now > @current_game.registration_ends
+        flash[:error] = "Registration ended #{@current_game.to_s(:registration_ends)}. If you would still like to play, please contact the administrators."
+      end
+
+      return redirect_to root_url
+    end
+  end
+
+
+  def require_personal_information
     if @logged_in_person.name.blank?
       return redirect_to edit_person_url(@logged_in_person)
     end
+  end
 
-    if current_waiver.nil? && !session[:underage]
-      return redirect_to sign_waiver_url(@logged_in_person)
-    end
+  def require_waiver
+    return unless @logged_in_person.legal_to_sign_waiver?
+
+    current_waiver = Waiver.where(
+      person_id: @logged_in_person,
+      game_id: @current_game
+    ).first
+
+    redirect_to sign_waiver_url(@logged_in_person) if current_waiver.blank?
   end
 
   # todo[tdooner]: I think this whole method is super jank. Going to revisit at

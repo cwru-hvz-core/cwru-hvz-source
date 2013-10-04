@@ -64,8 +64,12 @@ class Game < ActiveRecord::Base
     Time.now >= oz_reveal
   end
 
-  def can_register?
-    registration_begins < Time.now && registration_ends > Time.now
+  def can_register?(person = nil)
+    return false unless persisted?
+    return false unless registration_begins.present? && registration_ends.present?
+    return true if person.try(:is_admin)
+
+    registration_begins < now && registration_ends > now
   end
 
   def now
