@@ -37,7 +37,7 @@ class PeopleController < ApplicationController
   def edit
     @toedit = Person.find(params[:id])
 
-    if @logged_in_person.can_edit?(@toedit)
+    if !@logged_in_person.can_edit?(@toedit)
       flash[:error] = "You do not have permissions to edit this person's details."
       return redirect_to root_url
     end
