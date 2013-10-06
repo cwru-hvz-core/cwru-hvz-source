@@ -18,6 +18,8 @@ class Registration < ActiveRecord::Base
   validates_uniqueness_of :card_code, :scope => :game_id
   validates_presence_of :person_id, :game_id, :card_code
 
+  before_save :set_card_code
+
   def self.make_code
     chars = %w{ A B C D E F 1 2 3 4 5 6 7 8 9 }
     (0..5).map{ chars.to_a[rand(chars.size)] }.join
@@ -57,7 +59,7 @@ class Registration < ActiveRecord::Base
   def killing_tag
     # Each human should have only one killing tag. (That is, the tag that turned them
     # into a zombie)
-    self.taggedby.map{|x| x if x.mission_id.nil? or x.mission_id==0 }.compact.first
+    taggedby.first
   end
 
   def total_deaths_associated
@@ -190,5 +192,11 @@ class Registration < ActiveRecord::Base
     PHPBBUtility.clear_permissions(@conn, ids)
 
     return true
+  end
+
+private
+
+  def set_card_code
+    card_code = Registration.make_code if card_code.blank?
   end
 end

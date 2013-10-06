@@ -9,11 +9,13 @@
             Name:
           %td
             =text_field_tag nil, @logged_in_person.name, {:disabled => true, :size=>15}
-        %tr
-          %td{:style=>"width:75px"}
-            =f.label :dateofbirth, "Date Of Birth:"
-          %td
-            =f.date_select :dateofbirth, {:order => [:month, :day, :year], :start_year=>1940, :end_year=>1996}
+        = f.fields_for :person do |g|
+          %tr
+            %td{ style: 'width: 75px' }
+              = g.label :date_of_birth, 'Date Of Birth:'
+            %td
+              = g.date_select :date_of_birth, order: [:month, :day, :year],
+                start_year: 1940, end_year: 1996
     %div.span-1
     %div.span-10
       =f.label :studentid, "Student ID:"

@@ -33,16 +33,17 @@
           %h1 Case Humans vs. Zombies
           %div.headinfo.last
             %div.span-5
-              %b New! 
+              %b New!
               Discuss this game on the
               =link_to "Case HvZ Forum!", "http://forum.casehvz.com"
-
             %div.span-6.countdowncontainer
               - unless @current_game.game_begins.nil?
                 = render :partial => "index/countdown"
             %div.span-6.last
-              = link_to "Login", people_login_url() unless @logged_in
-              = render :partial => "index/userloggedin" if @logged_in
+              - if @logged_in_person.present?
+                = render :partial => "index/userloggedin"
+              - else
+                = link_to "Login", people_login_url
           %div.navigation
             %div.span-4= link_to "Home", root_url()
             %div.span-4

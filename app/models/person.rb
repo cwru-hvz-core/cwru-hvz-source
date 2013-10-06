@@ -29,4 +29,14 @@ class Person < ActiveRecord::Base
     return true if !current_registration.present?
     return false if current_game.has_begun?
   end
+
+  def can_edit?(other)
+    return true if is_admin
+
+    self == other
+  end
+
+  def legal_to_sign_waiver?
+    ((Date.today - date_of_birth).days / 1.year) >= 18
+  end
 end

@@ -1,26 +1,27 @@
 class WaiverController < ApplicationController
   before_filter :check_login
-  before_filter :check_for_waiver
-  before_filter :redirect_if_underage
 
   def new
     if !@current_game.can_register?
-      flash[:error] = "Registration for this game is not open at this time. Registration is open from #{@current_game.dates[:registration_begins]} to #{@current_game.dates[:registration_ends]}"
-      return redirect_to root_url()
+      flash[:error] = "Registration for this game is not open at this time. Registration is open from #{@current_game.to_s(:registration_begins)} to #{@current_game.to_s(:registration_ends)}"
+      return redirect_to root_url
     end
-    last_waiver = @logged_in_person.waivers.last
-    if last_waiver
-      @w = Waiver.new({:person_id => @logged_in_person.id, :dateofbirth => last_waiver.dateofbirth, :studentid => last_waiver.studentid})
+
+    if last_waiver = @logged_in_person.waivers.last
+      @w = Waiver.new(
+        person_id: @logged_in_person,
+        studentid: last_waiver.studentid,
+      )
     else
-      @w = Waiver.new({:person_id => @logged_in_person.id})
+      @w = Waiver.new(person_id: @logged_in_person)
     end
   end
 
   def create
-    # Pass the user through if they came from the under-18 page.
-    if params[:waiver][:underage]
-      session[:underage] = true
-      return redirect_to new_registration_url()
+    @logged_in_person.update_attribute(:date_of_birth, params[:waiver][:dateofbirth])
+
+    if !@logged_in_person.legal_to_sign_waiver?
+      return redirect_to new_registration_url
     end
 
     @w = Waiver.new(params[:waiver])
@@ -59,23 +60,5 @@ class WaiverController < ApplicationController
       redirect_to new_registration_url()
       return
     end
-  end
-
-  def check_for_waiver
-    current_waiver = Waiver.find_by_person_id_and_game_id(@logged_in_person.id, @current_game.id)
-
-    if session[:is_registering] and not current_waiver.nil?
-      redirect_to new_registration_url()
-      return false
-    end
-    if not current_waiver.nil?
-      flash[:message] = "You have already signed the waiver!"
-      redirect_to root_url()
-      return false
-    end
-  end
-
-  def redirect_if_underage
-    redirect_to new_registration_url() if session[:underage]
   end
 end
