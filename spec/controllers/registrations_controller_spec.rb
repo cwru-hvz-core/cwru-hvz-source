@@ -31,9 +31,9 @@ describe RegistrationsController do
       context 'when the user has not inputted a name' do
         let!(:user) { FactoryGirl.create(:person, name: '') }
 
-        it 'redirects to edit_person_path' do
+        it 'redirects to edit_person_path with ?next=registration' do
           get :new
-          response.should redirect_to edit_person_path(user)
+          response.should redirect_to edit_person_path(user, next: 'registration')
         end
       end
 
@@ -47,9 +47,9 @@ describe RegistrationsController do
           end
         end
 
-        it 'requires a waiver to be signed' do
+        it 'redirects to sign_waiver_url with ?next=registration' do
           get :new
-          response.should redirect_to sign_waiver_url(user)
+          response.should redirect_to sign_waiver_url(user, next: 'registration')
         end
       end
 

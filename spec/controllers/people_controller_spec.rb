@@ -70,6 +70,15 @@ describe PeopleController do
         person.reload.phone.should == new_phone
       end
 
+      context 'when called with a registration next step' do
+        let(:registration_params) { params.merge(next: 'registration') }
+
+        it 'redirects there' do
+          post :update, registration_params
+          response.should redirect_to new_registration_path
+        end
+      end
+
       context "when you shouldn't be allowed to update your name" do
         before { Person.any_instance.stub(can_change_name?: false) }
         it "doesn't allow you to update your name" do

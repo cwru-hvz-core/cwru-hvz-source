@@ -18,7 +18,7 @@ class WaiverController < ApplicationController
   end
 
   def create
-    @logged_in_person.update_attribute(:date_of_birth, params[:waiver][:dateofbirth])
+    #@logged_in_person.update_attribute(:date_of_birth, params[:waiver][:dateofbirth])
 
     if !@logged_in_person.legal_to_sign_waiver?
       return redirect_to new_registration_url
@@ -31,8 +31,7 @@ class WaiverController < ApplicationController
     # Shame on me for coding these here. They really should be in the validate method of Waiver.
     # TODO: Move them there.
 
-    @age = (@current_game.game_begins.to_date - @w.dateofbirth) * 1.day / 1.year
-    if @age < 18
+    unless @logged_in_person.legal_to_sign_waiver?
       return render :under18
     end
 
@@ -56,9 +55,13 @@ class WaiverController < ApplicationController
       render :new
       return
     end
-    if @w.save()
-      redirect_to new_registration_url()
-      return
+    if @w.save
+      case params[:next]
+      when 'registration'
+        redirect_to new_registration_path
+      else
+        redirect_to sign_waiver_path
+      end
     end
   end
 end
