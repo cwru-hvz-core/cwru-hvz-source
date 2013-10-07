@@ -154,7 +154,7 @@ private
 
   def require_personal_information
     if @logged_in_person.name.blank?
-      return redirect_to edit_person_url(@logged_in_person)
+      return redirect_to edit_person_url(@logged_in_person, next: 'registration')
     end
   end
 
@@ -166,7 +166,9 @@ private
       game_id: @current_game
     ).first
 
-    redirect_to sign_waiver_url(@logged_in_person) if current_waiver.blank?
+    if current_waiver.blank?
+      redirect_to sign_waiver_url(@logged_in_person, next: 'registration')
+    end
   end
 
   # todo[tdooner]: I think this whole method is super jank. Going to revisit at

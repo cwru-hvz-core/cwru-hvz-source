@@ -28,4 +28,35 @@ describe WaiverController do
       end
     end
   end
+
+  describe '#create' do
+    let(:valid_params) do
+      { id: person.id,
+        waiver: {
+          studentid: '1234567',
+          chk1: '1',
+          chk2: '1',
+          chk3: '1',
+          chk4: '1',
+          emergencyname: 'John Doe',
+          emergencyrelationship: 'Brother',
+          emergencyphone: '123-456-7890',
+          signature: person.name,
+      } }
+    end
+
+    it 'creates a waiver instance' do
+      expect { post :create, valid_params }.
+        to change { Waiver.count }.by(1)
+    end
+
+    context 'when a next registration step is passed in' do
+      let(:redirection_params) { valid_params.merge(next: 'registration') }
+
+      it 'redirects to the registration step' do
+        post :create, redirection_params
+        response.should redirect_to new_registration_path
+      end
+    end
+  end
 end

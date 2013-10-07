@@ -31,7 +31,12 @@ class PeopleController < ApplicationController
       @person.save()
     end
 
-    redirect_to(session[:was_at] || @person)
+    case params[:next]
+    when 'registration'
+      redirect_to new_registration_path
+    else
+      redirect_to edit_person_path(@person)
+    end
   end
 
   def edit
