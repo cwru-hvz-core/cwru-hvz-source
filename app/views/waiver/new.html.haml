@@ -1,7 +1,7 @@
 %h2.dink
   = @current_game.short_name + " Registration (Step 2 of 3)"
 %div.registration
-  =form_for (@w) do |f|
+  = form_for(@waiver, url: waivers_path(@logged_in_person, next: params[:next])) do |f|
     %div.span-10
       %table
         %tr
@@ -9,7 +9,7 @@
             Name:
           %td
             =text_field_tag nil, @logged_in_person.name, {:disabled => true, :size=>15}
-        = f.fields_for :person do |g|
+        = fields_for :person do |g|
           %tr
             %td{ style: 'width: 75px' }
               = g.label :date_of_birth, 'Date Of Birth:'

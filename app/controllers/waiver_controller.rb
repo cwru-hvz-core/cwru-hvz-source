@@ -7,18 +7,17 @@ class WaiverController < ApplicationController
       return redirect_to root_url
     end
 
-    if last_waiver = @logged_in_person.waivers.last
-      @w = Waiver.new(
-        person_id: @logged_in_person,
-        studentid: last_waiver.studentid,
-      )
-    else
-      @w = Waiver.new(person_id: @logged_in_person)
+    @waiver = Waiver.new.tap do |w|
+      w.person = @logged_in_person
+
+      if last_waiver = @logged_in_person.waivers.last
+        w.studentid = last_waiver.studentid
+      end
     end
   end
 
   def create
-    #@logged_in_person.update_attribute(:date_of_birth, params[:waiver][:dateofbirth])
+    @logged_in_person.update_attributes(params[:person])
 
     if !@logged_in_person.legal_to_sign_waiver?
       return redirect_to new_registration_url
@@ -37,24 +36,19 @@ class WaiverController < ApplicationController
 
     if @w.chk1.eql?("0") or @w.chk2.eql?("0") or @w.chk3.eql?("0") or @w.chk4.eql?("0")
       flash[:error] = "Error: You must check all boxes to accept the waiver."
-      render :new
-      return
     end
     if not @w.signature.downcase.eql?(@w.person.name.downcase)
       flash[:error] = "Error: You did not sign your name ("+@w.person.name+") correctly."
-      render :new
-      return
     end
     if @w.emergencyname.empty? or @w.emergencyphone.empty?
       flash[:error] = "Error: You must provide emergency contact details."
-      render :new
-      return
     end
     if @w.studentid.to_s.empty?
       flash[:error] = "Error: You must provide your student ID."
-      render :new
-      return
     end
+
+    return redirect_to sign_waiver_path(next: params[:next]) if flash[:error]
+
     if @w.save
       case params[:next]
       when 'registration'
