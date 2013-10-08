@@ -4,7 +4,7 @@ class Person < ActiveRecord::Base
     has_many :waivers
   validates :caseid, :presence => true
 
-  attr_accessible :name, :phone # The user-modifiable fields
+  attr_accessible :name, :phone, :date_of_birth # The user-modifiable fields
 
   def phone=(arg)
     write_attribute(:phone, arg.gsub(/[^\d]/){|x| })
@@ -37,6 +37,7 @@ class Person < ActiveRecord::Base
   end
 
   def legal_to_sign_waiver?
+    return true unless date_of_birth.present?  # assume > 18 until known otherwise
     ((Date.today - date_of_birth).days / 1.year) >= 18
   end
 end

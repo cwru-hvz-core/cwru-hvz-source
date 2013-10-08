@@ -12,7 +12,6 @@ class RegistrationsController < ApplicationController
     @squads = @current_game.squads.includes(:registrations)
 
     if @registration.card_code.present?
-      session[:is_registering] = false
       return redirect_to registration_path(@registration)
     end
   end
@@ -36,8 +35,6 @@ class RegistrationsController < ApplicationController
       flash[:error] = "Error, could not register you! #{@registration.errors.full_messages.first}"
       return redirect_to new_registration_url
     end
-
-    session[:is_registering] = false
 
     # Now worry about the squad, because we can't attribute squad leadership without a registration id
     if params[:squad_select] == 'create'

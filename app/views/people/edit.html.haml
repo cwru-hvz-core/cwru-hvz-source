@@ -1,10 +1,4 @@
-// Since we pass this in an object, these fields automatically
-// are populated with that object's properties if the symbol
-// matches the database column.
-- if session[:needs_info]
-  %div.span-24.last
-    Your profile is incomplete! Please fill out this information to continue signup.
-- if session[:is_registering]
+- if params[:next] == 'registration'
   %h2.dink
     = @current_game.short_name + " Registration (Step 1 of 3)"
 %div.span-4.clear
@@ -12,7 +6,7 @@
 %div.span-16
   %table
     %tbody
-      = form_for(@toedit) do |f|
+      = form_for(@toedit, url: person_path(@toedit, next: params[:next])) do |f|
         %tr
           %td
             %b Name:
