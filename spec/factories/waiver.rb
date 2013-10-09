@@ -3,6 +3,7 @@ FactoryGirl.define do
     person
     game
     studentid 12345
+    signature { person.name }
     datesigned { Date.today - 3.days }
     emergencyname 'Just call 911'
     emergencyrelationship '911'

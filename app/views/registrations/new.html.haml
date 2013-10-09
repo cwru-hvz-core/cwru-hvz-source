@@ -1,6 +1,7 @@
 %h2.dink
   = @current_game.short_name + " Registration (Step 3 of 3)"
 %div.registration
+  = render 'under18' if !@person.legal_to_sign_waiver?
   %div#infotable
     %table
       %thead

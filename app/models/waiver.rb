@@ -2,7 +2,18 @@ class Waiver < ActiveRecord::Base
   belongs_to :game
   belongs_to :person
 
-  accepts_nested_attributes_for :person
+  attr_accessor :signature
 
-  attr_accessor :signature, :chk1, :chk2, :chk3, :chk4
+  validate :check_signature
+  validates_presence_of :emergencyname, :emergencyphone, :studentid
+
+private
+
+  def check_signature
+    return unless new_record?
+
+    return if signature.try(:downcase) == person.name.downcase
+
+    errors.add(:signature, 'must match your name as it appears at the top')
+  end
 end
