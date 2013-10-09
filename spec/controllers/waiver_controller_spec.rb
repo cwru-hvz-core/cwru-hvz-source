@@ -32,12 +32,14 @@ describe WaiverController do
   describe '#create' do
     let(:valid_params) do
       { id: person.id,
-        waiver: {
-          studentid: '1234567',
+        confirmation: {
           chk1: '1',
           chk2: '1',
           chk3: '1',
           chk4: '1',
+        },
+        waiver: {
+          studentid: '1234567',
           emergencyname: 'John Doe',
           emergencyrelationship: 'Brother',
           emergencyphone: '123-456-7890',
