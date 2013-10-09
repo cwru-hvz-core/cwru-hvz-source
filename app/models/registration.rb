@@ -18,7 +18,7 @@ class Registration < ActiveRecord::Base
   validates_uniqueness_of :card_code, :scope => :game_id
   validates_presence_of :person_id, :game_id, :card_code
 
-  before_save :set_card_code
+  before_validation :set_card_code
 
   def self.make_code
     chars = %w{ A B C D E F 1 2 3 4 5 6 7 8 9 }
@@ -197,6 +197,6 @@ class Registration < ActiveRecord::Base
 private
 
   def set_card_code
-    card_code = Registration.make_code if card_code.blank?
+    self.card_code = Registration.make_code if self.card_code.blank?
   end
 end

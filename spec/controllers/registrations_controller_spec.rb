@@ -76,4 +76,30 @@ describe RegistrationsController do
       end
     end
   end
+
+  describe '#create' do
+    let!(:game) { FactoryGirl.create(:current_game) }
+    let!(:user) { FactoryGirl.create(:person) }
+
+    context 'under all the valid circumstances' do
+      before do
+        Game.stub(current: game)
+        log_in_as(user)
+        FactoryGirl.create(:waiver, person: user, game: game)
+        game.stub(now: game.registration_begins + 1.minute)
+      end
+
+      let(:valid_params) do
+        { registration: {
+          wants_oz: '0',
+          is_off_campus: '0'
+        } }
+      end
+
+      it 'works' do
+        expect { post :create, valid_params }.
+          to change { Registration.count }.by(1)
+      end
+    end
+  end
 end
