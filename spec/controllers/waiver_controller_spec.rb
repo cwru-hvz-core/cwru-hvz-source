@@ -45,17 +45,26 @@ describe WaiverController do
       } }
     end
 
-    it 'creates a waiver instance' do
-      expect { post :create, valid_params }.
-        to change { Waiver.count }.by(1)
+    it 'redirects home when the game is not open for registration' do
+      post :create, valid_params
+      response.should redirect_to root_path
     end
 
-    context 'when a next registration step is passed in' do
-      let(:redirection_params) { valid_params.merge(next: 'registration') }
+    context 'when the game is open for registration' do
+      before { game.stub(now: game.registration_begins + 1.minute) }
 
-      it 'redirects to the registration step' do
-        post :create, redirection_params
-        response.should redirect_to new_registration_path
+      it 'creates a waiver instance' do
+        expect { post :create, valid_params }.
+          to change { Waiver.count }.by(1)
+      end
+
+      context 'when a next registration step is passed in' do
+        let(:redirection_params) { valid_params.merge(next: 'registration') }
+
+        it 'redirects to the registration step' do
+          post :create, redirection_params
+          response.should redirect_to new_registration_path
+        end
       end
     end
   end

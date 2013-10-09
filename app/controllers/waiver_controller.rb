@@ -1,12 +1,8 @@
 class WaiverController < ApplicationController
   before_filter :check_login
+  before_filter :require_can_register
 
   def new
-    if !@current_game.can_register?
-      flash[:error] = "Registration for this game is not open at this time. Registration is open from #{@current_game.to_s(:registration_begins)} to #{@current_game.to_s(:registration_ends)}"
-      return redirect_to root_url
-    end
-
     @waiver = Waiver.new.tap do |w|
       w.person = @logged_in_person
 
