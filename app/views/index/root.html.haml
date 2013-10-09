@@ -5,8 +5,7 @@
   - unless @current_game.id.nil?
     %h2.dink Game Status
     %table
-      - cache({:controller => "games", :action=>"show", :action_suffix=>"gamestats", :id=>@current_game}, :expires_in => 1.minute) do
-        = render :partial => "games/gamestats"
+      = render 'games/gamestats', game: @current_game
   %h2.dink 
     Recent Updates
   %ul

@@ -1,6 +1,6 @@
 FactoryGirl.define do
   factory :person do
-    name 'John Doe'
+    name { |n| 'John #{n} Doe' }
     sequence(:caseid) { |n| "jxd12#{n}" }
     phone '3305551234'
     is_admin false

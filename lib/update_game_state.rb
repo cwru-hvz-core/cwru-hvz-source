@@ -50,6 +50,7 @@ class UpdateGameState
 		# We have to override validation because the registrations are generally not changable
 		# after registration ends.
 		[@human_faction, @zombie_faction, @deceased_faction].flatten.each { |x| x.save(:validate => false) }
+    @current_game.touch
 		Delayed::Job.enqueue(UpdateGameState.new(),{ :run_at => Time.now + 1.minute })
 	end
 

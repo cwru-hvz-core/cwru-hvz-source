@@ -1,20 +1,15 @@
-%div.player{:class => faction_id_to_class(player).downcase}
+%div.player{ class: faction_id_to_class(player) }
   %ul
     %li.number
-      = number.to_s +  "."
+      #{number}.
     %li.picture.right
-      =image_tag profile_photo_url(player.person, 32)
-    - unless player.person.nil?
-      %li.name.right{:class=>("admin" if player.person.is_admin?)}
-        = player.person.name
-        - if player.is_oz? and @game.ozs_revealed?
-          ="(OZ)"
-        - if calc_total_severity(player) > 0
-          ="(" + calc_total_severity(player).to_s + " strikes)"
-    - else
-      \[Unknown Player]
+      = image_tag profile_photo_url(player.person, 32)
+    %li.name.right{ class: ("admin" if player.person.try(:is_admin?)) }
+      = player.person.try(:name) || 'Unknown Player'
+      - if player.is_oz? && player.game.ozs_revealed?
+        (OZ)
     %li.survival.right
       = get_scoreboard_text(player).html_safe
     %li.points.right
-      %span.highlight=player.display_score 
+      %span.highlight= player.display_score
       Pts

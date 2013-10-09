@@ -60,6 +60,10 @@ class Game < ActiveRecord::Base
     Time.now >= game_ends
   end
 
+  def original_zombies
+    registrations.where(is_oz: true)
+  end
+
   def ozs_revealed?
     Time.now >= oz_reveal
   end
@@ -83,13 +87,6 @@ class Game < ActiveRecord::Base
   def since_begin
     return 0 unless has_begun?
     Game.now(self) - game_begins
-  end
-
-  def mode_score
-    UpdateGameState.points_for_time_survived((since_begin/1.hour).floor)
-    #m = Registration.find_by_sql("SELECT *,COUNT(*) as scorect from registrations group by score order by scorect desc")
-    #return 0 if m.nil?
-    #m.first.score
   end
 
   def utc_offset
