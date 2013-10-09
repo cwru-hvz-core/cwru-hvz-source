@@ -3,9 +3,9 @@ class RegistrationsController < ApplicationController
   before_filter :check_login, :only => [:new, :create, :show]
   before_filter :check_is_registered, :only => [:joinsquad]
 
-  before_filter :require_can_register, only: :new
-  before_filter :require_personal_information, only: :new
-  before_filter :require_waiver, only: :new
+  before_filter :require_can_register, only: [:new, :create]
+  before_filter :require_personal_information, only: [:new, :create]
+  before_filter :require_waiver, only: [:new, :create]
 
   def new
     @registration = Registration.where(person_id: @person, game_id: @current_game).first_or_initialize
