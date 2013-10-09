@@ -27,20 +27,16 @@ class Registration < ActiveRecord::Base
   end
 
   def display_score
-    if self.is_oz && !self.game.ozs_revealed?
-      return self.game.mode_score
+    if is_oz && !game.ozs_revealed?
+      UpdateGameState.points_for_time_survived((game.since_begin / 1.hour).floor)
+    else
+      self.score
     end
-    self.score
   end
 
   def validate
-    if Time.now < self.game.registration_begins
-      errors.add_to_base("Registration has not yet begun for this game!")
-    end
-
-    if Time.now > self.game.registration_ends
-      errors.add_to_base("Registration has already ended for this game!")
-    end
+    errors.add_to_base('Registration has not yet begun for this game!') if Time.now < self.game.registration_begins
+    errors.add_to_base('Registration has already ended for this game!') if Time.now > self.game.registration_ends
   end
 
   # Note: These methods are costly and should only be called asynchronously.

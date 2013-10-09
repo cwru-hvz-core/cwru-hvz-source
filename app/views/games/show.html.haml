@@ -51,8 +51,8 @@
     }
 %div.game-header
   %div.span-6.prepend-1
-    %h1.dink=@game.short_name
-    %h2.dink="(" + @game.to_s(:date_range) + ")"
+    %h1.dink= @game.short_name
+    %h2.dink (#{@game.to_s(:date_range)})
   %div.span-14.prepend-1.last
     #game_graph
 %div.game
@@ -61,20 +61,19 @@
       %thead
         %th{:colspan=>2}
           Players:
-      - cache({:action=>"show", :action_suffix=>"gamestats", :id=>@game}, :expires_in => 1.minute) do
-        = render :partial => "gamestats"
+      = render 'gamestats', game: @game
   %div.span-6.prepend-1
-    -if @squads.length > 0
+    - if @game.squads.length > 0
       %table.ozs#table-squads
         %thead
           %th{:colspan=>2}
             %b Top 5 Squads:
         %tbody
-          - @squads.each do |s|
+          - @game.squads.each do |s|
             %tr
               %td
-                %b=link_to s["name"], squad_url(s["id"])
-              %td=s["points"]
+                %b= link_to s.name, squad_url(s.id)
+              %td= s.points
     -else
       %div{:style=>"height:130px"}
         %b No squads found.
@@ -85,7 +84,7 @@
         %th{:colspan=>2}
           %b Original Zombies:
       %tbody
-        - @ozs.each do |z|
+        - @game.original_zombies.each do |z|
           %tr 
             - if @game.ozs_revealed? or (not @logged_in_person.nil? and z.person.id == @logged_in_person.id)
               %td{:class=>("admin nocenter" if z.person.is_admin)}
@@ -97,29 +96,28 @@
   %div.span-4.prepend-1.last
     =link_to_if(@game.ozs_revealed?, "Zombie Tag Tree", tree_game_url(@game))
   %div.span-23.clear{:style=>"margin-top:30px"}
-    - cache({:action => "show", :action_suffix=>"scoreboard-"+(params[:sorttype] or ""), :id=>@game}, :expires_in => 5.minutes) do
-      - number = 1
-      - prevscore = -1
-      - currentnum = 1
-      - countnum = 1
-      - @players.sort_by{|p| -p.display_score}.each do |p|
-        - if(p.display_score == prevscore)
-          - number = currentnum
-        - else
-          - number = currentnum = countnum
-          - prevscore = p.display_score
-        = render(:partial => "scoreboard", :locals => {:player => p, :number => (number)})
-        - countnum += 1
-      :javascript
-        $(function() {
-          $("#scoreboardTime").countdown({since: new Date(#{Time.now.strftime("%Y, %m-1, %d, %H, %M, %S")}), compact:true, format: 'MS'})
-        });
-      .outOfDate
-        #scoreboardInfo
-          This page is
-        #scoreboardTime
-        #scoreboardInfo
-          out of date.
+    - number = 1
+    - prevscore = -1
+    - currentnum = 1
+    - countnum = 1
+    - @game.registrations.each do |p|
+      - if p.display_score == prevscore
+        - number = currentnum
+      - else
+        - number = currentnum = countnum
+        - prevscore = p.display_score
+      = render 'scoreboard', player: p, number: number
+      - countnum += 1
+    :javascript
+      $(function() {
+        $("#scoreboardTime").countdown({since: new Date(#{Time.now.strftime("%Y, %m-1, %d, %H, %M, %S")}), compact:true, format: 'MS'})
+      });
+    .outOfDate
+      #scoreboardInfo
+        This page is
+      #scoreboardTime
+      #scoreboardInfo
+        out of date.
   %div.span-2.last
     &nbsp;
 

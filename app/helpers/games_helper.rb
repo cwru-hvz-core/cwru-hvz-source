@@ -29,18 +29,18 @@ module GamesHelper
 end
 
 def faction_id_to_class(registration)
-  return "human" if registration.is_oz and not registration.game.ozs_revealed?
+  return 'human' if registration.is_oz && !registration.game.ozs_revealed?
 
   case registration.faction_id
   when 0
-    return "human"
+    return 'human'
   when 1
-    return "zombie"
+    return 'zombie'
   when 2
-    return "deceased"
+    return 'deceased'
   when nil
-    return "deceased"
+    return 'deceased'
   else
-    return "deceased"
+    return 'deceased'
   end
 end

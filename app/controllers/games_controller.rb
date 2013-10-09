@@ -6,25 +6,17 @@ class GamesController < ApplicationController
   end
 
   def show
-    @game = Game.find(params[:id])
-    check_admin unless @game.has_begun?
-    @players = @game.registrations.includes(:person, :missions, :tagged, :taggedby, :game, :feeds, :bonus_codes)
+    @game = Game.where(id: params[:id]).first
+    return if !stale?(@game)
 
-    @ozs = @game.registrations.where(:is_oz => true).includes(:person)
-
-    @graphdata = JSON.parse(
-      Rails.cache.fetch("v1_games_#{@game.id}_show_graphdata", :expires_in => 1.minute) do
-        @game.graph_data.to_json
-      end
-    )
-
-    @squads = JSON.parse(
-      Rails.cache.fetch("v1_games_#{@game.id}_show_squads", :expires_in => 1.minute) do
-        @game.squads.includes({:registrations => :person}).
-          select{|x| x.registrations.length >=2 }.
-          sort_by(&:points).reverse.first(5).to_json(:methods => :points)
-      end
-    )
+    @game = Game.where(id: params[:id]).
+      includes(squads: :registrations, registrations: [
+        :taggedby, :tagged, :feeds, :game, :person, :infractions,
+        :missions, :bonus_codes,
+      ]).first
+    @graphdata = @game.graph_data
+    @squads = @game.squads.select { |x| x.registrations.length >= 2 }.
+                sort_by(&:points).reverse.first(5)
   end
 
   def rules
