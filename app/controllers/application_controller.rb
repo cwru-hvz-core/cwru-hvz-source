@@ -45,4 +45,22 @@ class ApplicationController < ActionController::Base
       redirect_to root_url
     end
   end
+
+  def require_can_register
+    if !@current_game.can_register?
+      if @current_game.registration_begins.blank? || @current_game.registration_ends.blank?
+        flash[:error] = 'Registration times for this game have not yet been configured'
+      end
+
+      if @current_game.now < @current_game.registration_begins
+        flash[:error] = "Registration begins #{@current_game.to_s(:registration_begins)}. Please check back then!"
+      end
+
+      if @current_game.now > @current_game.registration_ends
+        flash[:error] = "Registration ended #{@current_game.to_s(:registration_ends)}. If you would still like to play, please contact the administrators."
+      end
+
+      return redirect_to root_url
+    end
+  end
 end
