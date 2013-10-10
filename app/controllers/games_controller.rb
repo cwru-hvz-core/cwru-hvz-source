@@ -7,8 +7,11 @@ class GamesController < ApplicationController
 
   def show
     @game = Game.where(id: params[:id]).first
+
     return if !stale?(@game)
 
+    # Save the costly DB lookups if the stuff is cached already:
+    return render if Rails.cache.exist? ['views', @game.cache_key, 'show'].join('/')
     @game = Game.where(id: params[:id]).
       includes(squads: :registrations, registrations: [
         :taggedby, :tagged, :feeds, :game, :person, :infractions,
