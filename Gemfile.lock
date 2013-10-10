@@ -86,6 +86,7 @@ GEM
     newrelic_rpm (3.6.6.147)
     pg (0.16.0)
     polyglot (0.3.3)
+    pubsubhub (0.0.1)
     rack (1.4.5)
     rack-cache (1.2)
       rack (>= 0.4)
@@ -167,6 +168,7 @@ DEPENDENCIES
   mysql
   newrelic_rpm
   pg
+  pubsubhub
   rails (= 3.2.14)
   rails3-jquery-autocomplete
   rspec-rails

@@ -18,6 +18,7 @@ gem 'airbrake'
 gem 'newrelic_rpm'
 gem 'mysql'
 gem 'pg'
+gem 'pubsubhub'
 
 group :development, :test do
   gem 'rspec-rails'

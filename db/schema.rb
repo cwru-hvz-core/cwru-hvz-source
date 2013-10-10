@@ -11,7 +11,15 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131004040634) do
+ActiveRecord::Schema.define(:version => 20131010050350) do
+
+  create_table "achievements", :force => true do |t|
+    t.integer  "recipient_id",                  :null => false
+    t.string   "recipient_type",                :null => false
+    t.string   "type",                          :null => false
+    t.integer  "points",         :default => 0
+    t.datetime "created_at"
+  end
 
   create_table "attendances", :force => true do |t|
     t.integer  "registration_id"

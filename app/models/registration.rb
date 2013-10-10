@@ -13,6 +13,7 @@ class Registration < ActiveRecord::Base
   has_many :check_ins
   has_many :bonus_codes
   has_many :attendances
+  has_many :achievements, as: :recipient
 
   validates_uniqueness_of :person_id, :scope => :game_id
   validates_uniqueness_of :card_code, :scope => :game_id
@@ -31,6 +32,10 @@ class Registration < ActiveRecord::Base
     else
       UpdateGameState.points_for_time_survived((game.since_begin / 1.hour).floor)
     end
+  end
+
+  def has_achievement?(achievement_class)
+    achievements.where(type: achievement_class).exists?
   end
 
   def validate

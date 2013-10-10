@@ -8,6 +8,8 @@ class Tag < ActiveRecord::Base
   # TODO: Write code so additional feeds are scalable
   attr_accessor :tagee_card_code, :award_points, :feed_1, :feed_2
 
+  after_create :trigger_player_tagged
+
   def tagee_card_code=(code)
     tagee = Registration.find_by_card_code(code)
     self.tagee_id = tagee.id unless tagee.nil?
@@ -50,5 +52,11 @@ class Tag < ActiveRecord::Base
     else
       return tagged
     end
+  end
+
+private
+
+  def trigger_player_tagged
+    PubSubHub.trigger(:player_tagged, tag: self)
   end
 end
