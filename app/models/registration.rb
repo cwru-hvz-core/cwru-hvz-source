@@ -15,6 +15,16 @@ class Registration < ActiveRecord::Base
   has_many :attendances
   has_many :achievements, as: :recipient
 
+  HUMAN_FACTION = 0
+  ZOMBIE_FACTION = 1
+  DECEASED_FACTION = 2
+
+  FACTION_NAMES = {
+    HUMAN_FACTION => :human,
+    ZOMBIE_FACTION => :zombie,
+    DECEASED_FACTION => :deceased,
+  }
+
   validates_uniqueness_of :person_id, :scope => :game_id
   validates_uniqueness_of :card_code, :scope => :game_id
   validates_presence_of :person_id, :game_id, :card_code
@@ -27,11 +37,18 @@ class Registration < ActiveRecord::Base
   end
 
   def display_score
-    if is_oz && !game.ozs_revealed?
-      game.mode_score
-    else
-      UpdateGameState.points_for_time_survived((game.since_begin / 1.hour).floor)
-    end
+    return game.mode_score if is_oz && !game.ozs_revealed?
+    UpdateGameState.points_for_time_survived((game.since_begin / 1.hour).floor)
+  end
+
+  def display_faction_id
+    return HUMAN_FACTION if is_oz && !game.ozs_revealed?
+    faction_id
+  end
+
+  def display_time_survived
+    return game.since_begun if is_oz && !game.ozs_revealed?
+    time_survived
   end
 
   def has_achievement?(achievement_class)
@@ -51,15 +68,6 @@ class Registration < ActiveRecord::Base
     real_begins = self.game.game_begins
     return [0, tag.datetime - real_begins].max unless tag.nil?
     return [0, Game.now(self.game) - real_begins].max
-  end
-
-  def display_time_survived
-    if self.is_oz && !self.game.ozs_revealed?
-      real_begins = self.game.game_begins
-      return [0, Game.now(self.game) - real_begins].max
-    else
-      return self.time_survived()
-    end
   end
 
   def killing_tag
