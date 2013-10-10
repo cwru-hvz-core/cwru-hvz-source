@@ -20,6 +20,7 @@ gem 'mysql'
 gem 'pg'
 gem 'pry'
 gem 'pry-rails'
+gem 'pubsubhub'
 
 group :development, :test do
   gem 'rspec-rails'
