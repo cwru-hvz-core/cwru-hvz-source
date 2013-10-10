@@ -1,21 +1,13 @@
+- registrations_by_faction = game.registrations.group(:faction_id).count
 %tbody
-  %tr
-    %td
-      %b Human:
-    %td
-      = game.registrations.map{|x| x if x.faction_id == 0}.compact.length
-  %tr
-    %td
-      %b Zombie:
-    %td
-      = game.registrations.map{|x| x if x.faction_id == 1}.compact.length
-  %tr
-    %td
-      %b Deceased:
-    %td
-      = game.registrations.map{|x| x if x.faction_id == 2}.compact.length
+  - Registration::FACTION_NAMES.each do |faction_id, faction_name|
+    %tr
+      %td
+        %b #{faction_name.capitalize}:
+      %td
+        = registrations_by_faction[faction_id]
   %tr
     %td
       %b Total:
     %td
-      = game.registrations.length
+      = registrations_by_faction.values.sum

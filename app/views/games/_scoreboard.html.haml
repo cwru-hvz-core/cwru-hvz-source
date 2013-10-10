@@ -1,4 +1,4 @@
-%div.player{ class: faction_id_to_class(player) }
+%div.player{ class: Registration::FACTION_NAMES[player.display_faction_id] }
   %ul
     %li.number
       #{number}.
@@ -9,7 +9,7 @@
       - if player.is_oz? && player.game.ozs_revealed?
         (OZ)
     %li.survival.right
-      = get_scoreboard_text(player).html_safe
+      = get_scoreboard_text(player)
     %li.points.right
       %span.highlight= player.display_score
       Pts
