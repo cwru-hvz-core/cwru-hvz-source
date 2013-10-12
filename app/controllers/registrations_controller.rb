@@ -127,6 +127,10 @@ class RegistrationsController < ApplicationController
     @waiver = @registration.person.waivers.where(game_id: @current_game).first
   end
 
+  def find_by_code
+    @players = @current_game.registrations.includes(:person)
+  end
+
 private
 
   def require_personal_information
@@ -186,9 +190,5 @@ private
       flash[:error] = "You cannot join a squad after the game has started"
       redirect_to root_url
     end
-  end
-
-  def find_by_code
-    @players = @current_game.registrations.includes(:person)
   end
 end
