@@ -1,5 +1,5 @@
 -content_for :javascripts do
-  =javascript_include_tag 'https://www.google.com/jsapi'
+  = javascript_include_tag 'https://www.google.com/jsapi'
   :javascript
     google.load("visualization", "1", {packages:["corechart"]});
     google.setOnLoadCallback(drawChart);
@@ -39,25 +39,28 @@
     #game_graph
 = cache [@game, 'show'] do
   :javascript
-    /*
-    Here's the data!
+    $(function() {
+      /*
+      Here's the data!
 
-      Column 1:   Hours since the beginning of the game.
-      Column 2-4: Humans, Zombies, Deceased at that Hour
-      Column 5:   Whether this is the actual game state (true) or a projection
-                  (false)
+        Column 1:   Hours since the beginning of the game.
+        Column 2-4: Humans, Zombies, Deceased at that Hour
+        Column 5:   Whether this is the actual game state (true) or a projection
+                    (false)
 
-    There will up to 240 entries in the data set.
+      There will up to 240 entries in the data set.
 
-    If you're going to do something with this data, let us know! You don't
-    have to, but we're curious where our data ends up :). For example, a
-    biology professor used our data to write a disease spread rate calculation
-    lab.
+      If you're going to do something with this data, let us know! You don't
+      have to, but we're curious where our data ends up :). For example, a
+      biology professor used our data to write a disease spread rate calculation
+      lab.
 
-    casehvz@gmail.com
-    */
-    var graph_data = #{@graphdata.to_json}
-    drawChart(graph_data);
+      casehvz@gmail.com
+      */
+
+      var graph_data = #{@graphdata.to_json}
+      drawChart(graph_data);
+    });
   %div.game
     %div.span-4.clear
       %table.players

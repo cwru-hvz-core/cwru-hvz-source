@@ -1,11 +1,13 @@
 - if @current_game.ongoing?
-  :javascript
-    $(function() {
-      $("#countdown").countdown({until: new Date(Date.UTC(#{@current_game.game_ends.utc.strftime("%Y, %m - 1, %d, %H, %M, %S")})), description: "left to survive!"})
-    });
+  - time = @current_game.game_ends
+  - desc = 'left to survive'
 - else
+  - time = @current_game.game_begins
+  - desc = 'until the game begins!'
+
+- content_for :javascripts do
   :javascript
     $(function() {
-      $("#countdown").countdown({until: new Date(Date.UTC(#{@current_game.game_begins.utc.strftime("%Y, %m - 1, %d, %H, %M, %S")})), description: "until the game begins!"})
+      $('#countdown').countdown({until: new Date(Date.UTC(#{time.utc.strftime("%Y, %m - 1, %d, %H, %M, %S")})), description: "#{j desc}"})
     });
 #countdown

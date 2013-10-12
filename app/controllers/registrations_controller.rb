@@ -127,6 +127,10 @@ class RegistrationsController < ApplicationController
     @waiver = @registration.person.waivers.where(game_id: @current_game).first
   end
 
+  def find_by_code
+    @players = @current_game.registrations.includes(:person)
+  end
+
 private
 
   def require_personal_information
@@ -199,9 +203,5 @@ private
     end
 
     redirect_to registration_url(@logged_in_registration)
-  end
-
-  def find_by_code
-    @players = @current_game.registrations.includes(:person)
   end
 end
