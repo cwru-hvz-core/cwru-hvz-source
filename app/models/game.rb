@@ -6,7 +6,7 @@ class Game < ActiveRecord::Base
   has_many :waivers
   has_many :contact_messages
   has_many :squads
-  has_many :ozs, :class_name => "Registration", :conditions => ["is_oz = ?", true]
+  has_many :ozs, :class_name => 'Registration', :conditions => ['is_oz = ?', true]
   has_many :bonus_codes
   validates_with GameValidator  # Defined in ./lib/game_validator.rb
 
@@ -14,68 +14,96 @@ class Game < ActiveRecord::Base
     Game.find(:first, :conditions => ["is_current = ?", true]) or Game.new
   end
 
-  def dates
-  # Method to return all the human-readable dates for a game
-    datetimeformat = "%A, %B %e, %Y @ %I:%M %p"
-    array = {
-      :date_range => game_begins.strftime("%B %e") + " - " + game_ends.strftime("%e"),
-      :registration_begins => registration_begins.strftime(datetimeformat),
-      :registration_ends => registration_ends.strftime(datetimeformat),
-      :oz_reveal => oz_reveal.strftime(datetimeformat),
-      :game_begins => game_begins.strftime(datetimeformat),
-      :game_ends => game_ends.strftime(datetimeformat)
-    }
-    if game_ends.month != game_begins.month
-      array[:date_range] =  game_begins.strftime("%B %e") + " - " + game_ends.strftime("%B %e")
+  def to_s(type)
+    datetimeformat = '%A, %B %e, %Y @ %I:%M %p'
+
+    case type
+    when :date_range
+      if game_ends.month == game_begins.month
+        game_begins.strftime('%B %e') + ' - ' + game_ends.strftime('%e')
+      else
+        game_begins.strftime("%B %e") + ' - ' + game_ends.strftime('%B %e')
+      end
+    when :registration_begins
+      registration_begins.strftime(datetimeformat)
+    when :registration_ends
+      registration_ends.strftime(datetimeformat)
+    when :oz_reveal
+      oz_reveal.strftime(datetimeformat)
+    when :game_begins
+      game_begins.strftime(datetimeformat)
+    when :game_ends
+      game_ends.strftime(datetimeformat)
+    else
+      super
     end
-    return array
   end
+
   def zombietree_json
-    json = %&{id:"game#{self.id}",name:"#{self.short_name}",data:{},children:[&
-    children = self.registrations(:include=>[:tagged,:person]).collect{|x| x.zombietree_json if((x.killing_tag.nil? or x.killing_tag.tagger.nil?) and not x.is_human?)}.compact
+    # todo: destroy the next 3 lines with the fury of a thousand sons
+    json = %&{id:"game#{id}",name:"#{short_name}",data:{},children:[&
+    children = registrations(:include=>[:tagged,:person]).collect{|x| x.zombietree_json if((x.killing_tag.nil? or x.killing_tag.tagger.nil?) and not x.is_human?)}.compact
     json += %&#{ children.to_sentence(:last_word_connector => ",", :two_words_connector => ",", :words_connector => ",") unless children.empty?}]}&
   end
+
   def ongoing?
-    return false if self.game_begins.nil? or self.game_ends.nil?
-    self.has_begun? and not self.has_ended?
+    return false unless game_begins.present? && game_ends.present?
+
+    has_begun? and !has_ended?
   end
+
   def has_begun?
-    Time.now >= self.game_begins
+    Time.now >= game_begins
   end
+
   def has_ended?
-    Time.now >= self.game_ends
+    Time.now >= game_ends
   end
+
   def ozs_revealed?
-    Time.now >= self.oz_reveal
+    Time.now >= oz_reveal
   end
-  def can_register?
-    self.registration_begins < Time.now && self.registration_ends > Time.now
+
+  def can_register?(person = nil)
+    return false unless persisted?
+    return false unless registration_begins.present? && registration_ends.present?
+    return true if person.try(:is_admin)
+
+    registration_begins < now && registration_ends > now
   end
+
+  def now
+    [Time.zone.now, game_ends].min
+  end
+
   def self.now(game)
-    # Returns the effective time so states won't change after the game ends. (Hopefully)
-    [Time.zone.now, game.game_ends].min
+    game.now
   end
+
   def since_begin
-    return 0 unless self.has_begun?
-    Game.now(self) - self.game_begins
+    return 0 unless has_begun?
+    Game.now(self) - game_begins
   end
+
   def mode_score
-    UpdateGameState.points_for_time_survived((self.since_begin/1.hour).floor)
+    UpdateGameState.points_for_time_survived((since_begin/1.hour).floor)
     #m = Registration.find_by_sql("SELECT *,COUNT(*) as scorect from registrations group by score order by scorect desc")
     #return 0 if m.nil?
     #m.first.score
   end
+
   def utc_offset
     dst_off = 0
     dst_off = 1.hour if Time.now.dst?
-    ActiveSupport::TimeZone.new(self.time_zone).utc_offset + dst_off
+    ActiveSupport::TimeZone.new(time_zone).utc_offset + dst_off
   end
+
   def connect_to_phpbb
-    if self.phpbb_database_host.nil? || self.phpbb_database_username.nil? || self.phpbb_database_password.nil? || self.phpbb_database.nil?
+    if phpbb_database_host.nil? || phpbb_database_username.nil? || phpbb_database_password.nil? || phpbb_database.nil?
       return false
     end
     begin
-      conn = Mysql.connect(self.phpbb_database_host, self.phpbb_database_username, self.phpbb_database_password, self.phpbb_database)
+      conn = Mysql.connect(phpbb_database_host, phpbb_database_username, phpbb_database_password, phpbb_database)
     rescue
       return false
     end
@@ -83,11 +111,11 @@ class Game < ActiveRecord::Base
   end
 
   def graph_data
-    states = self.registrations.map{ |x| x.state_history }
-    tslength = ((self.game_ends - self.game_begins) / 240).floor
+    states = registrations.map{ |x| x.state_history }
+    tslength = ((game_ends - game_begins) / 240).floor
     @data = {}
     240.times do |dt|
-      now = self.game_begins + (dt.seconds.to_i*tslength)
+      now = game_begins + (dt.seconds.to_i*tslength)
       if now >= (Time.now + 48.hours)
         break
       end

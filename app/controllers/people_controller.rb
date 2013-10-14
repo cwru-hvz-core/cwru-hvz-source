@@ -2,15 +2,26 @@ class PeopleController < ApplicationController
   before_filter :check_login, :except => ["login", "logout"]
   before_filter CASClient::Frameworks::Rails::Filter, :only => "login"
 
-  # Note: On every page load where check_login is called as a before_filter
-
   def update
     @person = Person.find(params[:id], :include => :registrations) or Person.new
-    if !@is_admin && (@person != @logged_in_person)
+
+    if !@logged_in_person.can_edit?(@person)
       flash[:error] = "You do not have permissions to edit this person's details."
-      redirect_to root_url()
-      return
+      return redirect_to root_url
     end
+
+    # Protect against name changes
+    if params[:person][:name] != @person.name
+      if @is_admin || @person.can_change_name?
+        @person.update_attribute(:name, params[:person][:name])
+      else
+        return redirect_to edit_person_url(@person), :flash => {
+          :error => "You cannot edit your name now!"
+        }
+      end
+    end
+    params[:person].delete(:name)
+
     @person.update_attributes(params[:person])
 
     if @is_admin and not params[:person][:is_admin].nil?
@@ -25,18 +36,19 @@ class PeopleController < ApplicationController
 
   def edit
     @toedit = Person.find(params[:id])
-    if not @is_admin and @toedit != @logged_in_person
+
+    if !@logged_in_person.can_edit?(@toedit)
       flash[:error] = "You do not have permissions to edit this person's details."
-      redirect_to root_url()
-      return
+      return redirect_to root_url
     end
   end
 
   def show
     @person = Person.find(params[:id])
+
     if not @is_admin and @person != @logged_in_person
       flash[:error] = "You do not have permissions to view this person's profile."
-      redirect_to root_url()
+      redirect_to root_url
       return
     end
   end
