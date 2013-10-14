@@ -26,9 +26,9 @@ class ContactMessagesController < ApplicationController
 
   def list
     if params[:all].nil?
-      @messages = ContactMessage.find_all_by_game_id_and_visible(@current_game, true)
+      @messages = @current_game.contact_messages.where(visible: true).order('created_at DESC')
     else
-      @messages = ContactMessage.find_all_by_game_id(@current_game)
+      @messages = @current_game.contact_messages.order('created_at DESC')
     end
   end
 

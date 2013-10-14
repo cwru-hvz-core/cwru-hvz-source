@@ -28,7 +28,7 @@ are not counted towards any kill totals or point calculations.
   - @need_feeding.each do |r|
     - if @present_zombies.include?(r)
       %b= r.person.name
-    - else 
+    - else
       = r.person.name
-    (#{(r.time_until_death/1.hour).ceil} hours, #{r.attendances.length} missions, #{r.score} points)
+    (#{(r.time_until_death/1.hour).ceil} hours, #{r.attendances.length} missions, #{r.tagged.length} tags, #{r.score} points)
     %br

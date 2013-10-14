@@ -22,7 +22,8 @@ class MissionsController < ApplicationController
       select{ |x| x.is_zombie? || x.is_recently_deceased? })
     @present_zombies = @all_zombies & Set.new(@mission.attendances.map(&:registration))
     @need_feeding = (@all_zombies - Set.new(@feeds.map(&:registration))).
-      sort_by{|x| [x.state_history[:deceased], x.score]}
+      sort_by{|x| [@present_zombies.include?(x) ? 0 : 1, (x.tagged.present? || x.attendances.present?) ? 0 : 1,
+                   x.state_history[:deceased], -x.score]}
 
     @feed = Feed.new({:mission => @mission})
   end

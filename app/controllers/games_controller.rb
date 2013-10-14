@@ -1,5 +1,5 @@
 class GamesController < ApplicationController
-  before_filter :check_admin, :only => [:new, :create, :edit, :update, :emails, :admin_register, :admin_register_create, :heatmap]
+  before_filter :check_admin, :only => [:new, :create, :edit, :update, :emails, :admin_register, :admin_register_create, :heatmap, :index, :update_current]
 
   def index
     @games = Game.includes(:registrations).order(:game_begins).all
@@ -7,6 +7,7 @@ class GamesController < ApplicationController
 
   def show
     @game = Game.find(params[:id])
+    check_admin unless @game.has_begun?
     @players = @game.registrations.sort_by{ |x| -x.display_score }
     @ozs = @game.registrations.where(:is_oz => true).includes(:person)
 

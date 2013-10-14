@@ -17,9 +17,9 @@ class FeedsController < ApplicationController
     end
 
     @feed = Feed.new(params[:feed])
-      if @feed.person_id.nil?
-          @feed.person_id = Person.where("lower(name) LIKE ?", params[:feed][:person_name].downcase + "%")
-      end
+    if @feed.person_id.nil?
+        @feed.person_id = Person.where("lower(name) LIKE ?", params[:feed][:person_name].downcase + "%")
+    end
     @mission = Mission.find(params[:feed][:mission_id])
     @feed.datetime = @mission.end
     @feed.save()

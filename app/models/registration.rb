@@ -125,7 +125,7 @@ class Registration < ActiveRecord::Base
 
   def is_recently_deceased?
     # If the player has died in the past 2 hours
-    (Game.now(self.game) - self.state_history[:deceased]) < 2.hours
+    is_deceased? && (Game.now(self.game) - self.state_history[:deceased]) < 2.hours
   end
 
   def state_history

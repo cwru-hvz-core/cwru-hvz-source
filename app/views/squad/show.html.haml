@@ -12,7 +12,11 @@
         %tr
           %td=r.person.name
           %td=(r.display_time_survived/1.hour).round
-          %td=r.tagged.length
+          %td
+            - if r.is_oz? && !r.game.ozs_revealed?
+              0
+            - else
+              = r.tagged.length
           %td=r.display_score
 %div.clear
   %h3.dink=link_to "Back to Scoreboard", game_url(@squad.game)

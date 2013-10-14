@@ -139,17 +139,13 @@ class RegistrationsController < ApplicationController
     end
   end
   def joinsquad
-    if not params[:id].to_i == @logged_in_registration.id.to_i
+    if params[:id].to_i != @logged_in_registration.id.to_i
       flash[:error] = "Error! Trying to sign someone else up into a squad?"
-      redirect_to root_url()
-      return
-    end
-    if @logged_in_registration.squad != nil
+      redirect_to root_url
+    elsif @logged_in_registration.squad != nil
       flash[:error] = "Error! You cannot change your squad."
-      redirect_to root_url()
-      return
-    end
-    if !@current_game.has_begun?
+      redirect_to root_url
+    elsif !@current_game.has_begun?
       if params[:squadid].eql?("new")
         @squad = Squad.new({
           :name => params[:new_squad_name],
@@ -170,6 +166,9 @@ class RegistrationsController < ApplicationController
           redirect_to squads_url()
         end
       end
+    else
+      flash[:error] = "You cannot join a squad after the game has started"
+      redirect_to root_url
     end
   end
 
