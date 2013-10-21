@@ -18,4 +18,10 @@ class Mission < ActiveRecord::Base
       :end => self.end.strftime(ftime)
     }
   end
+
+  def player_attending?(registration)
+    @registration_ids ||= Set.new(attendances.pluck(:registration_id))
+
+    @registration_ids.include?(registration.id)
+  end
 end

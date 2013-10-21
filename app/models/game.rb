@@ -81,7 +81,7 @@ class Game < ActiveRecord::Base
   end
 
   def now
-    [Time.zone.now, game_ends].min
+    [updated_at, game_ends].min
   end
 
   def self.now(game)

@@ -1,8 +1,40 @@
-%h2.dink Add New Attendee:
-= form_for(@attendance,:remote=>:true,:update=>"attendances") do |f|
-  = f.hidden_field :person_id
-  = f.autocomplete_field :person_name, autocomplete_person_name_missions_path, :id_element => "#attendance_person_id"
-  = f.hidden_field :mission_id, :value => @mission.id
-%h2.dink Current Mission Attendees:
-#attendances
-  =render :partial=>"attendances"
+:css
+  /* todo: remove !important's when compass is gone */
+  .autocomplete-container {
+    width: 400px !important;
+  }
+  .autocomplete-search-field {
+    width: 100% !important;
+    margin: 0 !important;
+    -moz-box-sizing: border-box; /* todo other prefixes */
+  }
+  .autocomplete-search-results {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .autocomplete-search-results .selected {
+    background-color: #ccc;
+    font-weight: bold;
+  }
+  .autocomplete-search-results li {
+    padding: 0 1em !important;
+    margin: 0;
+    line-height: 2em;
+    text-align: left;
+    background-color: #efefef;
+    cursor: pointer;
+  }
+- content_for :javascripts do
+  :javascript
+    var players = [#{@game.registrations.map { |r| "new HvZ.Player({ id: #{r.id}, name: \"#{h r.person.name}\", attending: #{@mission.player_attending?(r)} })"}.join (',') }];
+    var playerList = new HvZ.PlayerList(players);
+    var attendance = new HvZ.PlayerAutocomplete({
+      playerList: playerList,
+      missionId: #{@mission.id},
+    });
+    var attendingPlayers = new HvZ.AttendingPlayers({
+      playerList: playerList,
+    });
+#playerList
+#attendingPlayers
