@@ -1,17 +1,13 @@
 class MissionsController < ApplicationController
   before_filter :check_admin, :except => [ :show, :index ]
-  autocomplete :person, :name
 
   def new
     @mission = Mission.new
   end
 
   def attendance
-      @mission = Mission.find(params[:id])
-    @attendance = @mission.attendances.new
-    @attendances = Attendance.find_all_by_mission_id(params[:id], :include=>:registration, :order => ["created_at DESC"])
-    @humans = @attendances.map {|x| x.registration_id if x.registration.is_human?}.compact
-    @zombies = @attendances.map {|x| x.registration_id if x.registration.is_zombie?}.compact
+    @mission = Mission.find(params[:id], include: { game: { registrations: :person } })
+    @game = @mission.game
   end
 
   def feeds
@@ -39,7 +35,7 @@ class MissionsController < ApplicationController
   end
 
   def index
-    @missions = @current_game.missions.sort{|x,y| x.start <=> y.start}
+    @missions = @current_game.missions.order(:start)
   end
 
   def show

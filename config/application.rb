@@ -6,6 +6,9 @@ require 'rails/all'
 # you've limited to :test, :development, or :production.
 Bundler.require(:default, Rails.env) if defined?(Bundler)
 
+# If you precompile assets before deploying to production, use this line
+Bundler.require *Rails.groups(:assets => %w(development test))
+
 ActiveRecord::Base.include_root_in_json = false
 
 module Hvz
@@ -41,7 +44,8 @@ module Hvz
     # Configure sensitive parameters which will be filtered from the log file.
     config.filter_parameters += [:password]
 
-    # Remove for Rails 4.0. Needed to satisfy Heroku Cedar stack:
-    config.assets.initialize_on_precompile = false
+    config.assets.precompile += ['application.css']
+    config.assets.enabled = true
+    config.assets.version = '1.0'
   end
 end

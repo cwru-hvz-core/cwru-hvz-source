@@ -1,33 +1,21 @@
-// This import applies a global reset to any page that imports this stylesheet.
-@import "blueprint/reset";
 
 // To configure blueprint, edit the partials/_base.sass file.
 @import "partials/base";
 
-// Import all the default blueprint modules so that we can access their mixins.
-@import "blueprint";
-// Import the non-default scaffolding module.
-@import "blueprint/scaffolding";
-
-// Import colors for error messages and stuff.
-@import "blueprint/interaction";
-@import "compass/utilities/tables";
-@import "compass/css3/box-shadow";
-@import "compass/css3/images";
-@import "compass/utilities/general/min";
-
-// Generate the blueprint framework according to your configuration:
+@import "compass";
+@import "_blueprint";
+@import "blueprint/grid";
+@import "blueprint/reset";
 @include blueprint;
 
-@include blueprint-scaffolding;
-
-html { 
+html, body {
 	@include background-image(linear-gradient(top, color-stops(mix($hvz-green,$bgcolor, 25%), $bgcolor 20%, $bgcolor)));
 	background-repeat: no-repeat;
 	background-color: $bgcolor;
 }
+
 .blueprint {
- 
+
 	overflow:auto;
 	@include pie-clearfix;
 	@include box-shadow(darken($bgcolor, 20%), 0px, 0px, 30px, 0px);

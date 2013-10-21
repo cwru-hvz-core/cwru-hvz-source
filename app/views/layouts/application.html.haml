@@ -2,14 +2,10 @@
 %html
   %head
     %title HvZ
-    = stylesheet_link_tag :all
+    = stylesheet_link_tag 'application'
     = csrf_meta_tag
-    = stylesheet_link_tag 'screen.css', :media => 'screen, projection'
-    = stylesheet_link_tag 'ui-lightness/jquery-ui-1.8.11.custom.css'
     = stylesheet_link_tag 'http://fonts.googleapis.com/css?family=IM+Fell+English+SC'
     = stylesheet_link_tag 'scoreboard'
-    /[if lt IE 8]
-      = stylesheet_link_tag 'ie.css', :media => 'screen, projection'
     :javascript
       var _gaq = _gaq || [];
       _gaq.push(['_setAccount', 'UA-28082792-1']);
@@ -51,7 +47,7 @@
             %div.span-4
               = link_to "Report A Tag", new_tag_url() unless @current_game.nil?
             - unless @current_game.id.nil?
-              %div.span-4 
+              %div.span-4
                 = link_to "Rules", rules_game_url(@current_game)
             %div.span-4.last
               = link_to("Contact Admins", new_contact_message_url())
@@ -65,12 +61,12 @@
         %div.footer.span-24.last
           Case Western's Humans vs. Zombies is organized by the Big Games Club. Comments can be left using the
           = link_to("contact page", new_contact_message_url()) + "."
-    = javascript_include_tag 'jquery'
+    = javascript_include_tag '//code.jquery.com/jquery-1.10.1.min.js'
     = javascript_include_tag 'jquery_ujs'
+    = javascript_include_tag '//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.2/underscore-min.js'
     = javascript_include_tag '//cdnjs.cloudflare.com/ajax/libs/backbone.js/1.0.0/backbone-min.js'
     = javascript_include_tag 'application'
     = javascript_include_tag 'jquery.countdown.min'
     = javascript_include_tag 'jquery-ui-1.8.11.custom.min.js'
-    = javascript_include_tag "autocomplete-rails.js"
     = javascript_include_tag "jit.js"
     = yield :javascripts

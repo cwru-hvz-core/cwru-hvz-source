@@ -1,4 +1,4 @@
-class Achievement::DoubleKill < Achievement
+class Achievement::AdminTakedown < Achievement
   include AchievementRegistry
 
   class << self
