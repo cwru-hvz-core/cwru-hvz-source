@@ -1,0 +1,3 @@
+= surround '[', ']' do
+  - game.registrations.each do |r|
+    new HvZ.Player({ id: #{r.id}, name: "#{h r.person.name}" }),
