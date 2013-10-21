@@ -9,186 +9,179 @@
 @include blueprint;
 
 html, body {
-	@include background-image(linear-gradient(top, color-stops(mix($hvz-green,$bgcolor, 25%), $bgcolor 20%, $bgcolor)));
-	background-repeat: no-repeat;
-	background-color: $bgcolor;
+  @include background-image(linear-gradient(top, color-stops(mix($hvz-green,$bgcolor, 25%), $bgcolor 20%, $bgcolor)));
+  background-repeat: no-repeat;
+  background-color: $bgcolor;
 }
 
-.blueprint {
+.container {
+  background-color: #fff;
+}
 
-	overflow:auto;
-	@include pie-clearfix;
-	@include box-shadow(darken($bgcolor, 20%), 0px, 0px, 30px, 0px);
-	margin:0px auto 0 auto;
-	width:950px;
+h1 {
+  font-size: 4em;
+}
 
-	h1 {
-		font-size:4em;
-	}
-	h2 {
-		font-size:2em;
-	}
+h2 {
+  font-size: 2em;
+}
 
-	.heading {
-		width:100%;
-		margin:20px auto 0px;
-		text-align:center;
-		background: url("/images/logo_small.png") no-repeat -32px 0px;
+.heading {
+  background: image-url("logo_small.png") no-repeat -32px 0px;
+  margin: 20px auto 0px;
+  text-align: center;
 
-		.navigation {
-			background-color:$hvz-green;
-			clear:both;
-			font-size:1.4em;
-			height:30px;
-		}
+  .navigation {
+    background-color: $hvz-green;
+    clear: both;
+    font-size: 1.4em;
+    height: 30px;
+    margin: 0;
+    padding: 0;
+  }
 
-		div.admin {
-			@include column(24, true);
-			text-align:center;
-			background-color: $admin-red;
-			color:#FFF;
-			div {
-				padding:5px 0 5px 0;
-			}
+  .admin {
+    background-color: $admin-red;
+    color: #fff;
+    line-height: 2.5em;
+    overflow: auto;
+    text-align: center;
+    width: 100%;
 
-			a {
-				color: #FFF;
-			}
-
-			div.hvzcore {
-				padding: 0pt; 
-				font-size: 22px; 
-				height: 13px; 
-				margin-top: 3px; 
-				margin-left: -2px; 
-				text-align: right; 
-				color: darken($admin-red, 10%);
-			}
-		}
-
-		div.countdowncontainer {
-			@include prepend(1);
-			@include append(1);
-		}
-	}
-
-	.heading h1{
-		font-family:'Dink';	
-	}
-	.dink {
-		font-family:'Dink';
-	}
-	.container {
-		@include container;
-		background-color:#FFF;
-	}
-	.content {
-		text-align:center;
-		@include prepend-top(15px);
-		@include prepend(1);
-		@include column(22);
-		@include min-height(600px);
-		.gameinfo {
-			text-align:left;
-		}
-		.quickstats {
-			text-align:right;
-			@include prepend(1);
-
-			table {
-				margin-left:auto;
-				width:150px;
-			}
-		}
-		#gametree {
-			height:600px;
-			background-color:#EFEFEF;
-			@include box-shadow(darken(#EFEFEF, 20%), 0px, 0px, 30px, 0px, inset);
-		}
-	}
-	.headinfo {
-		@include prepend(4);
-		@include column(19);
-		@include append-bottom(20px);
-
-    .profile_photo {
-      float: left;
+    a {
+      color: #fff;
     }
-	}
-	.footer {
-		text-align:center;
-padding:5px 0px;
-color: #666;
-	   border-bottom:3px solid $hvz-green;
-	   background-color: lighten($hvz-green,20%);
-	   a { color: #666; }
-	}
-	.missionlist {
-		font-size:24px;
-	}
+
+    .hvzcore {
+      color: darken($admin-red, 10%);
+    }
+  }
+
+  .countdowncontainer {
+    @include prepend(1);
+    @include append(1);
+  }
 }
+
+.heading h1 {
+  font-family: 'Dink';
+}
+
+.dink {
+  font-family: 'Dink';
+}
+
+.content {
+  @include prepend-top(15px);
+  @include prepend(1);
+  @include column(22);
+  @include min-height(600px);
+
+  .gameinfo {
+    text-align:left;
+  }
+
+  .quickstats {
+    text-align:right;
+    @include prepend(1);
+
+    table {
+      margin-left:auto;
+      width:150px;
+    }
+  }
+
+  #gametree {
+    @include box-shadow(darken(#EFEFEF, 20%), 0px, 0px, 30px, 0px, inset);
+    height:600px;
+    background-color:#EFEFEF;
+  }
+}
+
+.headinfo {
+  @include prepend(4);
+  @include column(19);
+  @include append-bottom(20px);
+
+  .profile_photo {
+    float: left;
+  }
+}
+
+.footer {
+  text-align:center;
+  padding:5px 0px;
+  color: #666;
+   border-bottom:3px solid $hvz-green;
+   background-color: lighten($hvz-green,20%);
+   a { color: #666; }
+}
+
+.missionlist {
+  font-size:24px;
+}
+
 div.game-header div {
   margin:10px 0 30px 0;
 }
-div.game {
-	table.players {
-	}
-	table.ozs {
-	}
-}
-div.registration {
-	@include column(22);
 
-#infotable {
-	@include column(10);
-	@include append(1);
+div.registration {
+  @include column(22);
+
+  #infotable {
+    @include column(10);
+    @include append(1);
+  }
+  #signuptable {
+    @include column(10,true);
+  }
 }
-#signuptable {
-	@include column(10,true);
-}
-}
+
 .error {
-	@include error();
+  @include error();
 }
 
 @font-face {
-	font-family:'Dink';
-src:url('/fonts/DINk.ttf') format('truetype')
+  font-family:'Dink';
+  src: url('/fonts/DINk.ttf') format('truetype')
 }
-th.admin {
-	text-align:center;
-	background-color: $admin-red;
-	color:#FFF;
-	
-	a {
-		color:#FFF;
-	}
-}
-td.admin {
-	text-align:center;
-	color:$admin-red;
 
-	a {
-		color:$admin-red;
-	}
+th.admin {
+  text-align:center;
+  background-color: $admin-red;
+  color:#FFF;
+
+  a {
+    color:#FFF;
+  }
 }
+
+td.admin {
+  text-align:center;
+  color:$admin-red;
+
+  a {
+    color:$admin-red;
+  }
+}
+
 td.nocenter {
-	text-align:left;
+  text-align:left;
 }
 a.admin {
-	color:$admin-red;
+  color:$admin-red;
 }
 
 /* For games#index, games#list page */
 table.gamelist {
-	tbody tr td {
-		height:60px;
-	}
-	td.name {
-		font-size: 2em;
-	}
+  tbody tr td {
+    height:60px;
+  }
+  td.name {
+    font-size: 2em;
+  }
 }
 
-textarea{
+textarea {
   max-width: 390px;
 }

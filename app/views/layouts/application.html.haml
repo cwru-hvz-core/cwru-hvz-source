@@ -17,56 +17,68 @@
         var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
       })();
   %body
-    %div.blueprint
-      %div.container
-        %div.heading
-          %h1 Case Humans vs. Zombies
-          %div.headinfo.last
-            %div.span-5
-              %b New!
-              Discuss this game on the
-              =link_to "Case HvZ Forum!", "http://forum.casehvz.com"
-            %div.span-6.countdowncontainer
-              - unless @current_game.game_begins.nil?
-                = render :partial => "index/countdown"
-            %div.span-6.last
-              - if @logged_in_person.present?
-                = render :partial => "index/userloggedin"
+    .container
+      .heading
+        %h1 Case Humans vs. Zombies
+        .headinfo.last
+          .span-5
+            %b New!
+            Discuss this game on the
+            =link_to "Case HvZ Forum!", "http://forum.casehvz.com"
+          .span-6.countdowncontainer
+            - if @current_game.game_begins.present?
+              = render 'index/countdown'
+          .span-6.last
+            - if @logged_in_person.present?
+              = render 'index/userloggedin'
+            - else
+              = link_to 'Login', people_login_url
+        %ul.navigation
+          %li.span-4
+            = link_to "Home", root_url
+          %li.span-4
+            - if not @current_game.id.nil?
+              - if @current_game.ongoing? || @current_game.has_ended?
+                = link_to 'Scoreboard', game_url(@current_game) unless @current_game.nil?
               - else
-                = link_to "Login", people_login_url
-          %div.navigation
-            %div.span-4= link_to "Home", root_url()
-            %div.span-4
-              - if not @current_game.id.nil?
-                - if @current_game.ongoing? || @current_game.has_ended?
-                  = link_to("Scoreboard", game_url(@current_game)) unless @current_game.nil?
-                - else
-                  = link_to("Registration", new_registration_url())
-            %div.span-4
-              = link_to "Missions", missions_url()
-            %div.span-4
-              = link_to "Report A Tag", new_tag_url() unless @current_game.nil?
-            - unless @current_game.id.nil?
-              %div.span-4
-                = link_to "Rules", rules_game_url(@current_game)
-            %div.span-4.last
-              = link_to("Contact Admins", new_contact_message_url())
-          = render :partial => "index/adminnavigation" if @is_admin
-        %div.content
-          - unless flash[:message].nil?
-            %div.info=flash[:message]
-          - unless flash[:error].nil?
-            %div.error=flash[:error]
-          = yield
-        %div.footer.span-24.last
-          Case Western's Humans vs. Zombies is organized by the Big Games Club. Comments can be left using the
-          = link_to("contact page", new_contact_message_url()) + "."
+                = link_to 'Registration', new_registration_url
+          %li.span-4
+            = link_to "Missions", missions_url
+          %li.span-4
+            = link_to "Report A Tag", new_tag_url unless @current_game.nil?
+          - unless @current_game.id.nil?
+            %li.span-4
+              = link_to "Rules", rules_game_url(@current_game)
+          %li.span-4.last
+            = link_to "Contact Admins", new_contact_message_url
+        - if @is_admin
+          %ul.admin
+            %li.span-4
+              = link_to 'Manage Games', games_url
+            %li.span-4
+              = link_to 'Manage Players', registrations_url
+            %li.span-4
+              = link_to 'Manage Missions', list_missions_url
+            %li.span-4
+              = link_to 'View Messages', list_contact_messages_url
+            %li.span-4
+              Game Tools
+            %li.span-4.dink.hvzcore.last
+              HvZ Core
+      .content
+        - unless flash[:message].nil?
+          .info=flash[:message]
+        - unless flash[:error].nil?
+          .error=flash[:error]
+        = yield
+      .footer.span-24.last
+        Case Western's Humans vs. Zombies is organized by the Big Games Club. Comments can be left using the
+        = link_to("contact page", new_contact_message_url()) + "."
     = javascript_include_tag '//code.jquery.com/jquery-1.10.1.min.js'
     = javascript_include_tag 'jquery_ujs'
     = javascript_include_tag '//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.2/underscore-min.js'
     = javascript_include_tag '//cdnjs.cloudflare.com/ajax/libs/backbone.js/1.0.0/backbone-min.js'
     = javascript_include_tag 'application'
     = javascript_include_tag 'jquery.countdown.min'
-    = javascript_include_tag 'jquery-ui-1.8.11.custom.min.js'
     = javascript_include_tag "jit.js"
     = yield :javascripts
