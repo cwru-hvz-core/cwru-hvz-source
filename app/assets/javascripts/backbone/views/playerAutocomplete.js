@@ -72,8 +72,7 @@ HvZ.PlayerAutocomplete = Backbone.View.extend({
 
   submitAttendance : function() {
     var selectedModel = this.foundPlayers[this.selectedIndex];
-    selectedModel.submitAttendanceForMission(this.options.missionId);
-
+    this.trigger('autocomplete:selected', { model : selectedModel });
     this.clear();
   },
 

@@ -1,7 +1,5 @@
-
-// To configure blueprint, edit the partials/_base.sass file.
+//= require shared/autocomplete_dropdown
 @import "partials/base";
-
 @import "compass";
 @import "_blueprint";
 @import "blueprint/grid";

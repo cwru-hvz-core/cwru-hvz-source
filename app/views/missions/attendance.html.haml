@@ -1,40 +1,11 @@
-:css
-  /* todo: remove !important's when compass is gone */
-  .autocomplete-container {
-    width: 400px !important;
-  }
-  .autocomplete-search-field {
-    width: 100% !important;
-    margin: 0 !important;
-    -moz-box-sizing: border-box; /* todo other prefixes */
-  }
-  .autocomplete-search-results {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-  .autocomplete-search-results .selected {
-    background-color: #ccc;
-    font-weight: bold;
-  }
-  .autocomplete-search-results li {
-    padding: 0 1em !important;
-    margin: 0;
-    line-height: 2em;
-    text-align: left;
-    background-color: #efefef;
-    cursor: pointer;
-  }
 - content_for :javascripts do
   :javascript
-    var players = [#{@game.registrations.map { |r| "new HvZ.Player({ id: #{r.id}, name: \"#{h r.person.name}\", attending: #{@mission.player_attending?(r)} })"}.join (',') }];
-    var playerList = new HvZ.PlayerList(players);
-    var attendance = new HvZ.PlayerAutocomplete({
-      playerList: playerList,
-      missionId: #{@mission.id},
-    });
-    var attendingPlayers = new HvZ.AttendingPlayers({
-      playerList: playerList,
+    $(function() {
+      var players = #{render 'shared/player_list', game: @game},
+          attendingPlayers = new HvZ.AttendingPlayers({
+            players: players,
+            missionId: #{@mission.id},
+          });
     });
 #playerList
 #attendingPlayers

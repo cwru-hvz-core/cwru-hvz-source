@@ -1,0 +1,30 @@
+/* todo: remove !important's when compass is gone */
+.autocomplete-container {
+  width: 400px !important;
+}
+
+.autocomplete-search-field {
+  @include box-sizing(border-box);
+  margin: 0 !important;
+  width: 100% !important;
+}
+
+.autocomplete-search-results {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.autocomplete-search-results .selected {
+  background-color: #ccc;
+  font-weight: bold;
+}
+
+.autocomplete-search-results li {
+  background-color: #efefef;
+  cursor: pointer;
+  line-height: 2em;
+  margin: 0;
+  padding: 0 1em !important;
+  text-align: left;
+}
