@@ -69,13 +69,13 @@
             Players:
         = render 'gamestats', game: @game
     %div.span-6.prepend-1
-      - if @game.squads.length > 0
+      - if @squads.length > 0
         %table.ozs#table-squads
           %thead
             %th{:colspan=>2}
               %b Top 5 Squads:
           %tbody
-            - @game.squads.each do |s|
+            - @squads.each do |s|
               %tr
                 %td
                   %b= link_to s.name, squad_url(s.id)
