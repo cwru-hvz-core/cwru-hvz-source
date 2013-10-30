@@ -2,10 +2,11 @@
 %html
   %head
     %title HvZ
-    = stylesheet_link_tag 'application'
     = csrf_meta_tag
+    = stylesheet_link_tag 'application'
     = stylesheet_link_tag 'http://fonts.googleapis.com/css?family=IM+Fell+English+SC'
     = stylesheet_link_tag 'scoreboard'
+    = stylesheet_link_tag '//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css'
     :javascript
       var _gaq = _gaq || [];
       _gaq.push(['_setAccount', 'UA-28082792-1']);
@@ -17,54 +18,40 @@
         var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
       })();
   %body
-    .container
-      .heading
-        %h1 Case Humans vs. Zombies
-        .headinfo.last
-          .span-5
-            %b New!
-            Discuss this game on the
-            =link_to "Case HvZ Forum!", "http://forum.casehvz.com"
-          .span-6.countdowncontainer
-            - if @current_game.game_begins.present?
-              = render 'index/countdown'
-          .span-6.last
-            - if @logged_in_person.present?
-              = render 'index/userloggedin'
+    %nav.navbar.navbar-default{ role: 'navigation' }
+      .container
+        .navbar-header.dink
+          = link_to 'Case HvZ', root_url, class: 'navbar-brand'
+
+        .collapse.navbar-collapse
+          %ul.nav.navbar-nav.navbar-right
+            %li
+              - if not @current_game.id.nil?
+                - if @current_game.ongoing? || @current_game.has_ended?
+                  = link_to 'Scoreboard', game_url(@current_game) unless @current_game.nil?
+                - else
+                  = link_to 'Registration', new_registration_url
+            %li= link_to "Missions", missions_url
+            %li= link_to "Report A Tag", new_tag_url unless @current_game.nil?
+            - if @current_game.rules.present?
+              %li= link_to "Rules", rules_game_url(@current_game)
+            %li= link_to "Contact Admins", new_contact_message_url
+            - if @logged_in_person
+              = render 'index/userloggedin', person: @logged_in_person
             - else
-              = link_to 'Login', people_login_url
-        %ul.navigation
-          %li.span-4
-            = link_to "Home", root_url
-          %li.span-4
-            - if not @current_game.id.nil?
-              - if @current_game.ongoing? || @current_game.has_ended?
-                = link_to 'Scoreboard', game_url(@current_game) unless @current_game.nil?
-              - else
-                = link_to 'Registration', new_registration_url
-          %li.span-4
-            = link_to "Missions", missions_url
-          %li.span-4
-            = link_to "Report A Tag", new_tag_url unless @current_game.nil?
-          - unless @current_game.id.nil?
-            %li.span-4
-              = link_to "Rules", rules_game_url(@current_game)
-          %li.span-4.last
-            = link_to "Contact Admins", new_contact_message_url
-        - if @is_admin
-          %ul.admin
-            %li.span-4
-              = link_to 'Manage Games', games_url
-            %li.span-4
-              = link_to 'Manage Players', registrations_url
-            %li.span-4
-              = link_to 'Manage Missions', list_missions_url
-            %li.span-4
-              = link_to 'View Messages', list_contact_messages_url
-            %li.span-4
-              Game Tools
-            %li.span-4.dink.hvzcore.last
-              HvZ Core
+              %li= link_to 'Log In', people_login_url
+            - if @is_admin
+              %li.dropdown
+                = link_to '#', class: 'dropdown-toggle', data: { toggle: 'dropdown' } do
+                  HvZ Core
+                  %b.caret
+                %ul.dropdown-menu
+                  %li= link_to 'Manage Games', games_url
+                  %li= link_to 'Manage Players', registrations_url
+                  %li= link_to 'Manage Missions', list_missions_url
+                  %li= link_to 'View Messages', list_contact_messages_url
+                  / %li Game Tools
+    .container
       .content
         - unless flash[:message].nil?
           .info=flash[:message]

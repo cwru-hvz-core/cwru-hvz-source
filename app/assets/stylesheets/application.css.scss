@@ -1,19 +1,10 @@
 //= require shared/autocomplete_dropdown
 @import "partials/base";
 @import "compass";
-@import "_blueprint";
-@import "blueprint/grid";
-@import "blueprint/reset";
-@include blueprint;
 
 html, body {
-  @include background-image(linear-gradient(top, color-stops(mix($hvz-green,$bgcolor, 25%), $bgcolor 20%, $bgcolor)));
-  background-repeat: no-repeat;
-  background-color: $bgcolor;
-}
-
-.container {
-  background-color: #fff;
+  margin: 0;
+  padding: 0;
 }
 
 h1 {
@@ -24,55 +15,11 @@ h2 {
   font-size: 2em;
 }
 
-.heading {
-  background: image-url("logo_small.png") no-repeat -32px 0px;
-  margin: 20px auto 0px;
-  text-align: center;
-
-  .navigation {
-    background-color: $hvz-green;
-    clear: both;
-    font-size: 1.4em;
-    height: 30px;
-    margin: 0;
-    padding: 0;
-  }
-
-  .admin {
-    background-color: $admin-red;
-    color: #fff;
-    line-height: 2.5em;
-    overflow: auto;
-    text-align: center;
-    width: 100%;
-
-    a {
-      color: #fff;
-    }
-
-    .hvzcore {
-      color: darken($admin-red, 10%);
-    }
-  }
-
-  .countdowncontainer {
-    @include prepend(1);
-    @include append(1);
-  }
-}
-
-.heading h1 {
-  font-family: 'Dink';
-}
-
 .dink {
   font-family: 'Dink';
 }
 
 .content {
-  @include prepend-top(15px);
-  @include prepend(1);
-  @include column(22);
   @include min-height(600px);
 
   .gameinfo {
@@ -81,7 +28,6 @@ h2 {
 
   .quickstats {
     text-align:right;
-    @include prepend(1);
 
     table {
       margin-left:auto;
@@ -93,16 +39,6 @@ h2 {
     @include box-shadow(darken(#EFEFEF, 20%), 0px, 0px, 30px, 0px, inset);
     height:600px;
     background-color:#EFEFEF;
-  }
-}
-
-.headinfo {
-  @include prepend(4);
-  @include column(19);
-  @include append-bottom(20px);
-
-  .profile_photo {
-    float: left;
   }
 }
 
@@ -121,22 +57,6 @@ h2 {
 
 div.game-header div {
   margin:10px 0 30px 0;
-}
-
-div.registration {
-  @include column(22);
-
-  #infotable {
-    @include column(10);
-    @include append(1);
-  }
-  #signuptable {
-    @include column(10,true);
-  }
-}
-
-.error {
-  @include error();
 }
 
 @font-face {

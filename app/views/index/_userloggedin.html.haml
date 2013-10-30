@@ -1,26 +1,11 @@
-.profile_photo
-  =link_to gravatar_profile_url(@logged_in_person) do
-    =image_tag profile_photo_url(@logged_in_person, 64, '')
-- unless (@logged_in_person.nil? or @logged_in_person.name.nil?)
-  %b{:title=>"Edit Info"}
-    = link_to @logged_in_person.name + " (" + @logged_in_person.caseid + ")", edit_person_url(@logged_in_person)
-  - if(not @current_game.nil?)
-    %br
-    - r =  Registration.find_by_person_id_and_game_id(@logged_in_person.id, @current_game.id)
-    -unless r.nil?
-      %b{:title=>"View Player Profile"}
-        - if r.is_human?
-          = link_to "Human [" + r.score.to_s + "]", registration_url(r)
-        - elsif r.is_zombie?
-          = link_to "Zombie [" + r.score.to_s + "]", registration_url(r)
-        - else
-          = link_to "Deceased [" + r.score.to_s + "]", registration_url(r)
+%li.dropdown
+  = link_to '#', class: 'dropdown-toggle', data: { toggle: 'dropdown' } do
+    = person.name
+    %b.caret
+  %ul.dropdown-menu
+    %li= link_to 'Edit Info', edit_person_path(person)
+    - if person.is_playing_current_game?
+      - r = person.current_game_registration
       - if r.is_off_campus
-        %br
-        = link_to "Off-Campus Check In", check_in_url()
-- else
-  %b Profile Incomplete! 
-  = "(" + @logged_in_person.caseid + ")"
-  = link_to "Update Profile", edit_person_url(@logged_in_person)
-%br
-=link_to "Logout", people_logout_url()
+        %li= link_to 'Off-Campus Check In', check_in_path
+    %li= link_to "Logout", people_logout_url()

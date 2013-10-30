@@ -18,8 +18,7 @@ Hidden around campus are various bonus codes. Input the code into this box and y
           %td.admin
             %b Person:
           %td
-            = hidden_field_tag :person_id, @logged_in_person.id
-            = autocomplete_field_tag :person_name, @logged_in_person.name, autocomplete_person_name_missions_path, :id_element => "#person_id"
+            person here
       %tr
         %td{:colspan=>2,:style=>"text-align:center"}=submit_tag("Claim the Code!")
 

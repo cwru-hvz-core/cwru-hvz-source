@@ -7,7 +7,8 @@ module ApplicationHelper
     return date.strftime("%A, %I:%M %p")
   end
 
-  def profile_photo_url(person, size=32, default=image_path('http://casehvz.com/images/gravatar_default.png'))
+  def profile_photo_url(person, size = 32)
+    default = image_path('http://casehvz.com/images/gravatar_default.png')
     ["http://www.gravatar.com/avatar/",
       Digest::MD5.hexdigest(person.caseid + '@case.edu'),
       "?s=#{size}&d=#{u default}"

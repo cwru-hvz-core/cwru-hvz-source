@@ -40,4 +40,17 @@ class Person < ActiveRecord::Base
     return true unless date_of_birth.present?  # assume > 18 until known otherwise
     ((Date.today - date_of_birth).days / 1.year) >= 18
   end
+
+  def is_playing_current_game?
+    game = Game.current
+    false unless game.persisted?
+
+    current_game_registration.present?
+  end
+
+  def current_game_registration
+    # TODO[tdooner]: make this not depend on the global Game.current state so
+    # that the platform can host multiple games simultaneously.
+    registrations.where(game_id: Game.current).first
+  end
 end
