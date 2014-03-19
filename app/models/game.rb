@@ -14,6 +14,10 @@ class Game < ActiveRecord::Base
     Game.find(:first, :conditions => ["is_current = ?", true]) or Game.new
   end
 
+  def hours_to_starve
+    48
+  end
+
   def to_s(type)
     datetimeformat = '%A, %B %e, %Y @ %I:%M %p'
 

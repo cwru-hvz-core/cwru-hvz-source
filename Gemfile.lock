@@ -37,6 +37,7 @@ GEM
       i18n
     builder (3.0.4)
     chunky_png (1.2.8)
+    coderay (1.1.0)
     columnize (0.3.6)
     compass (0.12.2)
       chunky_png (~> 1.2)
@@ -79,6 +80,7 @@ GEM
     mail (2.5.4)
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
+    method_source (0.8.2)
     mime-types (1.25)
     multi_json (1.8.0)
     multi_xml (0.5.5)
@@ -86,6 +88,12 @@ GEM
     newrelic_rpm (3.6.6.147)
     pg (0.16.0)
     polyglot (0.3.3)
+    pry (0.9.12.6)
+      coderay (~> 1.0)
+      method_source (~> 0.8)
+      slop (~> 3.4)
+    pry-rails (0.3.2)
+      pry (>= 0.9.10)
     rack (1.4.5)
     rack-cache (1.2)
       rack (>= 0.4)
@@ -128,6 +136,7 @@ GEM
     rubycas-client (2.3.9)
       activesupport
     sass (3.2.10)
+    slop (3.4.7)
     sprockets (2.2.2)
       hike (~> 1.2)
       multi_json (~> 1.0)
@@ -167,6 +176,8 @@ DEPENDENCIES
   mysql
   newrelic_rpm
   pg
+  pry
+  pry-rails
   rails (= 3.2.14)
   rails3-jquery-autocomplete
   rspec-rails

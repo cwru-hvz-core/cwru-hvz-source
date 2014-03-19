@@ -26,15 +26,20 @@ class Registration < ActiveRecord::Base
   end
 
   def display_score
-    if self.is_oz and not self.game.ozs_revealed?
+    if self.is_oz && !self.game.ozs_revealed?
       return self.game.mode_score
     end
     self.score
   end
 
   def validate
-    errors.add_to_base("Registration has not yet begun for this game!") if Time.now < self.game.registration_begins
-    errors.add_to_base("Registration has already ended for this game!") if Time.now > self.game.registration_ends
+    if Time.now < self.game.registration_begins
+      errors.add_to_base("Registration has not yet begun for this game!")
+    end
+
+    if Time.now > self.game.registration_ends
+      errors.add_to_base("Registration has already ended for this game!")
+    end
   end
 
   # Note: These methods are costly and should only be called asynchronously.
@@ -43,16 +48,19 @@ class Registration < ActiveRecord::Base
     return 0 if self.is_oz
     tag = self.killing_tag
     real_begins = self.game.game_begins
-    return [0, tag.datetime - real_begins].max unless tag.nil?
-    return [0, Game.now(self.game) - real_begins].max
+    if tag
+      return [0, tag.datetime - real_begins].max
+    else
+      return [0, Game.now(self.game) - real_begins].max
+    end
   end
 
   def display_time_survived
     if self.is_oz && !self.game.ozs_revealed?
       real_begins = self.game.game_begins
-      return [0, Game.now(self.game) - real_begins].max
+      return [0, self.game.now - real_begins].max
     else
-      return self.time_survived()
+      return self.time_survived
     end
   end
 
@@ -80,11 +88,10 @@ class Registration < ActiveRecord::Base
 
   def zombietree_json
     #recursively generates json data for this player's family tree.
-    #(the following code uses & as string delimiter
-    # to make things nicer)
-    json = %&{id:"player#{self.id}",name:"#{self.person.name.gsub('"','\"')}",data:{tags:#{self.tagged.length}},children:[&
-    children = self.tagged(:include=>[:tagged,:person]).collect{|x| x.tagee.zombietree_json if x.tagee}.compact
-    json += %&#{ children.to_sentence(:last_word_connector => ",", :two_words_connector => ",") unless children.empty?}]}&
+    { id: "player#{self.id}", name: self.person.name.gsub('"', '\"'),
+      data: { tags: self.tagged.length },
+      children: self.tagged(include: [:tagged, :person]).select(&:tagee).map { |x| x.tagee.zombietree_json }
+    }.to_json
   end
 
   def most_recent_feed

@@ -25,5 +25,13 @@ FactoryGirl.define do
         Game.where(is_current: true).destroy_all
       end
     end
+
+    trait :begun do
+      registration_begins { Time.now - 5.day }
+      registration_ends   { Time.now - 3.days }
+      game_begins         { Time.now - 3.days + 1.minute }
+      oz_reveal           { Time.now - 2.days + 1.minute }
+      game_ends           { Time.now + 7.days }
+    end
   end
 end

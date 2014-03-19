@@ -1,6 +1,24 @@
 require 'spec_helper'
 
 describe Registration do
+  describe '#zombietree_json' do
+    it 'should generate valid json' do
+      expect do
+        JSON.parse(FactoryGirl.build(:registration).zombietree_json)
+      end.not_to raise_error
+    end
+  end
+
+  describe '#most_recent_feed' do
+    subject { registration.most_recent_feed }
+
+    let(:registration) { FactoryGirl.create(:registration, :zombie) }
+
+    it 'should return a time' do
+      registration.most_recent_feed.should_not == nil
+    end
+  end
+
   describe '#killing_tag' do
     subject { registration.killing_tag }
 

@@ -18,6 +18,8 @@ gem 'airbrake'
 gem 'newrelic_rpm'
 gem 'mysql'
 gem 'pg'
+gem 'pry'
+gem 'pry-rails'
 
 group :development, :test do
   gem 'rspec-rails'
