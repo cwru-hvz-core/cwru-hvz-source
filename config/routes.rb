@@ -27,7 +27,6 @@ Hvz::Application.routes.draw do
     end
   end
 	resources :players, :as => :registrations, :controller => :registrations, :id=>/[0-9]*/ do
-      get 'forumsync'
       get 'showwaiver'
 		resources :infractions
 	end

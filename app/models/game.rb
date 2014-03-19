@@ -102,18 +102,6 @@ class Game < ActiveRecord::Base
     ActiveSupport::TimeZone.new(time_zone).utc_offset + dst_off
   end
 
-  def connect_to_phpbb
-    if phpbb_database_host.nil? || phpbb_database_username.nil? || phpbb_database_password.nil? || phpbb_database.nil?
-      return false
-    end
-    begin
-      conn = Mysql.connect(phpbb_database_host, phpbb_database_username, phpbb_database_password, phpbb_database)
-    rescue
-      return false
-    end
-    return conn
-  end
-
   def graph_data
     states = registrations.map{ |x| x.state_history }
     tslength = ((game_ends - game_begins) / 240).floor

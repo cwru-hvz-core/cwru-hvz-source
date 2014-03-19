@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131004040634) do
+ActiveRecord::Schema.define(:version => 20140319221624) do
 
   create_table "attendances", :force => true do |t|
     t.integer  "registration_id"
@@ -92,20 +92,13 @@ ActiveRecord::Schema.define(:version => 20131004040634) do
     t.datetime "registration_ends"
     t.datetime "game_begins"
     t.datetime "game_ends"
-    t.datetime "created_at",                                                                                 :null => false
-    t.datetime "updated_at",                                                                                 :null => false
+    t.datetime "created_at",                                                                          :null => false
+    t.datetime "updated_at",                                                                          :null => false
     t.boolean  "is_current"
-    t.text     "information",                :default => "No information given."
-    t.text     "rules",                      :default => "No rules have been posted yet. Check back later!"
-    t.string   "time_zone",                  :default => "Eastern Time (US & Canada)"
+    t.text     "information",         :default => "No information given."
+    t.text     "rules",               :default => "No rules have been posted yet. Check back later!"
+    t.string   "time_zone",           :default => "Eastern Time (US & Canada)"
     t.datetime "oz_reveal"
-    t.string   "phpbb_database_host"
-    t.string   "phpbb_database_username"
-    t.string   "phpbb_database_password"
-    t.string   "phpbb_database"
-    t.string   "phpbb_field_identification"
-    t.integer  "phpbb_human_group"
-    t.integer  "phpbb_zombie_group"
   end
 
   add_index "games", ["is_current"], :name => "index_games_on_is_current"

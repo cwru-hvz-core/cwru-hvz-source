@@ -27,28 +27,5 @@
       %td= f.time_zone_select :time_zone
     %tr
       %td{:colspan=>2}
-        %h2.dink External Connections: phpBB
-    %tr
-      %td This engine can connect to a phpBB installation.
-    %tr
-      %td=f.label :phpbb_database_host, "phpBB Database Host:"
-      %td=f.text_field :phpbb_database_host
-    %tr
-      %td=f.label :phpbb_database_username, "phpBB Database Username:"
-      %td=f.text_field :phpbb_database_username
-    %tr
-      %td=f.label :phpbb_database_password, "phpBB Database Password:"
-      %td=f.text_field :phpbb_database_password
-    %tr
-      %td=f.label :phpbb_field_identification, "phpBB Card-Code Field Identification:"
-      %td=f.text_field :phpbb_field_identification
-    %tr
-      %td=f.label :phpbb_human_group, "phpBB Human Group ID:"
-      %td=f.text_field :phpbb_human_group
-    %tr
-      %td=f.label :phpbb_zombie_group, "phpBB Zombie Group ID:"
-      %td=f.text_field :phpbb_zombie_group
-    %tr
-      %td{:colspan=>2}
         %div{:align=>"center"}= f.submit "Create This Game"
 

@@ -10,14 +10,6 @@ FactoryGirl.define do
     information 'This is the homepage!'
     time_zone 'Eastern Time (US & Canada)'
 
-    phpbb_database_host 'localhost'
-    phpbb_database_username 'none'
-    phpbb_database_password 'none'
-    phpbb_database 'none'
-    phpbb_field_identification 'none'
-    phpbb_human_group 0
-    phpbb_zombie_group 0
-
     factory :current_game do
       is_current true
 
