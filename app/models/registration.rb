@@ -1,5 +1,4 @@
 class Registration < ActiveRecord::Base
-  require './lib/phpbb_utility.rb'
   belongs_to :person
   belongs_to :game
   belongs_to :squad
@@ -26,15 +25,20 @@ class Registration < ActiveRecord::Base
   end
 
   def display_score
-    if self.is_oz and not self.game.ozs_revealed?
+    if self.is_oz && !self.game.ozs_revealed?
       return self.game.mode_score
     end
     self.score
   end
 
   def validate
-    errors.add_to_base("Registration has not yet begun for this game!") if Time.now < self.game.registration_begins
-    errors.add_to_base("Registration has already ended for this game!") if Time.now > self.game.registration_ends
+    if Time.now < self.game.registration_begins
+      errors.add_to_base("Registration has not yet begun for this game!")
+    end
+
+    if Time.now > self.game.registration_ends
+      errors.add_to_base("Registration has already ended for this game!")
+    end
   end
 
   # Note: These methods are costly and should only be called asynchronously.
@@ -43,16 +47,19 @@ class Registration < ActiveRecord::Base
     return 0 if self.is_oz
     tag = self.killing_tag
     real_begins = self.game.game_begins
-    return [0, tag.datetime - real_begins].max unless tag.nil?
-    return [0, Game.now(self.game) - real_begins].max
+    if tag
+      return [0, tag.datetime - real_begins].max
+    else
+      return [0, Game.now(self.game) - real_begins].max
+    end
   end
 
   def display_time_survived
     if self.is_oz && !self.game.ozs_revealed?
       real_begins = self.game.game_begins
-      return [0, Game.now(self.game) - real_begins].max
+      return [0, self.game.now - real_begins].max
     else
-      return self.time_survived()
+      return self.time_survived
     end
   end
 
@@ -80,11 +87,10 @@ class Registration < ActiveRecord::Base
 
   def zombietree_json
     #recursively generates json data for this player's family tree.
-    #(the following code uses & as string delimiter
-    # to make things nicer)
-    json = %&{id:"player#{self.id}",name:"#{self.person.name.gsub('"','\"')}",data:{tags:#{self.tagged.length}},children:[&
-    children = self.tagged(:include=>[:tagged,:person]).collect{|x| x.tagee.zombietree_json if x.tagee}.compact
-    json += %&#{ children.to_sentence(:last_word_connector => ",", :two_words_connector => ",") unless children.empty?}]}&
+    { id: "player#{self.id}", name: self.person.name.gsub('"', '\"'),
+      data: { tags: self.tagged.length },
+      children: self.tagged(include: [:tagged, :person]).select(&:tagee).map { |x| x.tagee.zombietree_json }
+    }.to_json
   end
 
   def most_recent_feed
@@ -167,31 +173,6 @@ class Registration < ActiveRecord::Base
     return false if self.nil? || other.nil?
     return false if not (self.is_a?(Registration) && other.is_a?(Registration))
     self.id == other.id
-  end
-
-  def phpbb_convert_to_faction(faction_id)
-    # Faction id: Human => 0, Zombie => 1, Deceased => 2
-    @conn = self.game.connect_to_phpbb()
-    return false unless @conn
-
-    ids = PHPBBUtility.get_user_ids(@conn, card_code)
-    convert_stmt = @conn.prepare("DELETE FROM phpbb_user_group WHERE group_id = ? AND user_id = ?")
-    add_stmt = @conn.prepare("INSERT INTO phpbb_user_group (group_id, user_id, group_leader, user_pending) VALUES (?, ?, 0, 0)")
-    ids.each do |id|
-      convert_stmt.execute(self.game.phpbb_human_group, id)
-      convert_stmt.execute(self.game.phpbb_zombie_group, id)
-      case faction_id
-      when 0
-        add_stmt.execute(self.game.phpbb_human_group, id)
-      when 1
-        add_stmt.execute(self.game.phpbb_zombie_group, id)
-      end
-    end
-    convert_stmt.close()
-    add_stmt.close()
-    PHPBBUtility.clear_permissions(@conn, ids)
-
-    return true
   end
 
 private

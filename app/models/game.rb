@@ -14,6 +14,10 @@ class Game < ActiveRecord::Base
     Game.find(:first, :conditions => ["is_current = ?", true]) or Game.new
   end
 
+  def hours_to_starve
+    48
+  end
+
   def to_s(type)
     datetimeformat = '%A, %B %e, %Y @ %I:%M %p'
 
@@ -96,18 +100,6 @@ class Game < ActiveRecord::Base
     dst_off = 0
     dst_off = 1.hour if Time.now.dst?
     ActiveSupport::TimeZone.new(time_zone).utc_offset + dst_off
-  end
-
-  def connect_to_phpbb
-    if phpbb_database_host.nil? || phpbb_database_username.nil? || phpbb_database_password.nil? || phpbb_database.nil?
-      return false
-    end
-    begin
-      conn = Mysql.connect(phpbb_database_host, phpbb_database_username, phpbb_database_password, phpbb_database)
-    rescue
-      return false
-    end
-    return conn
   end
 
   def graph_data

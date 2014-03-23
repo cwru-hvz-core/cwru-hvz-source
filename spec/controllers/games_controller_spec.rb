@@ -3,7 +3,7 @@ require 'spec_helper'
 describe GamesController do
   render_views
 
-  let(:game) { FactoryGirl.create(:current_game) }
+  let(:game) { FactoryGirl.create(:current_game, :begun) }
 
   describe '#show' do
     it 'renders' do

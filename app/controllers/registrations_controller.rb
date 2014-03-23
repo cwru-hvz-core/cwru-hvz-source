@@ -1,7 +1,7 @@
 class RegistrationsController < ApplicationController
   before_filter :check_admin, :only => [:index, :destroy, :submit_waiver, :showwaiver, :find_by_code]
   before_filter :check_login, :only => [:new, :create, :show]
-  before_filter :check_is_registered, :only => [:joinsquad, :forumsync]
+  before_filter :check_is_registered, :only => [:joinsquad]
 
   before_filter :require_can_register, only: :new
   before_filter :require_personal_information, only: :new
@@ -207,18 +207,6 @@ private
       flash[:error] = "You cannot join a squad after the game has started"
       redirect_to root_url
     end
-  end
-
-  def forumsync
-    success = @logged_in_registration.phpbb_convert_to_faction(@logged_in_registration.faction_id)
-
-    if success
-      flash[:message] = 'Synced successfully! Please check the forums to ensure you have access.'
-    else
-      flash[:error] = 'Could not sync forum account: an error has occurred.'
-    end
-
-    redirect_to registration_url(@logged_in_registration)
   end
 
   def find_by_code

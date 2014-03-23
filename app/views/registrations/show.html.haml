@@ -21,9 +21,4 @@ Your card code is:
   = " with " + @registration.score.to_s + " points."
 %br
 
-Forum Integration:
-%h2
-  =link_to "Synchronize Forum Account", registration_forumsync_url(@registration)
-%br
-
 =link_to "View Infractions", registration_infractions_url(@registration)
