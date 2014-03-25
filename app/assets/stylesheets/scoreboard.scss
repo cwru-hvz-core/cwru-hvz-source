@@ -56,13 +56,13 @@ div.player ul li.picture {
 	border-left:2px solid #AAA;
 }
 div.player.human ul li.picture {	
-	background:url("/images/scoreboard.png") repeat-y scroll 0 0 #EEE;
+	background:url("/assets/scoreboard.png") repeat-y scroll 0 0 #EEE;
 }
 div.player.zombie ul li.picture {	
-	background:url("/images/scoreboard_bg_zombie.png") repeat-x scroll 0 0 #EEE;
+	background:url("/assets/scoreboard_bg_zombie.png") repeat-x scroll 0 0 #EEE;
 }
 div.player.zombie ul li.name {	
-	background:url("/images/scoreboard_bg_zombie.png") repeat-x scroll 0 0 #EEE;
+	background:url("/assets/scoreboard_bg_zombie.png") repeat-x scroll 0 0 #EEE;
 }
 div.player ul li.points {
 	float:left;

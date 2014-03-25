@@ -99,12 +99,12 @@ class Registration < ActiveRecord::Base
     return retval
   end
 
-  def zombietree_json
+  def zombietree
     #recursively generates json data for this player's family tree.
-    { id: "player#{self.id}", name: self.person.name.gsub('"', '\"'),
+    { id: "player#{self.id}", name: self.person.name,
       data: { tags: self.tagged.length },
       children: self.tagged(include: [:tagged, :person]).select(&:tagee).map { |x| x.tagee.zombietree_json }
-    }.to_json
+    }
   end
 
   def most_recent_feed

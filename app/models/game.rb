@@ -44,10 +44,9 @@ class Game < ActiveRecord::Base
   end
 
   def zombietree_json
-    # todo: destroy the next 3 lines with the fury of a thousand sons
-    json = %&{id:"game#{id}",name:"#{short_name}",data:{},children:[&
-    children = registrations(:include=>[:tagged,:person]).collect{|x| x.zombietree_json if((x.killing_tag.nil? or x.killing_tag.tagger.nil?) and not x.is_human?)}.compact
-    json += %&#{ children.to_sentence(:last_word_connector => ",", :two_words_connector => ",", :words_connector => ",") unless children.empty?}]}&
+    { id: "game#{id}", name: short_name, data: {},
+      children: registrations(include: [:tagged, :person]).select{|x| !x.is_human? && (x.killing_tag.nil? || x.killing_tag.tagger.nil?)}.map(&:zombietree)
+    }.to_json
   end
 
   def ongoing?
