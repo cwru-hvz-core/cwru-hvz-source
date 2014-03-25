@@ -7,8 +7,8 @@ HvZ.Player = Backbone.Model.extend({
         'registration_id' : this.id,
         'mission_id' : missionId,
       }
-    }).done(function() {
-      this.set('attending', true);
+    }).done(function(data) {
+      this.set('attendance', data['id']);
     }.bind(this));
   },
 });

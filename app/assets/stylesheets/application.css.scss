@@ -71,6 +71,7 @@ h2 {
 }
 
 .content {
+  text-align: center;
   @include prepend-top(15px);
   @include prepend(1);
   @include column(22);

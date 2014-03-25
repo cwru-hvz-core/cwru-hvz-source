@@ -1,3 +1,5 @@
 = surround '[', ']' do
-  - game.registrations.each do |r|
-    new HvZ.Player({ id: #{r.id}, name: "#{h r.person.name}" }),
+  - game.registrations.includes(:person, :attendances).each do |r|
+    new HvZ.Player({ id: #{r.id}, name: "#{h r.person.name}",
+    attendance: #{r.attendances.find{|x| x.mission_id == mission.id}.try(:id) || 0},
+    faction: #{r.faction_id}}),

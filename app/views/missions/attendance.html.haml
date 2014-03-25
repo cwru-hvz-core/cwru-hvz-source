@@ -1,11 +1,32 @@
 - content_for :javascripts do
   :javascript
     $(function() {
-      var players = #{render 'shared/player_list', game: @game},
+      var players = #{render 'shared/player_list', game: @game, mission: @mission},
           attendingPlayers = new HvZ.AttendingPlayers({
             players: players,
             missionId: #{@mission.id},
           });
     });
+:css
+  #playerList > .autocomplete-container {
+    margin: auto;
+  }
+%h2.dink Add New Attendee:
 #playerList
+%script{type: "text/template", id: "playersTemplate"}
+  Humans:
+  %b <%= humans.length %>
+  | Zombies:
+  %b <%= zombies.length %>
+  | Deceased:
+  %b <%= deceased.length %>
+  %br
+  %br
+  %ol
+    <% _.each(players, function(p) { %>
+    %li <%= p.get('name') %> [ <a href='#' class='player-attendance' data-attendance=<%= p.get('attendance') %>>x</a> ]
+    <% }); %>
+
+
+%h2.dink Current Mission Attendees:
 #attendingPlayers

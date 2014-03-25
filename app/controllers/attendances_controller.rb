@@ -4,6 +4,7 @@ class AttendancesController < ApplicationController
   def create
     @attendance = Attendance.new(params[:attendance])
     @attendance.save
+    render json: @attendance
   end
 
   def destroy
