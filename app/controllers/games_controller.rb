@@ -89,7 +89,15 @@ class GamesController < ApplicationController
   end
 
   def emails
-    @game = Game.find(params[:id], :include => { :registrations => :person })
+    @game = Game.find(params[:id])
+    @registrations = @game.registrations
+    if params[:faction_id].present?
+      @registrations = @registrations.where(faction_id: params[:faction_id])
+    end
+
+    if params[:human_type].present?
+      @registrations = @registrations.where(human_type: params[:human_type])
+    end
   end
 
   def admin_register_new

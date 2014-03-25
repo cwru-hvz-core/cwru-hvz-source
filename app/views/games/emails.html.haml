@@ -1,8 +1,13 @@
-%h2 Humans
-= @game.registrations.select { |r| r.faction_id == 0 }.map { |r| "#{r.person.name} <#{r.person.caseid}@case.edu>" }.join ','
-%h2 Zombies
-= @game.registrations.select { |r| r.faction_id == 1 }.map { |r| "#{r.person.name} <#{r.person.caseid}@case.edu>" }.join ','
-%h2 Deceased
-= @game.registrations.select { |r| r.faction_id == 2 }.map { |r| "#{r.person.name} <#{r.person.caseid}@case.edu>" }.join ','
-%h2 All Players
-= @game.registrations.map { |r| "#{r.person.name} <#{r.person.caseid}@case.edu>" }.join ','
+%p
+  Select a faction and/or human type to filter emails. Leaving it blank will
+  make it not filtered by that. Leave both blank to get all players.
+= form_tag emails_game_path(@game.id), method: :get do
+  = label_tag :faction_id, "Faction:"
+  = select_tag :faction_id, options_for_select([["Human", 0], ["Zombies", 1], ["Deceased", 2]], params[:faction_id]),
+    include_blank: true
+  = label_tag :human_type, "Human Type:"
+  = select_tag :human_type, options_for_select(Registration::HUMAN_TYPES, params[:human_type]),
+    include_blank: true
+  = submit_tag "Submit"
+
+= @registrations.map { |r| "#{r.person.name} <#{r.person.caseid}@case.edu>" }.join ','
