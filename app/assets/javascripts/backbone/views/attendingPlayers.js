@@ -4,7 +4,7 @@ HvZ.AttendingPlayers = Backbone.View.extend({
   el : '#attendingPlayers',
 
   events : {
-    'click a.player-attendance': 'deleteAttendance',
+    'click a.delete-attendance': 'deleteAttendance',
   },
 
   initialize : function(options) {
