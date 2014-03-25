@@ -8,9 +8,7 @@ class GamesController < ApplicationController
   def show
     @game = Game.find(params[:id])
     check_admin unless @game.has_begun?
-    @players = @game.registrations.includes(:person)
-
-    @players = @players.sort_by { |x| -x.display_score }
+    @players = @game.registrations.includes(:person, :missions, :tagged, :taggedby, :game, :feeds, :bonus_codes)
 
     @ozs = @game.registrations.where(:is_oz => true).includes(:person)
 

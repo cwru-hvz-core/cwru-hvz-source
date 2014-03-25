@@ -3,19 +3,19 @@
     %td
       %b Human:
     %td
-      = @players.map{|x| x if x.faction_id == 0}.compact.length
+      = @players.where(faction_id: 0).count
   %tr
     %td
       %b Zombie:
     %td
-      = @players.map{|x| x if x.faction_id == 1}.compact.length
+      = @players.where(faction_id: 1).count
   %tr
     %td
       %b Deceased:
     %td
-      = @players.map{|x| x if x.faction_id == 2}.compact.length
+      = @players.where(faction_id: 2).count
   %tr
     %td
       %b Total:
     %td
-      = @players.length
+      = @players.count

@@ -102,7 +102,7 @@
       - prevscore = -1
       - currentnum = 1
       - countnum = 1
-      - @players.each do |p|
+      - @players.sort_by{|p| -p.display_score}.each do |p|
         - if(p.display_score == prevscore)
           - number = currentnum
         - else
