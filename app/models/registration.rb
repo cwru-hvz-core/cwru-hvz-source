@@ -19,6 +19,8 @@ class Registration < ActiveRecord::Base
 
   before_save :set_card_code
 
+  HUMAN_TYPES = ["Military", "Resistance", "Defected"]
+
   def self.make_code
     chars = %w{ A B C D E F 1 2 3 4 5 6 7 8 9 }
     (0..5).map{ chars.to_a[rand(chars.size)] }.join

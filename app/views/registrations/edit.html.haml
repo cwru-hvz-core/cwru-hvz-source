@@ -36,7 +36,13 @@
         -if @is_admin
           %tr
             %td.admin=f.label :squad, "Squad"
-            %td=collection_select :registration, :squad_id, @squads, :id, :name, {:include_blank => true}
+            %td=f.collection_select :squad_id, @squads, :id, :name, {:include_blank => true}
+          - if @registration.is_human?
+            %tr
+              %td.admin=f.label :human_type, "Human Type"
+              %td=f.select :human_type,
+                options_for_select(Registration::HUMAN_TYPES, @registration.human_type),
+                include_blank: true
           %tr
             %td.admin=f.label :is_off_campus, "Is Off Campus?"
             %td=f.check_box :is_off_campus
