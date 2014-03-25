@@ -156,6 +156,9 @@ GEM
       kgio (~> 2.6)
       rack
       raindrops (~> 0.7)
+    unicorn-rails (1.1.0)
+      rack
+      unicorn
 
 PLATFORMS
   ruby
@@ -185,3 +188,4 @@ DEPENDENCIES
   sqlite3
   twilio
   unicorn
+  unicorn-rails

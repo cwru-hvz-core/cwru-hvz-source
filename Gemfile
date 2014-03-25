@@ -33,3 +33,4 @@ end
 
 # Use unicorn as the web server
 gem 'unicorn'
+gem 'unicorn-rails'
