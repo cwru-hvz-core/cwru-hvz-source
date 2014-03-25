@@ -98,6 +98,7 @@ class GamesController < ApplicationController
     if params[:human_type].present?
       @registrations = @registrations.where(human_type: params[:human_type])
     end
+    @registrations = @registrations.includes(:person)
   end
 
   def admin_register_new
