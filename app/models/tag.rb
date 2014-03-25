@@ -57,6 +57,6 @@ class Tag < ActiveRecord::Base
 private
 
   def trigger_player_tagged
-    PubSubHub.trigger(:player_tagged, tag: self)
+    #PubSubHub.trigger(:player_tagged, tag: self)
   end
 end
