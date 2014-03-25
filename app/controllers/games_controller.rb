@@ -8,7 +8,10 @@ class GamesController < ApplicationController
   def show
     @game = Game.find(params[:id])
     check_admin unless @game.has_begun?
-    @players = @game.registrations.sort_by{ |x| -x.display_score }
+    @players = @game.registrations.includes(:person)
+
+    @players = @players.sort_by { |x| -x.display_score }
+
     @ozs = @game.registrations.where(:is_oz => true).includes(:person)
 
     @graphdata = JSON.parse(
