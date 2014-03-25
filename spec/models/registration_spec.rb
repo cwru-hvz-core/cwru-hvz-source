@@ -1,14 +1,6 @@
 require 'spec_helper'
 
 describe Registration do
-  describe '#zombietree_json' do
-    it 'should generate valid json' do
-      expect do
-        JSON.parse(FactoryGirl.build(:registration).zombietree_json)
-      end.not_to raise_error
-    end
-  end
-
   describe '#most_recent_feed' do
     subject { registration.most_recent_feed }
 
