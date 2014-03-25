@@ -1,4 +1,9 @@
 - content_for :javascripts do
+  = javascript_include_tag "backbone/models/player"
+  = javascript_include_tag "backbone/collections/playerList"
+  = javascript_include_tag "backbone/views/attendingPlayers"
+  = javascript_include_tag "backbone/views/playerAutocomplete"
+  
   :javascript
     $(function() {
       var players = #{render 'shared/player_list', game: @game, mission: @mission},
