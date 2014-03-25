@@ -1,13 +1,13 @@
 %div.admin
   %div.span-4
-    = link_to "Manage Games", games_url()
+    = link_to "Manage Games", games_path
   %div.span-4
-    = link_to "Manage Players", registrations_url()
+    = link_to "Manage Players", registrations_path
   %div.span-4
-    = link_to "Manage Missions", list_missions_url()
+    = link_to "Manage Missions", list_missions_path
   %div.span-4
-    = link_to "View Messages", list_contact_messages_url()
+    = link_to "View Messages", list_contact_messages_path
   %div.span-4
-    Game Tools
+    = link_to "Game Tools", tools_game_path(Game.current)
   %div.span-4.dink.hvzcore.last
     HvZ Core

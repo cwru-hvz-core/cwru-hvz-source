@@ -1,5 +1,5 @@
 class GamesController < ApplicationController
-  before_filter :check_admin, :only => [:new, :create, :edit, :update, :emails, :admin_register, :admin_register_create, :heatmap, :index, :update_current]
+  before_filter :check_admin, :only => [:new, :create, :edit, :update, :emails, :admin_register, :admin_register_create, :heatmap, :index, :update_current, :tools]
 
   def index
     @games = Game.includes(:registrations).order(:game_begins).all
@@ -135,5 +135,8 @@ class GamesController < ApplicationController
       end
     end
 
+  end
+
+  def tools
   end
 end

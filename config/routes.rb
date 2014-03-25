@@ -40,6 +40,7 @@ Hvz::Application.routes.draw do
     end
 
     member do
+      get 'tools'
       get 'rules'
       get 'tree'
       get 'heatmap'
