@@ -22,17 +22,11 @@ class UpdateGameState
 
     @players = @current_game.registrations
 
-    @human_faction = @players.map{|p|
-      p if p.is_human?
-    }.compact
+    @human_faction = @players.select(&:is_human?)
 
-    @zombie_faction = @players.map{|p|
-      p if p.is_zombie?
-    }.compact
+    @zombie_faction = @players.select(&:is_zombie?)
 
-    @deceased_faction = @players.map{|p|
-      p if p.is_deceased?
-    }.compact
+    @deceased_faction = @players.select(&:is_deceased?)
 
     @players.collect {|x| x.score = 0} # Reset the scores
     calculate_mission_scores(@players)
@@ -57,19 +51,28 @@ class UpdateGameState
     factions[:human].each do |h|
       h.faction_id = 0
     end
+
     factions[:zombie].each do |h|
       if h.faction_id == 0
-        Delayed::Job.enqueue SendNotification.new(h.person, "Welcome to the horde. Wear your headband with pride! Zombie Chant: What do we want? Brains! When do we want it? Brains!")
+        h.human_type = nil
+        Delayed::Job.enqueue SendNotification.new(h.person,
+          "Welcome to the horde. Wear your headband with pride! Zombie Chant: What do we want? Brains! When do we want it? Brains!")
       end
       if h.faction_id == 2
-        Delayed::Job.enqueue SendNotification.new(h.person, "Due to an error in the site, you were mistakenly marked as \"deceased\". You are no longer deceased and should continue playing as a zombie until further notice. Sorry!")
+        Delayed::Job.enqueue SendNotification.new(h.person,
+          "Due to an error in the site, you were mistakenly marked as \"deceased\"." +
+          "You are no longer deceased and should continue playing as a zombie until further notice. Sorry!")
       end
 
       h.faction_id = 1
     end
+
     factions[:deceased].each do |h|
       if h.faction_id == 1
-        Delayed::Job.enqueue SendNotification.new(h.person, "Sorry, but your status has become \"deceased\". You are now out of the game until the Final Mission. If this is a mistake (e.g. because of a mission), it should be fixed shortly. Otherwise, we'll see you at the final mission!")
+        Delayed::Job.enqueue SendNotification.new(h.person,
+          "Sorry, but your status has become \"deceased\". You are now out of the" + 
+          "game until the Final Mission. If this is a mistake (e.g. because of a mission)," +
+          "it should be fixed shortly. Otherwise, we'll see you at the final mission!")
       end
 
       h.faction_id = 2
@@ -82,28 +85,28 @@ class UpdateGameState
       h.score += UpdateGameState.points_for_time_survived((h.time_survived / 1.hour).floor)
     end
   end
+
   def calculate_cache_scores(all_players)
     all_players.each do |h|
       h.score += h.bonus_codes.sum(:points)
     end
   end
+
   def calculate_mission_scores(all_players)
     all_players.each do |h|
       h.score += h.missions.sum(:score)
     end
   end
+
   def self.points_for_time_survived(hours)
     1200 + 50 * hours
   end
+
   def calculate_zombie_tag_scores(zombie)
     zombie.each do |z|
       z.tagged.each do |t|
         z.score += t.score
       end
     end
-  end
-
-  def update_score_cache(registrations)
-
   end
 end

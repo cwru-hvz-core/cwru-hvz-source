@@ -31,6 +31,9 @@ class RegistrationsController < ApplicationController
     @registration.score = 0
     @registration.squad = nil unless params[:squad_select] == "existing"
 
+    # Default everyone to be military
+    @registration.human_type = 'Military'
+
     if !@registration.save
       flash[:error] = "Error, could not register you! #{@registration.errors.full_messages.first}"
       return redirect_to new_registration_url
