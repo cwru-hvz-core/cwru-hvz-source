@@ -14,7 +14,6 @@ gem 'dalli'
 gem 'jquery-rails', '>= 1.0.12'
 gem 'airbrake'
 gem 'newrelic_rpm'
-gem 'mysql'
 gem 'pg'
 gem 'pry'
 gem 'pry-rails'
@@ -23,11 +22,6 @@ gem 'pubsubhub'
 group :development, :test do
   gem 'rspec-rails'
   gem 'factory_girl_rails'
-end
-
-group :test do
-  gem 'sqlite3'
-  gem 'debugger'
 end
 
 # Gems used only for assets and not required
