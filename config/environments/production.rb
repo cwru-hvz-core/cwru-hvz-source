@@ -35,9 +35,9 @@ Hvz::Application.configure do
   # config.action_controller.asset_host = "http://assets.example.com"
 
   # Remove for Rails 4.0. Needed to satisfy Heroku Cedar stack:
-  config.assets.initialize_on_precompile = false
+  #config.assets.initialize_on_precompile = false
   config.assets.compress = true
-  config.assets.compile = false
+  #config.assets.compile = false
   config.assets.digest = true
 
   # Disable delivery errors, bad email addresses will be ignored
