@@ -102,7 +102,7 @@ class Registration < ActiveRecord::Base
     #recursively generates json data for this player's family tree.
     { id: "player#{self.id}", name: self.person.name,
       data: { tags: self.tagged.length },
-      children: self.tagged(include: [:tagged, :person]).select(&:tagee).map { |x| x.tagee.zombietree_json }
+      children: self.tagged(include: [:tagged, :person]).select(&:tagee).map { |x| x.tagee.zombietree}
     }
   end
 
