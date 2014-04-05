@@ -32,7 +32,7 @@ class RegistrationsController < ApplicationController
     @registration.squad = nil unless params[:squad_select] == "existing"
 
     # Default everyone to be military
-    @registration.human_type = 'Military'
+    @registration.human_type = 'Resistance'
 
     if !@registration.save
       flash[:error] = "Error, could not register you! #{@registration.errors.full_messages.first}"
