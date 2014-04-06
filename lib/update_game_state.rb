@@ -20,7 +20,7 @@ class UpdateGameState
   def perform
     Time.zone = @current_game.time_zone
 
-    @players = @current_game.registrations
+    @players = @current_game.registrations.includes(:person)
 
     @human_faction = @players.select(&:is_human?)
 
@@ -34,10 +34,15 @@ class UpdateGameState
     calculate_zombie_tag_scores(@zombie_faction)
     calculate_cache_scores(@players)
 
-    update_faction_cache({:human => @human_faction,
-                          :zombie => @zombie_faction,
-                          :deceased => @deceased_faction
-    })
+    factions = {
+      :human => @human_faction,
+      :zombie => @zombie_faction,
+      :deceased => @deceased_faction
+    }
+
+    update_faction_cache(factions)
+
+    update_forums(factions)
 
 
     # We have to override validation because the registrations are generally not changable
@@ -45,6 +50,21 @@ class UpdateGameState
     [@human_faction, @zombie_faction, @deceased_faction].flatten.each { |x| x.save(:validate => false) }
     @current_game.touch
     Delayed::Job.enqueue(UpdateGameState.new(),{ :run_at => Time.now + 1.minute })
+  end
+
+  def update_forums(factions)
+    params = {}
+    params[:human] = factions[:human].map { |r| r.person.caseid }.join(',')
+    params[:zombie] = factions[:zombie].map { |r| r.person.caseid }.join(',')
+    params[:core] = Person.where(is_admin: true).pluck(:caseid).join(',')
+
+    uri = URI.parse('http://forum.casehvz.com/hvz/groups')
+    http = Net::HTTP.new(uri.host, uri.port)
+
+    request = Net::HTTP::Post.new(uri.request_uri)
+    request.set_form_data(params.merge(api_key: 'fa7eb9f91ac0dee653d991f9b44f72f8f05421a157b00369162aa978d30d56a4'))
+
+    http.request(request)
   end
 
   def update_faction_cache(factions)
