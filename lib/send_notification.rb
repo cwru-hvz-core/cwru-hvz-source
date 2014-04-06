@@ -27,22 +27,14 @@ class SendNotification
   def perform
     Twilio.connect(ENV['TWILIO_ACCOUNT_SID'], ENV['TWILIO_AUTH_TOKEN'])
 
-    if not @mass_text.nil?
+    if @mass_text
       @mass_text.each do |x|
-        begin
-          Twilio::Sms.message(ENV['TWILIO_PHONE_NUMBER'], x[0].phone, x[1]) if (not x[0].phone.nil? and not x[0].phone.empty?)
-        rescue
-          puts "Could not send Twilio message."
-        end
+        Twilio::Sms.message(ENV['TWILIO_PHONE_NUMBER'], x[0].phone, x[1]) if x[0].phone.present?
       end
     end
 
-    if not @to_player.nil? and not @to_player.phone.nil? and not @to_player.phone.empty?
-      begin
-        Twilio::Sms.message(ENV['TWILIO_PHONE_NUMBER'], @to_player.phone, @message) if (not @to_player.phone.empty?)
-      rescue
-        puts "Could not send Twilio message."
-      end
+    if @to_player && @to_player.phone.present?
+      Twilio::Sms.message(ENV['TWILIO_PHONE_NUMBER'], @to_player.phone, @message)
     end
   end
 

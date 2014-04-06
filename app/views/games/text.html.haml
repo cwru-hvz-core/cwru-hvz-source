@@ -1,0 +1,20 @@
+%p
+  Select a faction and/or human type to filter emails. Leaving it blank will
+  make it not filtered by that. Leave both blank to get all players.
+  You can select a mission to only send texts to players attending that mission.
+= form_tag text_game_path(@game.id), method: :post do
+  = label_tag :faction_id, "Faction:"
+  = select_tag :faction_id, options_for_select([["Human", 0], ["Zombies", 1], ["Deceased", 2]], params[:faction_id]),
+    include_blank: true
+  = label_tag :human_type, "Human Type:"
+  = select_tag :human_type, options_for_select(Registration::HUMAN_TYPES, params[:human_type]),
+    include_blank: true
+  = label_tag :mission, "Mission Attended:"
+  = select_tag :mission, options_from_collection_for_select(@game.missions, 'id', 'title'),
+    include_blank: true
+
+  %br
+  = label_tag :message
+  = text_field_tag :message
+  %br
+  = submit_tag "Submit"
