@@ -11,7 +11,7 @@ class Tag < ActiveRecord::Base
   after_create :trigger_player_tagged
 
   def tagee_card_code=(code)
-    tagee = Registration.find_by_card_code(code)
+    tagee = Registration.find_by_card_code(code.upcase)
     self.tagee_id = tagee.id unless tagee.nil?
   end
 
@@ -33,6 +33,7 @@ class Tag < ActiveRecord::Base
     end
     tagee = Registration.find(self.tagee_id)
     errors.add_to_base "Tagged player is not a human!" unless tagee.is_human?
+    errors.add_to_base "Tagged player is not playing this game!" unless tagee.game == self.game
 
     errors.add_to_base "Tag occurred before game started!" if self.datetime < self.game.game_begins
     errors.add_to_base "Tag occurs after game ends!" if self.datetime >= self.game.game_ends

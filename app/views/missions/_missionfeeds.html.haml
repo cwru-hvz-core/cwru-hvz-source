@@ -1,5 +1,6 @@
 %h2.dink Current Feeds (#{@feeds.length}):
 %table
   - @feeds.each do |f|
-    %tr
-      %td=f.registration.person.name
+    - if f.registration
+      %tr
+        %td=f.registration.person.name

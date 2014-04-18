@@ -15,6 +15,7 @@ Hvz::Application.routes.draw do
   resources :bonus_codes
   resources :missions, :id => /[0-9]*/ do
     collection do
+      get :autocomplete_person_name
       get 'list'
     end
 

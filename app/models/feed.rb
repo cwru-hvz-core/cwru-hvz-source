@@ -3,7 +3,10 @@ class Feed < ActiveRecord::Base
   belongs_to :tag
   belongs_to :mission
 
-  validates_uniqueness_of :registration_id, :scope => [:mission_id, :tag_id]
+  validates_presence_of :registration_id
+  validates_uniqueness_of :registration_id, scope: [:mission_id, :tag_id],
+    if: ->(feed) { feed.mission_id || feed.tag_id }
+    
 
   attr_accessor :person_id, :person_name
 

@@ -14,15 +14,13 @@ class GamesController < ApplicationController
     # Don't send new HTML if the content is cached on the client:
     return if !stale?(@game) && !Rails.env.development?
 
-    # Save the costly DB lookups if the stuff is cached already:
-    return render if Rails.cache.exist? ['views', @game.cache_key, 'show'].join('/')
+    @graphdata = Rails.cache.fetch([@game.cache_key, 'graphdata']) { @game.graph_data }
 
     @game = Game.where(id: params[:id]).
       includes(squads: :registrations, registrations: [
         :taggedby, :tagged, :feeds, :game, :person, :infractions,
         :missions, :bonus_codes,
       ]).first
-    @graphdata = @game.graph_data
     @squads = @game.squads.select { |x| x.registrations.length >= 2 }.
                 sort_by(&:points).reverse.first(5)
   end
@@ -135,7 +133,7 @@ class GamesController < ApplicationController
   def admin_register_create
     @game = Game.find(params[:id])
     @person = Person.where(:caseid => params[:person][:caseid]).first_or_initialize
-    if @person.persisted?
+    if !@person.persisted?
       @person.update_attributes(:name => params[:person][:name], :phone => params[:person][:phone])
     end
     return redirect_to(admin_register_game_url(@game), :flash => { :error => 'You need to input a name for the person.' }) if !@person.name.present?
