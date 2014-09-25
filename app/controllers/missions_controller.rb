@@ -1,5 +1,6 @@
 class MissionsController < ApplicationController
   before_filter :check_admin, :except => [ :show, :index ]
+  autocomplete :person, :name
 
   def new
     @mission = Mission.new

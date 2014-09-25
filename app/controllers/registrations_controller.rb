@@ -134,27 +134,6 @@ class RegistrationsController < ApplicationController
     @players = @current_game.registrations.includes(:person)
   end
 
-private
-
-  def require_personal_information
-    if @logged_in_person.name.blank?
-      return redirect_to edit_person_url(@logged_in_person, next: 'registration')
-    end
-  end
-
-  def require_waiver
-    return unless @logged_in_person.legal_to_sign_waiver?
-
-    current_waiver = Waiver.where(
-      person_id: @logged_in_person,
-      game_id: @current_game
-    ).first
-
-    if current_waiver.blank?
-      redirect_to sign_waiver_url(@logged_in_person, next: 'registration')
-    end
-  end
-
   # todo[tdooner]: I think this whole method is super jank. Going to revisit at
   # a later time.
   #
@@ -192,6 +171,27 @@ private
     else
       flash[:error] = "You cannot join a squad after the game has started"
       redirect_to root_url
+    end
+  end
+
+  private
+
+  def require_personal_information
+    if @logged_in_person.name.blank?
+      return redirect_to edit_person_url(@logged_in_person, next: 'registration')
+    end
+  end
+
+  def require_waiver
+    return unless @logged_in_person.legal_to_sign_waiver?
+
+    current_waiver = Waiver.where(
+      person_id: @logged_in_person,
+      game_id: @current_game
+    ).first
+
+    if current_waiver.blank?
+      redirect_to sign_waiver_url(@logged_in_person, next: 'registration')
     end
   end
 end

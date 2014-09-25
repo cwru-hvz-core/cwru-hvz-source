@@ -18,9 +18,9 @@ class Registration < ActiveRecord::Base
   DECEASED_FACTION = 2
 
   FACTION_NAMES = {
-    HUMAN_FACTION => :human,
-    ZOMBIE_FACTION => :zombie,
-    DECEASED_FACTION => :deceased,
+    HUMAN_FACTION => 'human',
+    ZOMBIE_FACTION => 'zombie',
+    DECEASED_FACTION => 'deceased',
   }
 
   validates_uniqueness_of :person_id, :scope => :game_id
@@ -50,7 +50,7 @@ class Registration < ActiveRecord::Base
   end
 
   def display_time_survived
-    return game.since_begun if is_oz && !game.ozs_revealed?
+    return game.since_begin if is_oz && !game.ozs_revealed?
     time_survived
   end
 

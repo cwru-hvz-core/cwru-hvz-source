@@ -18,6 +18,7 @@ gem 'pg'
 gem 'pry'
 gem 'pry-rails'
 gem 'pubsubhub'
+gem 'rails3-jquery-autocomplete'
 
 group :development, :test do
   gem 'rspec-rails'

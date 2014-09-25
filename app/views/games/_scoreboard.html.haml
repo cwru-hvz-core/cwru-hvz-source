@@ -1,4 +1,4 @@
-%div.player{ class: Registration::FACTION_NAMES[player.display_faction_id] }
+%div.player{ class: [Registration::FACTION_NAMES[player.display_faction_id], player.human_type.try(:downcase)] }
   %ul
     %li.number
       #{number}.

@@ -28,7 +28,7 @@ class UpdateGameState
 
     @deceased_faction = @players.select(&:is_deceased?)
 
-    @players.collect {|x| x.score = 0} # Reset the scores
+    @players.each {|x| x.score = 0} # Reset the scores
     calculate_mission_scores(@players)
     calculate_human_scores(@players)
     calculate_zombie_tag_scores(@zombie_faction)
@@ -46,16 +46,26 @@ class UpdateGameState
 
 
     # We have to override validation because the registrations are generally not changable
-    # after registration ends.
-    [@human_faction, @zombie_faction, @deceased_faction].flatten.each { |x| x.save(:validate => false) }
-    @current_game.touch
+    # acollectfter registration ends.
+    changed = false
+    [@human_faction, @zombie_faction, @deceased_faction].flatten.each do |x|
+      if x.changed?
+        x.save(:validate => false)
+        changed = true
+      end
+    end
+    @current_game.touch if changed
     Delayed::Job.enqueue(UpdateGameState.new(),{ :run_at => Time.now + 1.minute })
   end
 
   def update_forums(factions)
+    factions[:military] = factions[:human].select { |r| r.human_type == 'Military' }
+    factions[:resistance] = factions[:human].select { |r| r.human_type != 'Military' }
     params = {}
-    params[:human] = factions[:human].map { |r| r.person.caseid }.join(',')
     params[:zombie] = factions[:zombie].map { |r| r.person.caseid }.join(',')
+    params[:human] = factions[:human].map { |r| r.person.caseid }.join(',')
+    params[:military] = factions[:military].map{ |r| r.person.caseid }.join(',')
+    params[:resistance] = factions[:resistance].map{ |r| r.person.caseid }.join(',')
     params[:core] = Person.where(is_admin: true).pluck(:caseid).join(',')
 
     uri = URI.parse('http://forum.casehvz.com/hvz/groups')

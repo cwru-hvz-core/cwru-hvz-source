@@ -58,6 +58,9 @@ div.player ul li.picture {
 div.player.human ul li.picture {	
 	background:url("/assets/scoreboard.png") repeat-y scroll 0 0 #EEE;
 }
+div.player.human.military ul li.picture {
+	background:url("/assets/scoreboard_military.png") repeat-y scroll 0 0 #EEE;
+}
 div.player.zombie ul li.picture {	
 	background:url("/assets/scoreboard_bg_zombie.png") repeat-x scroll 0 0 #EEE;
 }

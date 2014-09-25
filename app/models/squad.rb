@@ -10,7 +10,6 @@ class Squad < ActiveRecord::Base
   end
 
   def can_be_joined?
-    # TODO: Well, I guess this is a race condition.
     self.registrations.count < 8
   end
 end

@@ -19,7 +19,7 @@ class FeedsController < ApplicationController
 
       flash[:message] = "All Zombies Fed"
       if @mission
-        redirect_to feeds_mission_path
+        redirect_to feeds_mission_path(@mission)
       else
         redirect_to tools_game_path(Game.current)
       end
