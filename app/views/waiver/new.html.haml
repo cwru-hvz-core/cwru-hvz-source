@@ -15,7 +15,7 @@
               = g.label :date_of_birth, 'Date Of Birth:'
             %td
               = g.date_select :date_of_birth, order: [:month, :day, :year],
-                start_year: 1940, end_year: 1996
+                start_year: 1940, end_year: Time.now.year-14
     %div.span-1
     %div.span-10
       =f.label :studentid, "Student ID:"
