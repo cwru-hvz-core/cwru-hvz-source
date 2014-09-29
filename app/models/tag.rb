@@ -5,6 +5,8 @@ class Tag < ActiveRecord::Base
   belongs_to :tagger, :foreign_key => "tagger_id", :class_name => "Registration"
   belongs_to :tagee, :foreign_key => "tagee_id", :class_name => "Registration"
 
+  validate :validate
+
   # TODO: Write code so additional feeds are scalable
   attr_accessor :tagee_card_code, :award_points, :feed_1, :feed_2
 
