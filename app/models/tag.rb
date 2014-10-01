@@ -34,13 +34,13 @@ class Tag < ActiveRecord::Base
       end
     end
     tagee = Registration.find(self.tagee_id)
-    errors.add_to_base "Tagged player is not a human!" unless tagee.is_human?
-    errors.add_to_base "Tagged player is not playing this game!" unless tagee.game == self.game
+    errors.add :base, "Tagged player is not a human!" unless tagee.is_human?
+    errors.add :base, "Tagged player is not playing this game!" unless tagee.game == self.game
 
-    errors.add_to_base "Tag occurred before game started!" if self.datetime < self.game.game_begins
-    errors.add_to_base "Tag occurs after game ends!" if self.datetime >= self.game.game_ends
+    errors.add :base, "Tag occurred before game started!" if self.datetime < self.game.game_begins
+    errors.add :base, "Tag occurs after game ends!" if self.datetime >= self.game.game_ends
 
-    errors.add_to_base "Tag occurs in the future?!" if self.datetime >= Game.now(self.game)
+    errors.add :base, "Tag occurs in the future?!" if self.datetime >= Game.now(self.game)
   end
 
   def count_resulting_tags

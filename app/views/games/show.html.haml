@@ -95,7 +95,7 @@
         %tbody
           - @game.original_zombies.each do |z|
             %tr
-              - if @game.ozs_revealed? or (not @logged_in_person.nil? and z.person.id == @logged_in_person.id)
+              - if @game.ozs_revealed?
                 %td{:class=>("admin nocenter" if z.person.is_admin)}
                   %b= z.person.name
               - else
