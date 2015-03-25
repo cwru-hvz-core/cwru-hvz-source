@@ -27,10 +27,10 @@ class Tag < ActiveRecord::Base
       return
     end
     unless self.tagger_id == 0
-      errors.add_to_base "Tagger " + self.tagger.inspect + " is not a zombie!" unless (self.tagger.is_zombie? or self.tagger.is_oz)
+      errors.add :base, "Tagger " + self.tagger.inspect + " is not a zombie!" unless (self.tagger.is_zombie? or self.tagger.is_oz)
       # Check to ensure the tagger was a zombie at the time the player was tagged.
       if self.datetime < tagger.state_history[:zombie]
-        errors.add_to_base "Tag occurred before the tagging player was a zombie!"
+        errors.add :base, "Tag occurred before the tagging player was a zombie!"
       end
     end
     tagee = Registration.find(self.tagee_id)

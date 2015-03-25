@@ -33,6 +33,7 @@ class FeedsController < ApplicationController
       @feed.save
       @feeds = @mission.feeds.sort{|x,y| y.created_at <=> x.created_at}
     end
+    Game.current.touch
   end
 
 end

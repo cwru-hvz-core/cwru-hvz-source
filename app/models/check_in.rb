@@ -21,7 +21,7 @@ class CheckIn < ActiveRecord::Base
     # Pass this the location (from get_location) and the current local time.
     # time must be from Time.now.utc + Game.current.utc_offset/1.hour
     # TODO: I think this will break if Game.current.utc_offset > 6 hours... but I'm not 100% sure.
-    hour = time.hour + (Game.current.utc_offset/1.hour)
+    hour = time.hour# + (Game.current.utc_offset/1.hour)
     if location == "Wade"
       return true if hour < 6 or hour >= 18
     end

@@ -59,8 +59,8 @@ class Registration < ActiveRecord::Base
   end
 
   def validate
-    errors.add_to_base('Registration has not yet begun for this game!') if Time.now < self.game.registration_begins
-    errors.add_to_base('Registration has already ended for this game!') if Time.now > self.game.registration_ends
+    errors.add(:base, 'Registration has not yet begun for this game!') if Time.now < self.game.registration_begins
+    errors.add(:base, 'Registration has already ended for this game!') if Time.now > self.game.registration_ends
   end
 
   # Note: These methods are costly and should only be called asynchronously.
