@@ -3,7 +3,7 @@
     %li.number
       #{number}.
     %li.picture.right
-      = image_tag profile_photo_url(player.person, 32)
+      = image_tag profile_photo_url(player.person, 32), alt: ''
     %li.name.right{ class: ("admin" if player.person.try(:is_admin?)) }
       = player.person.try(:name) || 'Unknown Player'
       - if player.is_oz? && player.game.ozs_revealed?

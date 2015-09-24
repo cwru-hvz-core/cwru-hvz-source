@@ -14,6 +14,6 @@
         %td=m.regarding
         %td=m.body
         %td=m.note
-        %td=m.occurred.strftime("%A, %B %e, %Y @ %I:%M %p")
+        %td=m.occurred.try(:strftime, "%A, %B %e, %Y @ %I:%M %p")
         %td=link_to("Edit", edit_contact_message_url(m))
         %td=link_to("Delete", contact_message_url(m), :class=>"admin", :method=>:delete)
