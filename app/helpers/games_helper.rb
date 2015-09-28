@@ -20,7 +20,7 @@ module GamesHelper
       tag_string = "#{scoreboard_highlight(tag_count)} #{tag_count == 1 ? 'tag' : 'tags'}"
       
 
-      [tag_string].join(' ').html_safe
+      tag_string.html_safe
     else
       'Deceased!'
     end
