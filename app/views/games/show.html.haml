@@ -109,14 +109,24 @@
       - prevscore = -1
       - currentnum = 1
       - countnum = 1
-      - @game.registrations.sort_by{|x| x.display_score}.reverse_each do |p|
+      all_players = @game.registrations.group_by(:faction_id).sort_by{|x| x.display_score}.reverse_each do |p|.flatten
+        @humans = p
+        - if p.display_score == prevscore
+          - number = currentnum
+      - else
+       - number = currentnum = countnum
+       - prevscore = p.display_score
+        = render 'scoreboard', player: p, number: number
+        - countnum += 1
+  
+        @zombies = p
         - if p.display_score == prevscore
           - number = currentnum
         - else
           - number = currentnum = countnum
           - prevscore = p.display_score
-        = render 'scoreboard', player: p, number: number
-        - countnum += 1
+          = render 'scoreboard', player: p, number: number
+          - countnum += 1
   .outOfDate
     #scoreboardInfo
       This page is
