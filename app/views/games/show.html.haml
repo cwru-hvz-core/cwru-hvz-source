@@ -109,18 +109,17 @@
       - prevscore = -1
       - currentnum = 1
       - countnum = 1
-      all_players = @game.registrations.group_by(:faction_id).flatten
-      all_players[0].each do |p|
-       
-        - if p.display_score == prevscore
-          - number = currentnum
+        -all_players = @game.registrations.group_by(:faction_id)
+        -all_players[0].each do |p|
+      - if p.display_score == prevscore
+       - number = currentnum
       - else
        - number = currentnum = countnum
        - prevscore = p.display_score
         = render 'scoreboard', player: p, number: number
         - countnum += 1
   
-       all_players[1].each do |p|
+       -all_players[1].each do |p|
         - if p.display_score == prevscore
          - number = currentnum
         - else
