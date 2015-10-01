@@ -104,6 +104,7 @@
       - currentnum = 1
       - countnum = 1
       -all_players = @game.registrations.group_by(:faction_id)
+    %div.humans.clear{:style=>"float:left;width:400px"}
       -all_players[0].each do |p|
         - if p.display_score == prevscore
           - number = currentnum
@@ -112,6 +113,7 @@
           - prevscore = p.display_score
         = render 'scoreboard', player: p, number: number
         - countnum += 1
+    %div.zombies.clear{:style=>"float:right;width:400px"}
       -all_players[1].each do |p|
         - if p.display_score == prevscore
          - number = currentnum
