@@ -1,9 +1,8 @@
--content_for :javascripts do
-  =javascript_include_tag 'https://www.google.com/jsapi'
+- content_for :javascripts do
+  = javascript_include_tag 'https://www.google.com/jsapi'
   :javascript
     google.load("visualization", "1", {packages:["corechart"]});
-    google.setOnLoadCallback(drawChart);
-    function drawChart() {
+    function drawChart(graph_data) {
       var data = new google.visualization.DataTable();
       data.addColumn('number', 'Hours');
       data.addColumn('number', 'Humans');
@@ -12,25 +11,6 @@
       data.addColumn({type: 'boolean', role: 'certainty'});
       data.addColumn('number', 'Deceased');
       data.addColumn({type: 'boolean', role: 'certainty'});
-      /*
-      Here's the data!
-
-        Column 1:   Hours since the beginning of the game.
-        Column 2-4: Humans, Zombies, Deceased at that Hour
-        Column 5:   Whether this is the actual game state (true) or a projection
-                    (false)
-
-      There will up to 240 entries in the data set.
-
-      If you're going to do something with this data, let us know! You don't
-      have to, but we're curious where our data ends up :). For example, a
-      biology professor used our data to write a disease spread rate calculation
-      lab.
-
-      casehvz@gmail.com
-      */
-      var graph_data = #{@graphdata.to_json}
-
       data.addRows(graph_data);
 
       for (var i=0; i < data.getNumberOfRows(); i++) {
@@ -49,77 +29,100 @@
       var chart = new google.visualization.LineChart(document.getElementById('game_graph'));
       chart.draw(data, options);
     }
+  :javascript
+    $(function() {
+      /*
+      Here's the data!
+        Column 1:   Hours since the beginning of the game.
+        Column 2-4: Humans, Zombies, Deceased at that Hour
+        Column 5:   Whether this is the actual game state (true) or a projection
+                    (false)
+      There will up to 240 entries in the data set.
+      If you're going to do something with this data, let us know! You don't
+      have to, but we're curious where our data ends up :). For example, a
+      biology professor used our data to write a disease spread rate calculation
+      lab.
+      casehvz@gmail.com
+      */
+      var graph_data = #{@graphdata.to_json}
+      drawChart(graph_data);
+    });
+  :javascript
+    $(function() {
+      $("#scoreboardTime").countdown({since: new Date(#{Time.now.strftime("%Y, %m-1, %d, %H, %M, %S")}), compact:true, format: 'MS'})
+    });
 %div.game-header
   %div.span-6.prepend-1
-    %h1.dink=@game.short_name
-    %h2.dink="(" + @game.dates[:date_range] + ")"
+    %h1.dink= @game.short_name
+    %h2.dink (#{@game.to_s(:date_range)})
   %div.span-14.prepend-1.last
     #game_graph
-%div.game
-  %div.span-4.clear
-    %table.players
-      %thead
-        %th{:colspan=>2}
-          Players:
-      - cache({:action=>"show", :action_suffix=>"gamestats", :id=>@game}, :expires_in => 1.minute) do
-        = render :partial => "gamestats"
-  %div.span-6.prepend-1
-    -if @squads.length > 0
-      %table.ozs#table-squads
+= cache [@game.cache_key, 'show'].join('/') do
+  %div.game
+    %div.span-4.clear
+      %table.players
         %thead
           %th{:colspan=>2}
-            %b Top 5 Squads:
+            Players:
+        = render 'gamestats', game: @game
+    %div.span-6.prepend-1
+      - if @squads.length > 0
+        %table.ozs#table-squads
+          %thead
+            %th{:colspan=>2}
+              %b Top 5 Squads:
+          %tbody
+            - @squads.each do |s|
+              %tr
+                %td
+                  %b= link_to s.name, squad_url(s.id)
+                %td= s.points
+      -else
+        %div{:style=>"height:130px"}
+          %b No squads found.
+          This is where the top squads would be listed, but it appears that there are no squads for this game.
+    %div.span-5.prepend-1
+      %table.ozs#table-ozs
+        %thead
+          %th{:colspan=>2}
+            %b Original Zombies:
         %tbody
-          - @squads.each do |s|
+          - @game.original_zombies.each do |z|
             %tr
-              %td
-                %b=link_to s["name"], squad_url(s["id"])
-              %td=s["points"]
-    -else
-      %div{:style=>"height:130px"}
-        %b No squads found.
-        This is where the top squads would be listed, but it appears that there are no squads for this game.
-  %div.span-5.prepend-1
-    %table.ozs#table-ozs
-      %thead
-        %th{:colspan=>2}
-          %b Original Zombies:
-      %tbody
-        - @ozs.each do |z|
-          %tr 
-            - if @game.ozs_revealed? or (not @logged_in_person.nil? and z.person.id == @logged_in_person.id)
-              %td{:class=>("admin nocenter" if z.person.is_admin)}
-                %b= z.person.name
-            - else
-              %td
-                %b ??????
-            %td=z.score
-  %div.span-4.prepend-1.last
-    =link_to_if(@game.ozs_revealed?, "Zombie Tag Tree", tree_game_url(@game))
-  %div.span-23.clear{:style=>"margin-top:30px"}
-    - cache({:action => "show", :action_suffix=>"scoreboard-"+(params[:sorttype] or ""), :id=>@game}, :expires_in => 5.minutes) do
+              - if @game.ozs_revealed?
+                %td{:class=>("admin nocenter" if z.person.is_admin)}
+                  %b= z.person.name
+              - else
+                %td
+                  %b ??????
+              %td=z.score
+    %div.span-4.prepend-1.last
+      =link_to_if(@game.ozs_revealed?, "Zombie Tag Tree", tree_game_url(@game))
+    %div.span-23.clear{:style=>"margin-top:30px"}
       - number = 1
       - prevscore = -1
       - currentnum = 1
       - countnum = 1
-      - @players.each do |p|
-        - if(p.display_score == prevscore)
+      -all_players = @game.registrations.group_by(:faction_id)
+      -all_players[0].each do |p|
+        - if p.display_score == prevscore
           - number = currentnum
         - else
           - number = currentnum = countnum
           - prevscore = p.display_score
-        = render(:partial => "scoreboard", :locals => {:player => p, :number => (number)})
+        = render 'scoreboard', player: p, number: number
         - countnum += 1
-      :javascript
-        $(function() {
-          $("#scoreboardTime").countdown({since: new Date(#{Time.now.strftime("%Y, %m-1, %d, %H, %M, %S")}), compact:true, format: 'MS'})
-        });
-      .outOfDate
-        #scoreboardInfo
-          This page is
-        #scoreboardTime
-        #scoreboardInfo
-          out of date.
-  %div.span-2.last
-    &nbsp;
-
+      -all_players[1].each do |p|
+        - if p.display_score == prevscore
+         - number = currentnum
+        - else
+          - number = currentnum = countnum
+          - prevscore = p.display_score
+       - render 'scoreboard', player: p, number: number
+       - countnum += 1
+  .outOfDate
+    #scoreboardInfo
+      This page is
+    #scoreboardTime
+    #scoreboardInfo
+      out of date.
