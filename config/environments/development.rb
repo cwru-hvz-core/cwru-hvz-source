@@ -23,6 +23,8 @@ Hvz::Application.configure do
   config.action_dispatch.best_standards_support = :builtin
 
   config.assets.compress = false
-  config.assets.debug = true
+  config.assets.debug = truei
+
+  config.logger = ActiveSupport::Logger.new(config.paths['log'].first, 1, 50 * 1024 * 1024)
 end
 
