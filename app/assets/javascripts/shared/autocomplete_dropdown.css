@@ -1,3 +1,5 @@
+@import "compass/css3";
+
 /* todo: remove !important's when compass is gone */
 .autocomplete-container {
   width: 400px !important;

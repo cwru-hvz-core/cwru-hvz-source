@@ -1,10 +1,10 @@
-//= require shared/autocomplete_dropdown
 //= require jquery.countdown
 @import "partials/base";
 @import "compass";
 @import "_blueprint";
 @import "blueprint/grid";
 @import "blueprint/reset";
+//= require shared/autocomplete_dropdown
 @include blueprint;
 
 html, body {
