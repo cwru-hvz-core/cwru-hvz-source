@@ -43,7 +43,7 @@ person_ids = []
 # Create each person
 person_list.each do |name, case_id, phone, dob|
   p = Person.new(name: name, phone: phone, date_of_birth: dob)
-  # Case ID assignment must be done separately due to it being a protected attr
+  # Case ID assignment must be done separately due to it being a protected attribute
   p.caseid = case_id
   p.save
 
@@ -67,8 +67,6 @@ game_id = Game.last.id
 
 # Register each person for the game and submit a waiver for them
 person_ids.each do |person_id|
-  puts "Person ID: #{person_id}"
-  puts "Game ID: #{game_id}"
   Registration.create(
     person_id: person_id,
     game_id: game_id,
