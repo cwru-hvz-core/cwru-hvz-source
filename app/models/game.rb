@@ -11,14 +11,14 @@ class Game < ActiveRecord::Base
   validates_with GameValidator  # Defined in ./lib/game_validator.rb
 
   def self.current
-    Game.find(:first, :conditions => ["is_current = ?", true]) or Game.new
+    Game.where(is_current: true).first or Game.new
   end
 
   def hours_to_starve
     48
   end
 
-  def to_s(type)
+  def to_s(type=nil)
     datetimeformat = '%A, %B %e, %Y @ %I:%M %p'
 
     case type
@@ -39,7 +39,7 @@ class Game < ActiveRecord::Base
     when :game_ends
       game_ends.strftime(datetimeformat)
     else
-      super
+      super()
     end
   end
 
