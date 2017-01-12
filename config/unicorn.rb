@@ -2,7 +2,7 @@ worker_processes 2
 timeout 30
 preload_app true
 
-APP_PATH = '/home/hvz/cwru-hvz-source'
+APP_PATH = "#{Rails.root}"
 
 working_directory APP_PATH
 
