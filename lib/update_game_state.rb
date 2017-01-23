@@ -13,6 +13,8 @@
 # Also, this file should store the current game state in the database
 # if it has changed -- so all changes can be tracked over time.
 class UpdateGameState
+  FORUMS_URI = 'http://hvz.case.edu/hvz/groups'
+
   def initialize
     @current_game = Game.current
   end
@@ -41,9 +43,7 @@ class UpdateGameState
     }
 
     update_faction_cache(factions)
-
     update_forums(factions)
-
 
     # We have to override validation because the registrations are generally not changable
     # acollectfter registration ends.
@@ -59,6 +59,8 @@ class UpdateGameState
   end
 
   def update_forums(factions)
+    return unless forums_reachable?
+
     factions[:military] = factions[:human].select { |r| r.human_type == 'Military' }
     factions[:resistance] = factions[:human].select { |r| r.human_type != 'Military' }
     params = {}
@@ -68,13 +70,28 @@ class UpdateGameState
     params[:resistance] = factions[:resistance].map{ |r| r.person.caseid }.join(',')
     params[:core] = Person.where(is_admin: true).pluck(:caseid).join(',')
 
-    uri = URI.parse('http://forum.casehvz.com/hvz/groups')
+    uri = URI.parse(FORUMS_URI)
     http = Net::HTTP.new(uri.host, uri.port)
 
     request = Net::HTTP::Post.new(uri.request_uri)
     request.set_form_data(params.merge(api_key: 'fa7eb9f91ac0dee653d991f9b44f72f8f05421a157b00369162aa978d30d56a4'))
 
     http.request(request)
+  end
+
+  def forums_reachable?
+    begin
+      uri = URI.parse(FORUMS_URI)
+      http = Net::HTTP.new(uri.host, uri.port)
+
+      request = Net::HTTP::Get.new(uri.request_uri)
+      http.request(request)
+    rescue Errno::ECONNRESET => e
+      Rails.logger.error "Failed to update forums. Exception message: #{e.message}"
+      false
+    else
+      true
+    end
   end
 
   def update_faction_cache(factions)
@@ -100,7 +117,7 @@ class UpdateGameState
     factions[:deceased].each do |h|
       if h.faction_id == 1
         Delayed::Job.enqueue SendNotification.new(h.person,
-          "Sorry, but your status has become \"deceased\". You are now out of the" + 
+          "Sorry, but your status has become \"deceased\". You are now out of the" +
           "game until the Final Mission. If this is a mistake (e.g. because of a mission)," +
           "it should be fixed shortly. Otherwise, we'll see you at the final mission!")
       end
