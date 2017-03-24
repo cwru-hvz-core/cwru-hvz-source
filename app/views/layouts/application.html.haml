@@ -21,10 +21,11 @@
       .heading
         %h1 Case Humans vs. Zombies
         .headinfo.last
-          .span-5
-            %b New!
-            Discuss this game on the
-            =link_to "Case HvZ Forum!", "http://forum.casehvz.com"
+          .span-5{style: "width: 190px; height: 40px;"}
+
+            / %b New!
+            / Discuss this game on the
+            / =link_to "Case HvZ Forum!", "http://forum.casehvz.com"
           .span-6.countdowncontainer
             - if @current_game.game_begins.present?
               = render 'index/countdown'
