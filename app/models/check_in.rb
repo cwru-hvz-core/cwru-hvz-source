@@ -2,8 +2,8 @@ class CheckIn < ActiveRecord::Base
   belongs_to :registration
 
   def self.get_location(hostname)
-    nord = [/cse-xd\w+-\d+.\w+.(case|cwru).edu/]
-    wade = [/benewah.stuaff.cwru.edu/, /acpe-184-59-134-35.neo.res.rr.com/, /minnehaha.stuaff.cwru.edu/, /antrim.stuaff.cwru.edu/, /lapeer.stuaff.cwru.edu/]
+    nord = [/cse-xd\w+-\d+.\w+.(case|cwru).edu/, /cse-isr.engineering.(cwru|case).edu/]
+    wade = [/benewah.stuaff.cwru.edu/, /minnehaha.stuaff.cwru.edu/, /antrim.stuaff.cwru.edu/, /lapeer.stuaff.cwru.edu/]
     nord.each do |n|
       if n.match(hostname.downcase)
         return "Nord"
