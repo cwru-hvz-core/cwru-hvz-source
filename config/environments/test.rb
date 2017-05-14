@@ -7,8 +7,8 @@ Hvz::Application.configure do
   # and recreated between test runs.  Don't rely on the data there!
   config.cache_classes = true
 
-  # Log error messages when you accidentally call methods on nil.
-  config.whiny_nils = true
+  # Don't eagerly load libraries in the Rails ecosystem
+  config.eager_load = false
 
   # Show full error reports and disable caching
   config.consider_all_requests_local       = true
