@@ -3,7 +3,7 @@ class PeopleController < ApplicationController
   before_filter CASClient::Frameworks::Rails::Filter, :only => "login"
 
   def update
-    @person = Person.find(params[:id], :include => :registrations) or Person.new
+    @person = Person.find(params[:id]) or Person.new
 
     if !@logged_in_person.can_edit?(@person)
       flash[:error] = "You do not have permissions to edit this person's details."
