@@ -25,6 +25,7 @@ gem 'sass-rails', "~> 4.0.0"
 gem 'compass-blueprint'
 gem 'coffee-rails', "~> 4.0.0"
 gem 'uglifier'
+gem 'protected_attributes'
 
 group :development, :test do
   gem 'rspec-rails'
