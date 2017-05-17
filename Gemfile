@@ -1,7 +1,7 @@
 source 'http://rubygems.org'
-ruby "2.0.0"
+ruby "2.2.0"
 
-gem 'rails', '4.1'
+gem 'rails', '4.2'
 gem 'haml'
 gem 'json'
 gem 'breadcrumbs'
