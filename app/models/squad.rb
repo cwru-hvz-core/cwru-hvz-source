@@ -10,6 +10,6 @@ class Squad < ActiveRecord::Base
   end
 
   def can_be_joined?
-    self.registrations.count < 8
+    self.registrations.count < 25
   end
 end
