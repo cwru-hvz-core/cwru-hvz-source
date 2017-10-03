@@ -9,6 +9,10 @@ class Squad < ActiveRecord::Base
     self.registrations.map{|x| x.display_score}.sum()
   end
 
+  def avg_points
+    (self.registrations.map{|x| x.display_score}.sum()/self.registrations.count).round
+  end
+
   def can_be_joined?
     self.registrations.count < 25
   end

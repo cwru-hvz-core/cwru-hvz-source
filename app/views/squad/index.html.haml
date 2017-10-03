@@ -29,7 +29,7 @@ Note: Once you join or create a squad, you must remain with that squad for the r
         %td
           %b Leader:
           =s.leader.person.name if s.leader
-        %td{:rowspan=>2}=s.points()
+        %td{:rowspan=>2}=s.avg_points()
       %tr{:style=>"background-color:"+col}
         %td
           %b Members:
