@@ -5,10 +5,10 @@
   - unless @current_game.id.nil?
     %h2.dink Game Status
     %table
-      = render 'games/gamestats', game: @current_game
-  %h2.dink 
+      = render 'games/gamestats', game: @current_game 
+ %h2.dink 
     Recent Updates
-  %ul
+/  %ul
   - @items[0,5].each do |i|
     - if i.is_a?(Tag)
       %li= tag_text(i)
