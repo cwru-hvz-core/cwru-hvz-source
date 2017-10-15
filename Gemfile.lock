@@ -1,3 +1,10 @@
+GIT
+  remote: git://github.com/rubycas/rubycas-client.git
+  revision: 7b67c8f1b5515ee4e28479d640d2da0a5aadfbe0
+  specs:
+    rubycas-client (2.3.10.rc1)
+      activesupport
+
 GEM
   remote: http://rubygems.org/
   specs:
@@ -165,8 +172,6 @@ GEM
       rspec-mocks (~> 3.6.0)
       rspec-support (~> 3.6.0)
     rspec-support (3.6.0)
-    rubycas-client (2.3.9)
-      activesupport
     sass (3.2.19)
     sass-rails (4.0.5)
       railties (>= 4.0.0, < 5.0)
@@ -228,7 +233,7 @@ DEPENDENCIES
   rails3-jquery-autocomplete
   railties
   rspec-rails
-  rubycas-client
+  rubycas-client!
   sass-rails (~> 4.0.0)
   twilio
   uglifier
