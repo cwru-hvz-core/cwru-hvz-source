@@ -1,17 +1,17 @@
 source 'http://rubygems.org'
-ruby "2.0.0"
+ruby "2.2.0"
 
-gem 'rails', '3.2.14'
+gem 'rails', '4.2'
 gem 'haml'
 gem 'json'
 gem 'breadcrumbs'
-gem 'rubycas-client'
+gem 'rubycas-client', git: 'git://github.com/rubycas/rubycas-client.git'
 gem 'delayed_job_active_record'
 gem 'twilio'
 gem 'gchartrb'
 gem 'RedCloth'
 gem 'dalli'
-gem 'jquery-rails', '>= 1.0.12'
+gem 'jquery-rails'
 gem 'airbrake'
 gem 'newrelic_rpm'
 gem 'pg'
@@ -19,20 +19,17 @@ gem 'pry'
 gem 'pry-rails'
 gem 'pubsubhub'
 gem 'rails3-jquery-autocomplete'
+gem 'railties'
+gem 'compass-rails'
+gem 'sass-rails', "~> 4.0.0"
+gem 'compass-blueprint'
+gem 'coffee-rails', "~> 4.0.0"
+gem 'uglifier'
+gem 'protected_attributes'
 
 group :development, :test do
   gem 'rspec-rails'
   gem 'factory_girl_rails'
-end
-
-# Gems used only for assets and not required
-# in production environments by default.
-group :assets do
-  gem 'compass-rails'
-  gem 'sass-rails',   "~> 3.2.3"
-  gem 'compass-blueprint'
-  gem 'coffee-rails', "~> 3.2.1"
-  gem 'uglifier'
 end
 
 # Use unicorn as the web server
